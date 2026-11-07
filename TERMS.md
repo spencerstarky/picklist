@@ -40,7 +40,7 @@ All brand names, product titles, and logos referenced are trademarks of their re
 
 - **One-Time Flat Fee:** PickList is sold as a one-time flat fee ($29 USD) for lifetime access to version 1.x without recurring monthly subscription charges.
 - **Payment Processing:** Handled securely via ExtensionPay and Stripe.
-- **14-Day Money-Back Guarantee:** If the Software does not function as described on your compatible computer system and our support team cannot assist in resolving the issue, you may request a 100% refund within 14 days of purchase by emailing `support@spencerreselling.com` with your purchase receipt.
+- **14-Day Money-Back Guarantee:** If the Software does not function as described on your compatible computer system and our support team cannot assist in resolving the issue, you may request a 100% refund within 14 days of purchase by emailing `picklist.help@gmail.com` with your purchase receipt.
 
 ---
 
@@ -73,5 +73,5 @@ These Terms are governed by and construed in accordance with the laws of the Sta
 ## 9. Contact Information
 
 For questions or concerns regarding these Terms:
-- **Email:** `support@spencerreselling.com`
-- **Website:** `https://spencerreselling.com`
+- **Email:** `picklist.help@gmail.com`
+- **GitHub / Website:** `https://github.com/spencerstarky/picklist`

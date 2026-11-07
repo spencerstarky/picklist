@@ -65,5 +65,5 @@ PickList's use and transfer to any other app of information received from Google
 ## 5. Contact Information
 
 For questions or inquiries regarding this Privacy Policy:
-- **Email:** `support@spencerreselling.com`
-- **Website:** `https://spencerreselling.com`
+- **Email:** `picklist.help@gmail.com`
+- **GitHub / Website:** `https://github.com/spencerstarky/picklist`
