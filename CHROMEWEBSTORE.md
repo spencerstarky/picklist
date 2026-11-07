@@ -35,7 +35,7 @@ Privacy & Security:
 Your sales data stays completely private. All order processing, SKU sorting, and reminder syncing happen locally on your computer. No personal customer information, order history, or authentication tokens are ever sent to external third-party servers.
 
 Support & Feedback:
-For questions, support, or feature requests, contact support@spencerreselling.com.
+For questions, support, or feature requests, contact picklist.help@gmail.com.
 
 **Category** [REQUIRED]
 Productivity
@@ -53,11 +53,13 @@ English
 | Store Icon [REQUIRED] | 128×128 PNG | ✅ Ready | icons/icon128.png |
 | Screenshot 1 [REQUIRED] | 1280×800 or 640×400 | ⬜ Not created | |
 | Screenshot 2 [RECOMMENDED] | 1280×800 or 640×400 | ⬜ Not created | |
+| Screenshot 3 [RECOMMENDED] | 1280×800 or 640×400 | ⬜ Not created | |
 | Small Promo Tile [RECOMMENDED] | 440×280 | ⬜ Not created | |
 
 ### Screenshot Notes
-- Screenshot 1: Extension popup open showing active session status, SKU sorting preview, and one-click sync button.
-- Screenshot 2: Apple Reminders app on macOS and iOS showing the compiled "Daily Pull List" sorted descending by SKU.
+- **Screenshot 1:** Extension popup open showing active session status, SKU sorting preview, and one-click sync button.
+- **Screenshot 2:** Apple Reminders app on macOS and iOS showing the compiled "Daily Pull List" sorted descending by SKU.
+- **Screenshot 3 (Toolbar Pinning):** Chrome toolbar showing the puzzle-piece extensions menu (🧩) with the pin icon highlighted next to PickList, showing users how to keep it one-click accessible.
 
 ## Permissions Justification
 
