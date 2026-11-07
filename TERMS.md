@@ -38,7 +38,7 @@ All brand names, product titles, and logos referenced are trademarks of their re
 
 ## 4. Payment Terms & 14-Day Refund Policy
 
-- **One-Time Flat Fee:** PickList is sold as a one-time flat fee ($29 USD) for lifetime access to version 1.x without recurring monthly subscription charges.
+- **One-Time Flat Fee:** PickList is sold as a one-time flat fee ($29.99 USD) for lifetime access to version 1.x without recurring monthly subscription charges.
 - **Payment Processing:** Handled securely via ExtensionPay and Stripe.
 - **14-Day Money-Back Guarantee:** If the Software does not function as described on your compatible computer system and our support team cannot assist in resolving the issue, you may request a 100% refund within 14 days of purchase by emailing `picklist.help@gmail.com` with your purchase receipt.
 
@@ -60,7 +60,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT WARRANTY OF ANY KIN
 
 ## 7. Limitation of Liability
 
-TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL THE DEVELOPERS OR OPERATORS OF PICKLIST BE LIABLE FOR ANY INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES (INCLUDING LOSS OF PROFITS, DATA, GOODWILL, OR BUSINESS INTERRUPTION) ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE. IN NO EVENT SHALL OUR TOTAL CUMULATIVE LIABILITY EXCEED THE TOTAL AMOUNT PAID BY YOU FOR THE SOFTWARE ($29 USD).
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL THE DEVELOPERS OR OPERATORS OF PICKLIST BE LIABLE FOR ANY INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES (INCLUDING LOSS OF PROFITS, DATA, GOODWILL, OR BUSINESS INTERRUPTION) ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE. IN NO EVENT SHALL OUR TOTAL CUMULATIVE LIABILITY EXCEED THE TOTAL AMOUNT PAID BY YOU FOR THE SOFTWARE ($29.99 USD).
 
 ---
 

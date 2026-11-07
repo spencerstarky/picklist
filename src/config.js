@@ -11,7 +11,7 @@ const CONFIG = {
   EXTPAY_ID: "nifty-pull-list",
 
   // One-time flat fee display price (or monthly fee depending on your Stripe setup)
-  FLAT_FEE_PRICE: "$29",
+  FLAT_FEE_PRICE: "$29.99",
 
   // Google Tasks Configuration (For non-Apple users on Windows, Android & ChromeOS)
   GOOGLE_TASKS_LIST_NAME: "Daily Pull List",

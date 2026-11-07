@@ -524,7 +524,7 @@ echo "=================================================================="
   const displayPrice = document.getElementById("displayPrice");
   const btnPriceTag = document.getElementById("btnPriceTag");
 
-  const priceText = (typeof CONFIG !== "undefined" && CONFIG.FLAT_FEE_PRICE) ? CONFIG.FLAT_FEE_PRICE : "$29";
+  const priceText = (typeof CONFIG !== "undefined" && CONFIG.FLAT_FEE_PRICE) ? CONFIG.FLAT_FEE_PRICE : "$29.99";
   if (displayPrice) displayPrice.innerHTML = `${priceText} <span style="font-size: 18px; font-weight: 500; color: var(--text-muted);">one-time flat fee</span>`;
   if (btnPriceTag) btnPriceTag.textContent = `(${priceText})`;
 
