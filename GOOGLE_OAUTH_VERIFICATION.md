@@ -9,13 +9,12 @@
 | Field | Value to Enter |
 |---|---|
 | **App Name** | PickList : Daily Order Pulls for Nifty |
-| **User Support Email** | support@spencerreselling.com |
+| **User Support Email** | picklist.help@gmail.com |
 | **App Logo** | Upload `icons/icon128.png` (128×128 PNG) |
-| **Application Home Page** | `https://spencerreselling.com` (or your GitHub Pages guide URL) |
-| **Application Privacy Policy Link** | `https://spencerreselling.com/privacy-policy` (or hosted `src/privacy.html`) |
-| **Application Terms of Service Link** | `https://spencerreselling.com/terms` (or hosted `src/terms.html`) |
-| **Authorized Domains** | `spencerreselling.com` |
-| **Developer Contact Information** | support@spencerreselling.com |
+| **Application Home Page** | Your Vercel URL (e.g., `https://picklist-....vercel.app`) |
+| **Application Privacy Policy Link** | `https://<your-vercel-domain>/privacy` |
+| **Application Terms of Service Link** | `https://<your-vercel-domain>/terms` |
+| **Developer Contact Information** | picklist.help@gmail.com |
 
 ---
 
