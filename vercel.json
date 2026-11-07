@@ -1,0 +1,10 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/", "destination": "/src/guide.html", "permanent": false },
+    { "source": "/guide", "destination": "/src/guide.html", "permanent": false },
+    { "source": "/privacy", "destination": "/src/privacy.html", "permanent": false },
+    { "source": "/terms", "destination": "/src/terms.html", "permanent": false },
+    { "source": "/onboarding", "destination": "/src/onboarding.html", "permanent": false }
+  ]
+}

@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PickList: How It Works & Reseller Guide</title>
+  <link rel="icon" type="image/png" href="../icons/icon48.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --accent: #0071e3;
+      --accent-hover: #0077ed;
+      --accent-light: #e0f2fe;
+      --border: #e2e8f0;
+      --border-subtle: #f1f5f9;
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation */
+    .navbar {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 24px;
+    }
+
+    .nav-container {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-link {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .btn-nav-primary {
+      background: var(--accent);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 5px rgba(0, 113, 227, 0.25);
+    }
+
+    .btn-nav-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      max-width: 820px;
+      margin: 0 auto 48px;
+    }
+
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.18;
+      color: var(--text-main);
+      margin-bottom: 18px;
+    }
+
+    .hero h1 span.gradient-text {
+      background: linear-gradient(135deg, #0071e3 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 0;
+    }
+
+    .btn-hero {
+      background: var(--accent);
+      color: white;
+      padding: 16px 36px;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 20px rgba(0, 113, 227, 0.4), 0 2px 6px rgba(0, 0, 0, 0.06);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-hero:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px rgba(0, 113, 227, 0.48), 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Sleek 3-Card Workflow Grid */
+    .workflow-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 80px;
+      scroll-margin-top: 100px;
+    }
+
+    .workflow-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .workflow-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+
+    .workflow-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .workflow-icon-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .workflow-icon-badge.blue {
+      background: rgba(0, 113, 227, 0.08);
+      color: #0071e3;
+    }
+
+    .workflow-icon-badge.emerald {
+      background: rgba(16, 185, 129, 0.08);
+      color: #059669;
+    }
+
+    .workflow-icon-badge.purple {
+      background: rgba(99, 102, 241, 0.08);
+      color: #4f46e5;
+    }
+
+    .workflow-step-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 0.05em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      background: #f1f5f9;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .workflow-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .workflow-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Alternating Story Sections */
+    .story-section {
+      display: flex;
+      flex-direction: column;
+      gap: 96px;
+      margin-bottom: 88px;
+    }
+
+    .story-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 56px;
+      scroll-margin-top: 96px;
+    }
+
+    .story-row.reverse .story-copy {
+      order: 2;
+    }
+
+    .story-row.reverse .story-visual {
+      order: 1;
+    }
+
+    /* Story Copy Elements */
+    .story-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .story-copy h2 {
+      font-size: 29px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      line-height: 1.24;
+      margin-bottom: 16px;
+    }
+
+    .story-copy p.lead-p {
+      font-size: 15.5px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+
+    .story-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .story-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .feature-icon-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .feature-text-block strong {
+      display: block;
+      font-size: 13.5px;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .feature-text-block p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Story Visual Stages */
+    .visual-stage {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .phones-dual-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 28px 16px;
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    }
+
+    .phone-stage-card {
+      text-align: center;
+      flex: 1;
+      max-width: 220px;
+    }
+
+    .phone-stage-card img {
+      width: 100%;
+      height: auto;
+      max-height: 380px;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.12));
+      transition: transform 0.25s ease;
+    }
+
+    .phone-stage-card img:hover {
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    .phone-stage-card .badge-mini {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    /* Tablet Stage */
+    .tablet-stage {
+      padding: 28px;
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    }
+
+    .tablet-stage img {
+      width: 100%;
+      max-width: 440px;
+      height: auto;
+      filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.12));
+      border-radius: 6px;
+      transition: transform 0.25s ease;
+    }
+
+    .tablet-stage img:hover {
+      transform: scale(1.02);
+    }
+
+    /* Interactive Live Checklist Visual */
+    .live-checklist-card {
+      width: 100%;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 22px;
+      text-align: left;
+    }
+
+    .checklist-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .checklist-header h3 {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checklist-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checklist-counter-pill {
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--success-light);
+      color: var(--success);
+      padding: 3px 9px;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-guide-reset {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 3px 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-guide-reset:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    .demo-tabs-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 9px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .demo-tab-btn {
+      flex: 1;
+      padding: 7px 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .demo-tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .demo-tab-btn.active {
+      background: #ffffff;
+      color: var(--accent);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .live-items-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .interactive-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f8fafc;
+      border: 1px solid #edf2f7;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .interactive-item:hover {
+      border-color: #cbd5e1;
+      background: #f1f5f9;
+      transform: translateY(-1px);
+    }
+
+    .interactive-circle {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #94a3b8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      color: transparent;
+      transition: all 0.18s ease;
+      flex-shrink: 0;
+    }
+
+    .interactive-circle.google {
+      border-color: #1a73e8;
+    }
+
+    .interactive-item.completed {
+      opacity: 0.55;
+      background: #f1f5f9;
+      transform: none;
+    }
+
+    .interactive-item.completed .interactive-circle {
+      background: var(--success);
+      border-color: var(--success);
+      color: white;
+    }
+
+    .interactive-item.completed .interactive-circle.apple {
+      background: #0071e3;
+      border-color: #0071e3;
+      color: white;
+    }
+
+    .interactive-item.completed .interactive-circle.google {
+      background: #1a73e8;
+      border-color: #1a73e8;
+      color: white;
+    }
+
+    .interactive-item.completed .item-title {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .sku-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-family: ui-monospace, monospace;
+    }
+
+    .sku-badge.rack {
+      background: rgba(0, 113, 227, 0.12);
+      color: var(--accent);
+    }
+
+    .sku-badge.bin {
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+    }
+
+    .sku-badge.shelf {
+      background: rgba(245, 158, 11, 0.12);
+      color: #d97706;
+    }
+
+    .item-title {
+      font-weight: 500;
+      color: var(--text-main);
+      flex: 1;
+    }
+
+    .item-meta {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* Bottom CTA Card */
+    .cta-card {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 52px 36px;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .cta-card h2 {
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .cta-card p {
+      font-size: 16px;
+      color: #cbd5e1;
+      max-width: 620px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding-top: 48px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Interactive Browser Simulator Section (Hero Centerpiece) */
+    .browser-demo-section {
+      margin-bottom: 72px;
+      scroll-margin-top: 100px;
+    }
+
+    .chrome-window-mockup {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      overflow: visible;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+      position: relative;
+    }
+
+    /* Window Header / Tabs */
+    .chrome-topbar {
+      background: #e2e8f0;
+      padding: 10px 14px 0;
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      border-bottom: 1px solid #cbd5e1;
+      border-radius: 14px 14px 0 0;
+    }
+
+    .window-controls {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding-bottom: 10px;
+    }
+
+    .control-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .control-dot.close { background: #ff5f56; border: 1px solid #e0443e; }
+    .control-dot.min { background: #ffbd2e; border: 1px solid #dea123; }
+    .control-dot.max { background: #27c93f; border: 1px solid #1aab29; }
+
+    .chrome-tabs-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .chrome-tab {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 8px 8px 0 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid #cbd5e1;
+      border-left: 1px solid #cbd5e1;
+      border-right: 1px solid #cbd5e1;
+      box-shadow: 0 -1px 2px rgba(0,0,0,0.02);
+    }
+
+    .tab-favicon {
+      font-size: 13px;
+    }
+
+    .tab-close {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-left: 4px;
+      cursor: default;
+    }
+
+    .chrome-tab-new {
+      padding: 6px 10px 8px;
+      color: #64748b;
+      font-size: 16px;
+      cursor: default;
+    }
+
+    /* Address & Extension Navigation Bar */
+    .chrome-nav-bar {
+      background: #ffffff;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #e2e8f0;
+      position: relative;
+    }
+
+    .nav-arrow-btns {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .chrome-url-box {
+      flex: 1;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #475569;
+    }
+
+    .url-lock {
+      font-size: 11px;
+      color: #10b981;
+    }
+
+    .url-text {
+      flex: 1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      color: #1e293b;
+    }
+
+    .url-star {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .chrome-extensions-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+
+    .puzzle-btn {
+      color: #64748b;
+      font-size: 16px;
+      padding: 4px;
+      cursor: default;
+    }
+
+    .ext-btn-wrapper {
+      position: relative;
+    }
+
+    .chrome-ext-btn {
+      background: rgba(0, 113, 227, 0.08);
+      border: 1.5px solid #0071e3;
+      padding: 3px;
+      border-radius: 7px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+    }
+
+    .chrome-ext-btn:hover {
+      background: rgba(0, 113, 227, 0.16);
+      transform: scale(1.05);
+    }
+
+    .chrome-ext-btn.active {
+      background: #0071e3;
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.3);
+    }
+
+    .sim-ext-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      display: block;
+    }
+
+    .sim-ext-active-dot {
+      width: 7px;
+      height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 1px;
+      right: 1px;
+      border: 1.5px solid white;
+    }
+
+    /* Floating Hint Tooltip */
+    .sim-click-hint {
+      position: absolute;
+      top: 42px;
+      right: 0;
+      background: #0f172a;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+      z-index: 40;
+      cursor: pointer;
+      animation: floatPulse 2s infinite ease-in-out;
+    }
+
+    .sim-click-hint::before {
+      content: "";
+      position: absolute;
+      top: -5px;
+      right: 12px;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 5px solid #0f172a;
+    }
+
+    @keyframes floatPulse {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* Native Retina-Sharp Reconstructed Nifty Dashboard */
+    .browser-viewport {
+      position: relative;
+      background: #f8fafc;
+      border-radius: 0 0 14px 14px;
+      overflow: hidden;
+      line-height: normal;
+    }
+
+    .nifty-app-layout {
+      display: flex;
+      min-height: 460px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #0f172a;
+      background: #f8fafc;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Nifty Left Sidebar */
+    .nifty-sidebar {
+      width: 68px;
+      background: #ffffff;
+      border-right: 1px solid #edf2f7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 0 20px;
+      flex-shrink: 0;
+    }
+
+    .nifty-sidebar-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      margin-bottom: 22px;
+    }
+
+    .nifty-brand-svg {
+      display: block;
+    }
+
+    .nifty-wordmark {
+      font-size: 13px;
+      font-weight: 700;
+      color: #00796b;
+      letter-spacing: -0.01em;
+    }
+
+    .nifty-nav-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+    }
+
+    .nifty-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      width: 100%;
+      cursor: pointer;
+      color: #64748b;
+      font-size: 10px;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .nifty-nav-item:hover {
+      color: #0f172a;
+    }
+
+    .nifty-nav-item.active {
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .nav-icon-tile {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+    }
+
+    .nifty-nav-item.active .nav-icon-tile {
+      background: #1e293b;
+      color: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Main Dashboard Viewport */
+    .nifty-main-content {
+      flex: 1;
+      padding: 22px 26px;
+      background: #f8fafc radial-gradient(circle at 95% 10%, rgba(204, 251, 241, 0.5) 0%, rgba(240, 253, 250, 0.2) 30%, transparent 60%);
+      overflow-x: auto;
+    }
+
+    .nifty-top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .nifty-greeting-title {
+      font-size: 21px;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin-bottom: 3px;
+    }
+
+    .nifty-greeting-sub {
+      font-size: 12.5px;
+      color: #64748b;
+    }
+
+    .nifty-avatar-wrapper {
+      position: relative;
+    }
+
+    .nifty-mascot-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: block;
+      background: #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      border: 2px solid #ffffff;
+    }
+
+    /* Dashboard Cards */
+    .nifty-card {
+      background: #ffffff;
+      border: 1px solid #eef2f6;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .summary-card {
+      margin-bottom: 16px;
+    }
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+
+    .card-title-row h4, .summary-card-header h4 {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+
+    .card-caption {
+      font-size: 11.5px;
+      color: #64748b;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .card-action-link {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #0f172a;
+      cursor: pointer;
+    }
+
+    .summary-metrics-grid {
+      display: flex;
+      gap: 20px;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+
+    .metrics-subgroup {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .subgroup-title {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .metric-box {
+      background: #ffffff;
+      border: 1px solid #edf2f7;
+      border-radius: 8px;
+      padding: 10px 8px;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+
+    .metric-box:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .metric-num {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 1px;
+    }
+
+    .metric-lbl {
+      font-size: 10.5px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .metrics-divider {
+      width: 1px;
+      background: #e2e8f0;
+      margin: 18px 2px 0;
+    }
+
+    /* Bottom Grid */
+    .nifty-bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 16px;
+    }
+
+    .goals-empty-msg {
+      font-size: 12px;
+      color: #64748b;
+      font-style: italic;
+      margin-top: 18px;
+    }
+
+    .attention-tabs {
+      display: flex;
+      gap: 12px;
+      font-size: 11.5px;
+    }
+
+    .att-tab {
+      color: #64748b;
+      cursor: pointer;
+      padding-bottom: 4px;
+    }
+
+    .att-tab.active {
+      color: #0f172a;
+      font-weight: 700;
+      border-bottom: 2px solid #0f172a;
+    }
+
+    .attention-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .attention-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 12px 9px 10px;
+      border-radius: 6px;
+      background: #ffffff;
+      border-left: 3px solid transparent;
+      transition: background 0.15s ease;
+    }
+
+    .attention-item:hover {
+      background: #f8fafc;
+    }
+
+    .attention-item.red-border { border-left-color: #ef4444; }
+    .attention-item.yellow-border { border-left-color: #f59e0b; }
+    .attention-item.blue-border { border-left-color: #3b82f6; }
+
+    .item-text-group {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .item-sub {
+      font-size: 10px;
+      color: #64748b;
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-btn {
+      font-size: 11px;
+      font-weight: 600;
+      color: #0f172a;
+      white-space: nowrap;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .item-btn:hover {
+      color: #0071e3;
+    }
+
+    /* THE SIMULATED POPUP DROPDOWN OVERLAY */
+    .sim-popup-dropdown {
+      position: absolute;
+      top: 12px;
+      right: 24px;
+      width: 330px;
+      background: #f5f5f7;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.14);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22), 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 16px;
+      z-index: 35;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: normal;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: top right;
+      opacity: 0;
+      transform: scale(0.96) translateY(-8px);
+      pointer-events: none;
+    }
+
+    .sim-popup-dropdown.open {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Popup internal components */
+    .popup-win-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 11px;
+    }
+
+    .popup-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .popup-mini-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+    }
+
+    .popup-title-group h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+
+    .popup-ver-badge {
+      font-size: 10px;
+      font-weight: 600;
+      background: rgba(0, 0, 0, 0.05);
+      padding: 2px 6px;
+      border-radius: 10px;
+      color: #86868b;
+    }
+
+    .popup-segmented-tabs {
+      display: flex;
+      background: #e5e5ea;
+      padding: 3px;
+      border-radius: 8px;
+      gap: 3px;
+      margin-bottom: 11px;
+    }
+
+    .sim-tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #48484a;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .sim-tab-btn.active {
+      background: #ffffff;
+      color: #1d1d1f;
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .popup-status-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 11px;
+    }
+
+    .popup-status-badge {
+      flex: 1;
+      background: #ffffff;
+      border: 1px solid #e5e5ea;
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #1d1d1f;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    .status-dot.green { background: #34c759; box-shadow: 0 0 4px rgba(52, 199, 89, 0.5); }
+
+    .popup-card-filter {
+      background: #ffffff;
+      border: 1px solid #e5e5ea;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 11px;
+    }
+
+    .filter-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .filter-label {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #86868b;
+      letter-spacing: 0.05em;
+    }
+
+    .filter-mini-pill {
+      font-size: 9.5px;
+      font-weight: 600;
+      background: #eef2ff;
+      color: #4f46e5;
+      padding: 1px 6px;
+      border-radius: 8px;
+    }
+
+    .popup-select {
+      width: 100%;
+      padding: 6px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background: #ffffff;
+      color: #1d1d1f;
+      margin-bottom: 6px;
+    }
+
+    .filter-subtext {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      color: #86868b;
+    }
+
+    .popup-sync-btn {
+      width: 100%;
+      background: #0071e3;
+      color: white;
+      border: none;
+      padding: 11px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0, 113, 227, 0.3);
+      transition: all 0.2s ease;
+      margin-bottom: 8px;
+    }
+
+    .popup-sync-btn:hover {
+      background: #0077ed;
+      transform: translateY(-1px);
+    }
+
+    .popup-sync-btn.syncing {
+      background: #2563eb;
+      pointer-events: none;
+    }
+
+    .popup-sync-btn.success {
+      background: #16a34a;
+    }
+
+    .popup-status-bar {
+      background: #ffffff;
+      border: 1px solid #e5e5ea;
+      border-radius: 6px;
+      padding: 6px;
+      font-size: 11px;
+      color: #86868b;
+      text-align: center;
+      margin-bottom: 9px;
+      min-height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .popup-status-bar.highlight {
+      color: #15803d;
+      font-weight: 600;
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+
+    .popup-settings-collapse {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #48484a;
+      padding: 4px 2px;
+      margin-bottom: 8px;
+      cursor: default;
+    }
+
+    .popup-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: #86868b;
+      border-top: 1px solid #e5e5ea;
+      padding-top: 7px;
+    }
+
+    .footer-target {
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .hero h1 { font-size: 32px; }
+      .workflow-cards-grid { grid-template-columns: 1fr; gap: 14px; }
+      .story-row, .story-row.reverse { grid-template-columns: 1fr; gap: 36px; }
+      .story-row.reverse .story-copy { order: 1; }
+      .story-row.reverse .story-visual { order: 2; }
+      .nav-links .nav-link { display: none; }
+      .phones-dual-stage { flex-direction: column; }
+      .table-row { grid-template-columns: 80px 70px 1fr 60px; }
+      .table-row .status-cell { display: none; }
+      .sim-popup-dropdown { position: static; width: 100%; margin-top: 16px; transform: none !important; opacity: 1 !important; pointer-events: auto !important; }
+      .sim-click-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <img src="../icons/icon48.png" alt="Logo" style="width: 28px; height: 28px; border-radius: 7px; box-shadow: 0 1px 4px rgba(0,0,0,0.12);">
+        <span>PickList</span>
+      </a>
+      <div class="nav-links">
+        <a href="#browser-demo" class="nav-link">Live Demo</a>
+        <a href="#how-it-works" class="nav-link">Workflow</a>
+        <a href="#mobile-widgets" class="nav-link">Mobile & Widgets</a>
+        <a href="#cross-device" class="nav-link">Cross-Device</a>
+        <a href="onboarding.html" class="btn-nav-primary">Run Setup Wizard →</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1>Automatic Pick Lists.<br><span class="gradient-text">Sent to Apple Reminders & Google Tasks.</span></h1>
+      <p>
+        PickList connects directly with your active Nifty session, sorts your multi-channel sales across <strong>eBay, Poshmark, Mercari, Depop, Etsy, and Whatnot</strong> by warehouse location, and delivers an optimized walking path for your inventory.
+      </p>
+      <div class="hero-actions">
+        <a href="onboarding.html" class="btn-hero">
+          <span>⚡ Start Setup Wizard</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Interactive Browser Extension Simulator Section (Hero Showcase) -->
+    <section class="browser-demo-section" id="browser-demo">
+      <!-- Realistic macOS Chrome Browser Frame -->
+      <div class="chrome-window-mockup">
+        <!-- Chrome Top Window Header & Tab Bar -->
+        <div class="chrome-topbar">
+          <div class="window-controls">
+            <span class="control-dot close"></span>
+            <span class="control-dot min"></span>
+            <span class="control-dot max"></span>
+          </div>
+          <div class="chrome-tabs-row">
+            <div class="chrome-tab active">
+              <span class="tab-favicon">⚡</span>
+              <span class="tab-title">Nifty • Dashboard</span>
+              <span class="tab-close">×</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chrome Address / Navigation Bar -->
+        <div class="chrome-nav-bar">
+          <div class="nav-arrow-btns">
+            <span class="nav-arrow">←</span>
+            <span class="nav-arrow">→</span>
+            <span class="nav-refresh">🔄</span>
+          </div>
+
+          <div class="chrome-url-box">
+            <span class="url-lock">🔒</span>
+            <span class="url-text">app.nifty.ai/dashboard</span>
+            <span class="url-star">☆</span>
+          </div>
+
+          <div class="chrome-extensions-bar">
+            <span class="ext-icon puzzle-btn" title="Extensions">🧩</span>
+
+            <!-- THE INTERACTIVE EXTENSION ICON BUTTON -->
+            <div class="ext-btn-wrapper">
+              <button class="chrome-ext-btn active" id="sim-ext-trigger" title="PickList : Daily Order Pulls for Nifty">
+                <img src="../icons/icon48.png" alt="PickList" class="sim-ext-icon">
+                <span class="sim-ext-active-dot"></span>
+              </button>
+
+              <!-- Animated Click Hint Badge -->
+              <div class="sim-click-hint" id="sim-click-hint">
+                <span>Click icon to toggle dropdown</span>
+                <span class="hint-hand">👆</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Browser Main Body Viewport (Real Nifty Dashboard + Extension Dropdown Overlay) -->
+        <div class="browser-viewport" id="browser-viewport">
+          
+          <!-- Native Retina-Crisp Nifty Dashboard Reconstructed Webpage -->
+          <div class="nifty-app-layout">
+            <!-- Left Navigation Sidebar -->
+            <aside class="nifty-sidebar">
+              <div class="nifty-sidebar-brand">
+                <svg class="nifty-brand-svg" viewBox="0 0 40 44" width="30" height="33">
+                  <!-- Hanger -->
+                  <path d="M20 4 C17 4 16 6 18 8 C19 9 20 9.5 20 11 L7 19 L33 19 Z" fill="none" stroke="#00796b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Robot Head -->
+                  <rect x="7" y="21" width="26" height="15" rx="7.5" fill="none" stroke="#00796b" stroke-width="2.2"/>
+                  <!-- Cute Eyes -->
+                  <path d="M13 28 Q15 26 17 28" fill="none" stroke="#00796b" stroke-width="2.2" stroke-linecap="round"/>
+                  <path d="M23 28 Q25 26 27 28" fill="none" stroke="#00796b" stroke-width="2.2" stroke-linecap="round"/>
+                  <!-- Ear Nodes -->
+                  <circle cx="5" cy="28.5" r="2" fill="#00796b"/>
+                  <circle cx="35" cy="28.5" r="2" fill="#00796b"/>
+                </svg>
+                <span class="nifty-wordmark">nifty</span>
+              </div>
+
+              <nav class="nifty-nav-list">
+                <div class="nifty-nav-item active">
+                  <div class="nav-icon-tile">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                  </div>
+                  <span class="nav-label">Home</span>
+                </div>
+
+                <div class="nifty-nav-item">
+                  <div class="nav-icon-tile">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+                      <path d="m3.3 7 8.7 5 8.7-5"/>
+                      <path d="M12 22V12"/>
+                    </svg>
+                  </div>
+                  <span class="nav-label">Inventory</span>
+                </div>
+
+                <div class="nifty-nav-item">
+                  <div class="nav-icon-tile">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+                      <polyline points="16 7 22 7 22 13"/>
+                    </svg>
+                  </div>
+                  <span class="nav-label">Analytics</span>
+                </div>
+
+                <div class="nifty-nav-item">
+                  <div class="nav-icon-tile">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                      <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                      <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                      <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                      <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                    </svg>
+                  </div>
+                  <span class="nav-label">Automation</span>
+                </div>
+
+                <div class="nifty-nav-item">
+                  <div class="nav-icon-tile">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="4" y="6" width="16" height="14" rx="3"/>
+                      <circle cx="9" cy="12" r="1.5" fill="currentColor"/>
+                      <circle cx="15" cy="12" r="1.5" fill="currentColor"/>
+                      <line x1="12" y1="2" x2="12" y2="6"/>
+                    </svg>
+                  </div>
+                  <span class="nav-label">Ask Otto</span>
+                </div>
+              </nav>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="nifty-main-content">
+              <!-- Top Greeting Header -->
+              <header class="nifty-top-header">
+                <div class="greeting-col">
+                  <h3 class="nifty-greeting-title">Good afternoon</h3>
+                  <p class="nifty-greeting-sub">Big seller energy today.</p>
+                </div>
+                <div class="nifty-avatar-wrapper">
+                  <img src="images/nifty-avatar.png" alt="Nifty Mascot" class="nifty-mascot-avatar">
+                </div>
+              </header>
+
+              <!-- Card 1: Today's summary -->
+              <section class="nifty-card summary-card">
+                <div class="summary-card-header">
+                  <h4>Today's summary</h4>
+                  <span class="card-caption">Your numbers at a glance</span>
+                </div>
+
+                <div class="summary-metrics-grid">
+                  <!-- Automation Sub-Section -->
+                  <div class="metrics-subgroup">
+                    <span class="subgroup-title">AUTOMATION</span>
+                    <div class="metrics-row">
+                      <div class="metric-box">
+                        <span class="metric-num">5758</span>
+                        <span class="metric-lbl">Shares</span>
+                      </div>
+                      <div class="metric-box">
+                        <span class="metric-num">48</span>
+                        <span class="metric-lbl">Relists</span>
+                      </div>
+                      <div class="metric-box">
+                        <span class="metric-num">60</span>
+                        <span class="metric-lbl">Offers</span>
+                      </div>
+                      <div class="metric-box">
+                        <span class="metric-num">574</span>
+                        <span class="metric-lbl">Follows</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="metrics-divider"></div>
+
+                  <!-- Analytics Sub-Section -->
+                  <div class="metrics-subgroup">
+                    <span class="subgroup-title">ANALYTICS</span>
+                    <div class="metrics-row">
+                      <div class="metric-box">
+                        <span class="metric-num">7</span>
+                        <span class="metric-lbl">Listed</span>
+                      </div>
+                      <div class="metric-box">
+                        <span class="metric-num">8</span>
+                        <span class="metric-lbl">Sold</span>
+                      </div>
+                      <div class="metric-box">
+                        <span class="metric-num">$377</span>
+                        <span class="metric-lbl">Revenue</span>
+                      </div>
+                      <div class="metric-box">
+                        <span class="metric-num">$323</span>
+                        <span class="metric-lbl">Profit</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Bottom Row: Goals + Needs attention -->
+              <div class="nifty-bottom-grid">
+                <!-- Goals Card -->
+                <section class="nifty-card goals-card">
+                  <div class="card-title-row">
+                    <h4>Goals</h4>
+                    <span class="card-action-link">Edit goals</span>
+                  </div>
+                  <p class="card-caption">Track your progress against the targets you set</p>
+                  <p class="goals-empty-msg">Set time-based targets to measure your progress.</p>
+                </section>
+
+                <!-- Needs Attention Card -->
+                <section class="nifty-card attention-card">
+                  <div class="card-title-row">
+                    <h4>Needs attention</h4>
+                    <div class="attention-tabs">
+                      <span class="att-tab active">Active (3)</span>
+                      <span class="att-tab">Dismissed</span>
+                    </div>
+                  </div>
+                  <p class="card-caption">High-priority actions worth handling now</p>
+
+                  <div class="attention-items-list">
+                    <div class="attention-item red-border">
+                      <div class="item-text-group">
+                        <h5 class="item-title">Fix listings with publishing errors</h5>
+                        <p class="item-sub">Brooks Brothers Button Down Irish Linen Shirt Men's XL Long Sleeve Striped Peach and 1 others failed to publish</p>
+                      </div>
+                      <span class="item-btn">Fix &rarr;</span>
+                    </div>
+
+                    <div class="attention-item yellow-border">
+                      <div class="item-text-group">
+                        <h5 class="item-title">We detected listings that may be duplicates</h5>
+                        <p class="item-sub">Vintage Marching Band Shako Hat Plume Military Blue Eagle Insignia Plume Medium and 5 others are listed more than once</p>
+                      </div>
+                      <span class="item-btn">Merge &rarr;</span>
+                    </div>
+
+                    <div class="attention-item blue-border">
+                      <div class="item-text-group">
+                        <h5 class="item-title">No full sync in over a month</h5>
+                        <p class="item-sub">Run a full sync to keep your Inventory data current</p>
+                      </div>
+                      <span class="item-btn">Sync &rarr;</span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </main>
+          </div>
+
+          <!-- THE SIMULATED EXTENSION POPUP DROPDOWN (Matches User Screenshot) -->
+          <div class="sim-popup-dropdown open" id="sim-popup-dropdown">
+            <!-- Window header -->
+            <div class="popup-win-header">
+              <div class="popup-title-group">
+                <img src="../icons/icon48.png" alt="PickList" class="popup-mini-icon">
+                <h4>PickList</h4>
+              </div>
+              <span class="popup-ver-badge">v1.0.0</span>
+            </div>
+
+            <!-- Segmented Control Tabs -->
+            <div class="popup-segmented-tabs">
+              <button class="sim-tab-btn active" id="sim-tab-apple">
+                <span>🍎</span> Apple Reminders
+              </button>
+              <button class="sim-tab-btn" id="sim-tab-google">
+                <span>📋</span> Google Tasks
+              </button>
+            </div>
+
+            <!-- Status Indicator Row -->
+            <div class="popup-status-row">
+              <div class="popup-status-badge">
+                <span class="status-dot green"></span>
+                <span>Nifty Active</span>
+              </div>
+              <div class="popup-status-badge">
+                <span class="status-dot green"></span>
+                <span id="sim-dest-status-text">Reminders Active</span>
+              </div>
+            </div>
+
+            <!-- Filter Card -->
+            <div class="popup-card-filter">
+              <div class="filter-header-line">
+                <span class="filter-label">PULL ORDERS SOLD IN:</span>
+                <span class="filter-mini-pill" id="sim-filter-pill">Since Sync</span>
+              </div>
+              <select class="popup-select" id="sim-time-select">
+                <option value="Since Sync">Since Last Sync</option>
+                <option value="Today">Today's Orders</option>
+                <option value="24 Hours">Last 24 Hours</option>
+                <option value="All Unshipped">All Unshipped Orders</option>
+              </select>
+              <div class="filter-subtext">
+                <span>🕒</span>
+                <span id="sim-filter-subtext">Pulls items sold since <strong>Today at 4:37 PM</strong></span>
+              </div>
+            </div>
+
+            <!-- Primary Sync Action Button -->
+            <button class="popup-sync-btn" id="sim-sync-btn">
+              <span id="sim-sync-icon">⚡</span>
+              <span id="sim-sync-text">Sync Pull List Now</span>
+            </button>
+
+            <!-- Status Bar Banner -->
+            <div class="popup-status-bar" id="sim-status-bar">
+              Ready to sync
+            </div>
+
+            <!-- Collapsible Settings Row -->
+            <div class="popup-settings-collapse">
+              <span>⚙️ Advanced Settings</span>
+              <span>▾</span>
+            </div>
+
+            <!-- Footer -->
+            <div class="popup-footer">
+              <div class="footer-links">
+                <span>📖 Guide</span> • <span>⚙️ Setup</span>
+              </div>
+              <span class="footer-target" id="sim-footer-target">Reminders: "Daily Pull List"</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Sleek 3-Card Workflow Grid (Placed Directly Under Chrome Demo) -->
+    <section class="workflow-cards-grid" id="how-it-works">
+      <div class="workflow-card">
+        <div class="workflow-card-top">
+          <div class="workflow-icon-badge blue">⚡</div>
+          <span class="workflow-step-tag">STEP 01</span>
+        </div>
+        <h3>1-Click Nifty Sync</h3>
+        <p>Instantly pull today's paid multi-channel sales across eBay, Poshmark, Mercari & Etsy in seconds.</p>
+      </div>
+
+      <div class="workflow-card">
+        <div class="workflow-card-top">
+          <div class="workflow-icon-badge emerald">🧭</div>
+          <span class="workflow-step-tag">STEP 02</span>
+        </div>
+        <h3>Smart SKU Sequencing</h3>
+        <p>Orders are automatically sorted into an optimized, continuous walking path across numeric racks and bins.</p>
+      </div>
+
+      <div class="workflow-card">
+        <div class="workflow-card-top">
+          <div class="workflow-icon-badge purple">📱</div>
+          <span class="workflow-step-tag">STEP 03</span>
+        </div>
+        <h3>Mobile Floor Pulling</h3>
+        <p>Check off physical items hands-free with tactile haptics directly on your iPhone, iPad, or Apple Watch.</p>
+      </div>
+    </section>
+
+    <!-- Alternating Story Sections -->
+    <div class="story-section">
+
+      <!-- Story Row 1: Mobile Widgets (Copy Left, Visual Right) -->
+      <div class="story-row" id="mobile-widgets">
+        <div class="story-copy">
+          <span class="story-tag">📱 Mobile Task Apps & Widgets</span>
+          <h2>Your Daily Pick List Sent to Your Device</h2>
+          <p class="lead-p">
+            Walk your racks, shelves, and bins with both hands free. Your daily queue with SKU locations, item titles, prices, and marketplace tags lives directly in your pocket. No balancing heavy laptops or juggling loose paper printouts while pulling inventory.
+          </p>
+
+          <ul class="story-features">
+            <li class="story-feature-item">
+              <div class="feature-icon-badge">📲</div>
+              <div class="feature-text-block">
+                <strong>Glanceable Lock Screen & Home Screen Widgets</strong>
+                <p>Check off items without even unlocking your phone. Track live remaining pull counts and tap circles to complete orders on the fly.</p>
+              </div>
+            </li>
+            <li class="story-feature-item">
+              <div class="feature-icon-badge">🍎</div>
+              <div class="feature-text-block">
+                <strong>Apple Reminders Compatibility</strong>
+                <p>Syncs natively with iPhone, iPad, and Apple Watch. Includes crisp tactile checkoffs, full offline storage in concrete areas, and one-tap iCloud sharing for helpers.</p>
+              </div>
+            </li>
+            <li class="story-feature-item">
+              <div class="feature-icon-badge">📋</div>
+              <div class="feature-text-block">
+                <strong>Google Tasks Integration</strong>
+                <p>Full support across iOS, Android, and web. Access your sequenced daily orders in the official Google Tasks app and side-by-side with Google Calendar.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="story-visual">
+          <div class="visual-stage phones-dual-stage">
+            <div class="phone-stage-card">
+              <img src="images/iphone-mockup-reminders.png?v=2" alt="Apple Reminders 16 Daily Pull List Widget on iPhone">
+              <span class="badge-mini">🍎 Apple Reminders Widget</span>
+            </div>
+            <div class="phone-stage-card">
+              <img src="images/iphone-mockup-tasks.png?v=2" alt="Google Tasks Mobile App on iPhone">
+              <span class="badge-mini">📋 Google Tasks Mobile App</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story Row 2: Intelligent Routing & Live Checklist (Visual Left, Copy Right) -->
+      <div class="story-row reverse" id="continuous-routing">
+        <div class="story-copy">
+          <span class="story-tag">✅ Tactile Pull Flow & Smart Routing</span>
+          <h2>The Tactile Flow of Checking Items Off as You Pull</h2>
+          <p class="lead-p">
+            Enjoy instant physical confirmation with every item you grab from your racks or bins. Tapping an item delivers crisp tactile feedback, crosses it off in real time, and updates your remaining total along an optimized walking route:
+          </p>
+
+          <ul class="story-features">
+            <li class="story-feature-item">
+              <div class="feature-icon-badge">🔢</div>
+              <div class="feature-text-block">
+                <strong>Numeric Racks First</strong>
+                <p>Pure numerical items are sorted in ascending or descending sequence (e.g. #10024 → #10087 → #10115) for high-speed rack walking.</p>
+              </div>
+            </li>
+            <li class="story-feature-item">
+              <div class="feature-icon-badge">📦</div>
+              <div class="feature-text-block">
+                <strong>Location Bins & Shelves Second</strong>
+                <p>Alpha-numeric bins and designated shelf coordinates (e.g. Bin B-104 → Shelf 3) are sequenced next to eliminate backtracking.</p>
+              </div>
+            </li>
+            <li class="story-feature-item">
+              <div class="feature-icon-badge">🏷️</div>
+              <div class="feature-text-block">
+                <strong>Un-SKU'd Items Grouped Last</strong>
+                <p>Items without a location are placed cleanly at the end so your primary picking run never gets stalled.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="story-visual">
+          <div class="visual-stage" style="padding: 16px;">
+            <div class="live-checklist-card">
+              <div class="checklist-header">
+                <h3><span>📋</span> Interactive Pull List Demo</h3>
+                <div class="checklist-controls">
+                  <span class="checklist-counter-pill" id="live-count-pill">4 items remaining</span>
+                  <button class="btn-guide-reset" id="btn-guide-reset" title="Reset items">↺ Reset</button>
+                </div>
+              </div>
+
+              <!-- Multi-view selector tabs -->
+              <div class="demo-tabs-bar">
+                <button class="demo-tab-btn active" id="tab-btn-floor">🏬 Floor View</button>
+                <button class="demo-tab-btn" id="tab-btn-apple">🍎 Apple Reminders</button>
+                <button class="demo-tab-btn" id="tab-btn-google">📋 Google Tasks</button>
+              </div>
+
+              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;" id="demo-guide-hint">Tap any item below to experience instant checkoff feedback:</p>
+
+              <!-- View 1: Reseller Floor View -->
+              <div class="live-items-stack" id="interactive-demo-floor">
+                <div class="interactive-item">
+                  <div class="interactive-circle">✓</div>
+                  <span class="sku-badge rack">#10024</span>
+                  <span class="item-title">Vintage Levi's 501 Dark Wash 34x32</span>
+                  <span class="item-meta">eBay • $48</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle">✓</div>
+                  <span class="sku-badge rack">#10087</span>
+                  <span class="item-title">Patagonia Synchilla Snap-T Fleece (M)</span>
+                  <span class="item-meta">Poshmark • $65</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle">✓</div>
+                  <span class="sku-badge bin">Bin B-104</span>
+                  <span class="item-title">Nike Vintage Windbreaker Blue/White</span>
+                  <span class="item-meta">Mercari • $34</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle">✓</div>
+                  <span class="sku-badge shelf">Shelf 3</span>
+                  <span class="item-title">Carhartt Detroit Jacket Rugged Brown</span>
+                  <span class="item-meta">Depop • $120</span>
+                </div>
+              </div>
+
+              <!-- View 2: Apple Reminders View -->
+              <div class="live-items-stack" id="interactive-demo-apple" style="display: none;">
+                <div class="interactive-item">
+                  <div class="interactive-circle apple">✓</div>
+                  <span class="sku-badge rack">SKU 11053</span>
+                  <span class="item-title">Metallica 2025 Tour T-Shirt</span>
+                  <span class="item-meta">eBay • $45.00</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle apple">✓</div>
+                  <span class="sku-badge rack">SKU 10999</span>
+                  <span class="item-title">Patagonia Fjord Flannel Shirt</span>
+                  <span class="item-meta">Poshmark • $58.00</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle apple">✓</div>
+                  <span class="sku-badge rack">SKU 10842</span>
+                  <span class="item-title">Carhartt Detroit Duck Canvas Jacket</span>
+                  <span class="item-meta">Whatnot • $135.00</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle apple">✓</div>
+                  <span class="sku-badge bin">[Bin B-104]</span>
+                  <span class="item-title">The North Face Goretex Paclite Jacket</span>
+                  <span class="item-meta">Depop • $110.00</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle apple">✓</div>
+                  <span class="sku-badge shelf">[Coats]</span>
+                  <span class="item-title">Handmade 90s Oversized Knitted Wool Sweater</span>
+                  <span class="item-meta">Etsy • $54.00</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle apple">✓</div>
+                  <span class="sku-badge" style="background: rgba(142, 142, 147, 0.15); color: #48484a;">[No SKU]</span>
+                  <span class="item-title">Vintage Levi's 501 Made in USA Jeans</span>
+                  <span class="item-meta">Mercari • $38.00</span>
+                </div>
+              </div>
+
+              <!-- View 3: Google Tasks View -->
+              <div class="live-items-stack" id="interactive-demo-google" style="display: none;">
+                <div class="interactive-item">
+                  <div class="interactive-circle google">✓</div>
+                  <span class="sku-badge" style="background: rgba(26, 115, 232, 0.12); color: #1a73e8;">SKU 11053</span>
+                  <span class="item-title">Metallica 2025 Tour T-Shirt</span>
+                  <span class="item-meta">eBay • $45.00</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle google">✓</div>
+                  <span class="sku-badge" style="background: rgba(26, 115, 232, 0.12); color: #1a73e8;">SKU 10999</span>
+                  <span class="item-title">Patagonia Fjord Flannel Shirt</span>
+                  <span class="item-meta">Poshmark • $58.00</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle google">✓</div>
+                  <span class="sku-badge" style="background: rgba(26, 115, 232, 0.12); color: #1a73e8;">SKU 10842</span>
+                  <span class="item-title">Carhartt Detroit Duck Canvas Jacket</span>
+                  <span class="item-meta">Whatnot • $135.00</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle google">✓</div>
+                  <span class="sku-badge bin">[Bin B-104]</span>
+                  <span class="item-title">The North Face Goretex Paclite Jacket</span>
+                  <span class="item-meta">Depop • $110.00</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle google">✓</div>
+                  <span class="sku-badge shelf">[Coats]</span>
+                  <span class="item-title">Handmade 90s Oversized Knitted Wool Sweater</span>
+                  <span class="item-meta">Etsy • $54.00</span>
+                </div>
+                <div class="interactive-item">
+                  <div class="interactive-circle google">✓</div>
+                  <span class="sku-badge" style="background: rgba(142, 142, 147, 0.15); color: #48484a;">[No SKU]</span>
+                  <span class="item-title">Vintage Levi's 501 Made in USA Jeans</span>
+                  <span class="item-meta">Mercari • $38.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story Row 3: Tablet & Cross-Device Sync (Copy Left, Visual Right) -->
+      <div class="story-row" id="cross-device">
+        <div class="story-copy">
+          <span class="story-tag">🔄 Complete Ecosystem Sync</span>
+          <h2>Your Pull List on Every Screen You Use</h2>
+          <p class="lead-p">
+            Whether you walk the floor with an iPhone or Android, mount an iPad at your packing bench, or review orders on your laptop, your list stays updated in real time across your entire hardware setup.
+          </p>
+
+          <ul class="story-features">
+            <li class="story-feature-item">
+              <div class="feature-icon-badge">📱</div>
+              <div class="feature-text-block">
+                <strong>Phone, Tablet, Desktop & Watch</strong>
+                <p>Pick on your phone, review on your iPad, and check off from your wrist. Native sync across iOS, iPadOS, macOS, Android, and web browsers.</p>
+              </div>
+            </li>
+            <li class="story-feature-item">
+              <div class="feature-icon-badge">👥</div>
+              <div class="feature-text-block">
+                <strong>Real-Time Helper & Team Sharing</strong>
+                <p>Work with a spouse or helper? Share your list in one tap. As items are pulled at the racks, they clear immediately from the tablet screen.</p>
+              </div>
+            </li>
+            <li class="story-feature-item">
+              <div class="feature-icon-badge">⚡</div>
+              <div class="feature-text-block">
+                <strong>Zero Device Limits or Extra Logins</strong>
+                <p>No clunky proprietary warehouse software or subscriptions. It uses the native task apps already built into the hardware you own.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="story-visual">
+          <div class="visual-stage tablet-stage" style="flex-direction: column; gap: 16px;">
+            <img src="images/ipad-mockup-reminders.png" alt="Apple Reminders iPad Split View Light Mode Mockup">
+            <div class="device-pills-row" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 6px;">
+              <span style="font-size: 11.5px; padding: 4px 10px; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; font-weight: 600; color: #475569;">📱 iPhone</span>
+              <span style="font-size: 11.5px; padding: 4px 10px; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; font-weight: 600; color: #475569;">📱 iPad</span>
+              <span style="font-size: 11.5px; padding: 4px 10px; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; font-weight: 600; color: #475569;">💻 Mac</span>
+              <span style="font-size: 11.5px; padding: 4px 10px; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; font-weight: 600; color: #475569;">⌚ Apple Watch</span>
+              <span style="font-size: 11.5px; padding: 4px 10px; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; font-weight: 600; color: #475569;">🤖 Android</span>
+              <span style="font-size: 11.5px; padding: 4px 10px; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; font-weight: 600; color: #475569;">🌐 Web</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom CTA Card -->
+    <section class="cta-card">
+      <h2>Ready to Cut 30–60 Minutes Off Daily Fulfillment?</h2>
+      <p>
+        Install the extension, link your preferred task app in 60 seconds, and pull tomorrow morning's orders in one single pass.
+      </p>
+      <a href="onboarding.html" class="btn-hero" style="background: var(--accent); box-shadow: 0 4px 14px rgba(0, 113, 227, 0.5);">
+        <span>⚡ Run Setup Wizard Now</span>
+      </a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>PickList is an independent tool built for high-volume resellers using Nifty. Not affiliated with or endorsed by Nifty, Apple Inc., or Google LLC.</p>
+      <div style="margin-top: 10px; font-size: 12px; color: var(--text-muted); display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+        <a href="terms.html" target="_blank" style="color: var(--text-muted); text-decoration: none;">Terms of Service</a> •
+        <a href="privacy.html" target="_blank" style="color: var(--text-muted); text-decoration: none;">Privacy Policy</a> •
+        <a href="onboarding.html" style="color: var(--accent); text-decoration: none; font-weight: 600;">Setup Wizard →</a>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="guide.js"></script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — PickList</title>
+  <style>
+    :root {
+      --primary: #0071e3;
+      --primary-dark: #005bb5;
+      --text: #1d1d1f;
+      --text-muted: #6e6e73;
+      --bg: #f5f5f7;
+      --card-bg: #ffffff;
+      --border: #d2d2d7;
+      --success: #34c759;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      padding: 40px 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .header-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      background: rgba(0, 113, 227, 0.1);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .effective-date {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f2f2f7;
+    }
+
+    .highlight-banner {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .highlight-banner span.icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .highlight-banner p {
+      font-size: 13.5px;
+      color: #166534;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 36px;
+      margin-bottom: 14px;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 14px;
+      font-size: 14.5px;
+      color: #333336;
+    }
+
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      color: #333336;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    strong {
+      color: var(--text);
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .legal-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin: 18px 0;
+      font-size: 13.5px;
+    }
+
+    .footer-nav {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #f2f2f7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 28px 20px;
+      }
+      h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header-badge">Legal & Security</div>
+    <h1>Privacy Policy</h1>
+    <div class="effective-date">Last Updated: November 6, 2026 • Version 1.0</div>
+
+    <div class="highlight-banner">
+      <span class="icon">🛡️</span>
+      <div>
+        <strong>Local-First & Zero-Knowledge Architecture</strong>
+        <p>PickList processes all your orders, SKU calculations, and pull list sequencing <strong>100% locally on your computer</strong>. Your sales data, buyer names, and order histories are never collected, stored, or transmitted to any third-party analytics or external database servers.</p>
+      </div>
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+      This Privacy Policy describes how PickList ("we", "us", or "our") handles information in connection with our Google Chrome extension, companion helper scripts, and related software (collectively, the "Software"). 
+    </p>
+    <p>
+      We built PickList specifically for high-volume online resellers. We understand that your inventory counts, supplier SKUs, and buyer details are confidential business assets. Our architecture is deliberately designed so that we never receive, see, or broker your commercial sales data.
+    </p>
+
+    <h2>2. Information Accessed & Handled</h2>
+    <p>PickList interacts only with the minimum necessary data to fulfill its single core purpose: turning multi-channel sales into a sequenced physical picking checklist.</p>
+
+    <h3>A. Sales & Order Information from Nifty</h3>
+    <ul>
+      <li><strong>What is accessed:</strong> When you initiate a sync, the Software reads recent order summaries (item titles, SKU numbers, selling prices, marketplace platforms such as eBay, Poshmark, Mercari, Depop, Etsy, and order timestamps) directly through your existing, authenticated browser session with Nifty.</li>
+      <li><strong>How it is processed:</strong> This information is held transiently in your computer's local memory, parsed into physical warehouse locations (racks, bins, shelves), and formatted into task titles.</li>
+      <li><strong>Where it goes:</strong> It is sent directly to your chosen destination task application (Apple Reminders via local bridge/Shortcuts, or Google Tasks via direct Google API). It is never sent to our servers.</li>
+    </ul>
+
+    <h3>B. Google Tasks & Google Account Data</h3>
+    <ul>
+      <li><strong>What is accessed:</strong> If you connect Google Tasks, PickList requests permission to access the <code>https://www.googleapis.com/auth/tasks</code> scope.</li>
+      <li><strong>How it is used:</strong> PickList uses this access solely to create and manage your designated <strong>"Daily Pull List"</strong> task list, insert sequenced order items, and check for existing tasks to prevent duplicates.</li>
+      <li><strong>Authentication Tokens:</strong> OAuth 2.0 access tokens and refresh tokens are securely stored locally within your browser using Chrome's native <code>chrome.identity</code> and <code>chrome.storage.local</code> APIs. Tokens are never transmitted to external servers.</li>
+    </ul>
+
+    <h3>C. Extension Settings & Local Cache</h3>
+    <ul>
+      <li>PickList stores your preferred sync settings (such as chosen task destination, sorting mode, lookback window, and last sync timestamp) strictly within your browser's local sandbox via <code>chrome.storage.local</code>.</li>
+    </ul>
+
+    <h3>D. Payment Information</h3>
+    <ul>
+      <li>License payments are securely processed by <strong>ExtensionPay</strong> and <strong>Stripe</strong>.</li>
+      <li>We do not receive, process, or store your credit card details, bank account numbers, or billing addresses. ExtensionPay only provides us with an anonymized user identifier and a boolean confirmation of active license status.</li>
+    </ul>
+
+    <h2>3. Google API Services User Data Policy (Limited Use Disclosure)</h2>
+    <div class="legal-box">
+      <p style="margin-bottom: 0;">
+        PickList's use and transfer to any other app of information received from Google APIs will adhere to the <strong><a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API Services User Data Policy</a></strong>, including the Limited Use requirements. We do not use Google user data for advertising, analytics, profiling, or machine learning model training.
+      </p>
+    </div>
+
+    <h2>4. Data Sharing & Third Parties</h2>
+    <ul>
+      <li><strong>No Sale of Personal Data:</strong> We do not sell, rent, license, or disclose your personal information or your buyers' information to third parties, data brokers, or advertisers for any reason.</li>
+      <li><strong>No Tracking Analytics:</strong> PickList does not load Google Analytics, telemetry scripts, ad networks, or background user tracking software.</li>
+      <li><strong>Direct API Communication:</strong> All network requests made by the extension are direct, encrypted HTTPS requests between your browser and the respective official service endpoints:
+        <ul>
+          <li><code>api.nifty.ai</code> (your inventory source)</li>
+          <li><code>tasks.googleapis.com</code> (official Google Tasks API)</li>
+          <li><code>extensionpay.com</code> (license authentication)</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>5. Data Retention & Deletion</h2>
+    <ul>
+      <li><strong>Transient Processing:</strong> Order details from Nifty are processed in-memory and discarded once the tasks are delivered. No permanent database of your sales exists on any server.</li>
+      <li><strong>Local Data Removal:</strong> You can completely erase all local settings, cached timestamps, and stored OAuth credentials at any time simply by removing the extension from your browser (<code>chrome://extensions</code> → Remove).</li>
+      <li><strong>Google Access Revocation:</strong> You can disconnect PickList's access to your Google Tasks account at any time through your Google Security Settings at <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">https://myaccount.google.com/permissions</a>.</li>
+    </ul>
+
+    <h2>6. Security</h2>
+    <p>
+      We employ defense-in-depth security practices. All communications with third-party APIs utilize industry-standard Transport Layer Security (TLS/HTTPS). In accordance with Chrome Extensions Manifest V3 standards, PickList executes within a sandboxed environment with zero inline script execution, strict Content Security Policy (CSP), and minimal requested privileges.
+    </p>
+
+    <h2>7. Children's Privacy</h2>
+    <p>
+      The Software is designed for commercial business operators and resellers and is not intended for use by children under the age of 13. We do not knowingly access or collect information from children.
+    </p>
+
+    <h2>8. Changes to this Privacy Policy</h2>
+    <p>
+      We may periodically update this Privacy Policy to reflect changes in our practices, platform requirements, or applicable laws. Any modifications will be posted here with an updated "Last Updated" timestamp.
+    </p>
+
+    <h2>9. Contact Us</h2>
+    <p>
+      If you have questions, feedback, or privacy-related inquiries regarding PickList, please reach out to us:
+    </p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:support@spencerreselling.com">support@spencerreselling.com</a></li>
+      <li><strong>Website:</strong> <a href="https://spencerreselling.com" target="_blank" rel="noopener">https://spencerreselling.com</a></li>
+    </ul>
+
+    <div class="footer-nav">
+      <div>PickList • Independent Reseller Companion</div>
+      <div>
+        <a href="terms.html">Terms of Service</a> • 
+        <a href="guide.html">User Guide</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

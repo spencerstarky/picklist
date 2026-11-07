@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PickList</title>
+  <style>
+    :root {
+      --bg-primary: #f5f5f7;
+      --bg-card: #ffffff;
+      --border-color: #e5e5ea;
+      --border-focus: #0071e3;
+      --text-main: #1d1d1f;
+      --text-muted: #86868b;
+      --text-secondary: #48484a;
+      --primary: #0071e3;
+      --primary-hover: #0077ed;
+      --success: #34c759;
+      --warning: #ff9f0a;
+      --danger: #ff3b30;
+      --apple-gray: #f5f5f7;
+      --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      width: 330px;
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.4;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .app-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    h1 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+    }
+
+    .badge-ver {
+      font-size: 10px;
+      font-weight: 500;
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      padding: 2px 7px;
+      border-radius: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Segmented Platform Control */
+    .segmented-control {
+      display: flex;
+      background: #ececf0;
+      padding: 3px;
+      border-radius: 9px;
+      margin-bottom: 12px;
+      gap: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    .segment-btn {
+      flex: 1;
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 7px 10px;
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: inherit;
+      user-select: none;
+      outline: none;
+    }
+
+    .segment-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .segment-btn.active {
+      background: #ffffff;
+      color: var(--text-main);
+      font-weight: 600;
+      border-color: rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    /* Status Pills */
+    .pills-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .status-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--text-secondary);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+      transition: all 0.15s ease;
+    }
+
+    .status-pill:hover {
+      border-color: #d1d1d6;
+      background: #fafafa;
+      color: var(--text-main);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--warning);
+      flex-shrink: 0;
+    }
+
+    .dot.active {
+      background: var(--success);
+      box-shadow: 0 0 5px rgba(52, 199, 89, 0.45);
+    }
+
+    .dot.error {
+      background: var(--danger);
+    }
+
+    /* Action Button */
+    .btn-sync {
+      width: 100%;
+      background: linear-gradient(180deg, #0077ed 0%, #0071e3 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 9px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0, 113, 227, 0.28);
+      transition: all 0.15s ease;
+      margin-bottom: 8px;
+    }
+
+    .btn-sync:hover {
+      filter: brightness(1.05);
+      box-shadow: 0 3px 8px rgba(0, 113, 227, 0.38);
+    }
+
+    .btn-sync:active {
+      transform: scale(0.99);
+      filter: brightness(0.95);
+    }
+
+    .btn-sync:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Status Box */
+    .status-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s ease;
+    }
+
+    .status-box.success {
+      color: #15803d;
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+      font-weight: 500;
+    }
+
+    .status-box.error {
+      color: #b91c1c;
+      border-color: #fecaca;
+      background: #fef2f2;
+      font-weight: 500;
+    }
+
+    /* Timeframe Selection Card */
+    .timeframe-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 9px;
+      padding: 9px 11px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .timeframe-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .timeframe-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .timeframe-badge {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--accent);
+      background: rgba(0, 113, 227, 0.08);
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+
+    .timeframe-select {
+      width: 100%;
+      background: #fcfcfd;
+      border: 1px solid var(--border-color);
+      border-radius: 7px;
+      padding: 7px 9px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.15s ease;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .timeframe-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
+    }
+
+    .lookback-preview {
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(0, 0, 0, 0.06);
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .lookback-preview strong {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    /* Advanced Settings Collapsible Accordion */
+    .advanced-details {
+      margin-bottom: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 9px;
+      background: var(--bg-card);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .advanced-summary {
+      padding: 9px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      list-style: none;
+      background: #ffffff;
+      transition: all 0.15s ease;
+    }
+
+    .advanced-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .advanced-summary:hover {
+      background: #fbfbfd;
+      color: var(--text-main);
+    }
+
+    .summary-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: -0.01em;
+    }
+
+    .summary-arrow {
+      font-size: 8px;
+      transition: transform 0.2s ease;
+      color: #8e8e93;
+    }
+
+    .advanced-details[open] .summary-arrow {
+      transform: rotate(180deg);
+      color: var(--primary);
+    }
+
+    .advanced-details[open] .advanced-summary {
+      border-bottom: 1px solid #f0f0f2;
+      background: #fbfbfd;
+    }
+
+    .advanced-content {
+      padding: 12px;
+      background: #ffffff;
+    }
+
+    /* Form Controls */
+    .control-group {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    select, input[type="number"] {
+      width: 100%;
+      background: #f5f5f7;
+      color: var(--text-main);
+      border: 1px solid #d1d1d6;
+      border-radius: 7px;
+      padding: 7px 9px;
+      font-size: 12px;
+      outline: none;
+      box-sizing: border-box;
+      font-family: inherit;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    select:focus, input[type="number"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+      background: #ffffff;
+    }
+
+    .custom-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .custom-row input {
+      width: 76px;
+      text-align: center;
+    }
+
+    .custom-row span {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Referral Box */
+    .referral-box {
+      background: #f0f7ff;
+      border: 1px solid #cce4ff;
+      border-radius: 9px;
+      padding: 10px 11px;
+      font-size: 11px;
+      margin-bottom: 10px;
+    }
+
+    .referral-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+
+    .badge-partner {
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .referral-box p {
+      color: var(--text-secondary);
+      font-size: 11px;
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .referral-link {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+    }
+
+    .referral-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer a:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+    .spinner {
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title-group">
+      <img src="../icons/icon48.png" alt="Logo" class="app-icon">
+      <h1>PickList</h1>
+    </div>
+    <span class="badge-ver">v1.0.0</span>
+  </div>
+
+  <!-- Destination Platform Toggle -->
+  <div class="segmented-control" id="destControl">
+    <button type="button" class="segment-btn active" data-dest="apple" id="btnDestApple">
+      <span>🍎 Apple Reminders</span>
+    </button>
+    <button type="button" class="segment-btn" data-dest="google" id="btnDestGoogle">
+      <span>📋 Google Tasks</span>
+    </button>
+  </div>
+
+  <div class="pills-row">
+    <a href="https://app.nifty.ai" target="_blank" class="status-pill" id="pillNifty" title="Click to open Nifty.ai">
+      <span class="dot" id="dotNifty"></span>
+      <span id="textNifty">Checking Nifty...</span>
+    </a>
+    <div class="status-pill" id="pillBridge" title="Destination Status">
+      <span class="dot" id="dotBridge"></span>
+      <span id="textBridge">Checking Status...</span>
+    </div>
+  </div>
+
+  <div class="timeframe-card">
+    <div class="timeframe-header">
+      <label for="lookbackSelect" class="timeframe-label">Pull Orders Sold In:</label>
+      <span id="timeframeBadge" class="timeframe-badge">1 Day</span>
+    </div>
+    <select id="lookbackSelect" class="timeframe-select">
+      <option value="since-last-sync" id="optSinceLastSync" style="display: none;">Since Last Sync</option>
+      <option value="24" selected>Past 24 Hours</option>
+      <option value="48">Past 48 Hours</option>
+      <option value="72">Past 72 Hours</option>
+      <option value="auto">Smart Auto (72h Mon / 24h Weekdays)</option>
+      <option value="custom">Custom Hours...</option>
+    </select>
+    <div class="custom-row" id="customRow" style="display: none; margin-top: 6px;">
+      <input type="number" id="customHoursInput" min="1" max="720" value="36">
+      <span>hours lookback</span>
+    </div>
+    <div id="lookbackPreview" class="lookback-preview">
+      <span class="preview-icon">🕒</span>
+      <span id="lookbackPreviewText" class="preview-text">Pulls orders sold since yesterday</span>
+    </div>
+  </div>
+
+  <button id="syncBtn" class="btn-sync">
+    <span id="btnIcon">⚡</span>
+    <span id="btnText">Sync Pull List Now</span>
+  </button>
+
+  <div id="statusBox" class="status-box">Ready to sync</div>
+
+  <!-- Advanced Settings Collapsible -->
+  <details class="advanced-details" id="advancedDetails">
+    <summary class="advanced-summary">
+      <span class="summary-title">⚙️ Advanced Settings</span>
+      <span class="summary-arrow">▼</span>
+    </summary>
+    <div class="advanced-content">
+
+      <div class="control-group">
+        <label for="scheduleSelect">Daily Auto-Send Time</label>
+        <select id="scheduleSelect">
+          <option value="6">6:00 AM Weekdays</option>
+          <option value="7">7:00 AM Weekdays</option>
+          <option value="8" selected>8:00 AM Weekdays (Default)</option>
+          <option value="9">9:00 AM Weekdays</option>
+          <option value="10">10:00 AM Weekdays</option>
+          <option value="12">12:00 PM Weekdays</option>
+          <option value="off">Off (Manual Only)</option>
+        </select>
+      </div>
+
+      <div class="control-group" style="margin-bottom: 0;">
+        <label for="sortSelect">Pull List Sort Strategy</label>
+        <select id="sortSelect">
+          <option value="hybrid-desc" selected>Smart Hybrid (Racks → Bins → No SKU)</option>
+          <option value="alpha">Bins & Locations (A → Z Alphabetical)</option>
+          <option value="sku-desc">Numeric Sequence (999 → 1 Descending)</option>
+          <option value="sku-asc">Numeric Sequence (1 → 999 Ascending)</option>
+          <option value="marketplace">Platform Grouped (eBay, Posh, Depop, Mercari, Etsy, Whatnot)</option>
+          <option value="recent">Order Date (Newest Sold First)</option>
+        </select>
+      </div>
+    </div>
+  </details>
+
+  <!-- Nifty Referral Card -->
+  <div class="referral-box" id="referralBox">
+    <div class="referral-header">
+      <strong style="color: var(--text-main);">New to Nifty?</strong>
+      <span class="badge-partner">Partner Offer</span>
+    </div>
+    <p>Sign up to auto-delist across eBay, Poshmark, Mercari, Depop, Etsy & Whatnot.</p>
+    <a href="https://nifty.ai/?referral=SOURCEDANDSOLD" target="_blank" class="referral-link" id="popupReferralLink">
+      Sign up with partner link →
+    </a>
+  </div>
+
+  <div class="footer">
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <a href="#" id="openGuideLink" title="View product overview, problems solved, and video walkthrough">📖 Guide</a>
+      <span style="color: var(--text-muted); font-size: 10px;">•</span>
+      <a href="#" id="openSetupLink" title="Open 3-step setup wizard">⚙️ Setup</a>
+    </div>
+    <span id="targetListLabel" style="font-size: 10px;">List: "Daily Pull List"</span>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
