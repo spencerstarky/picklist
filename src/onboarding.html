@@ -591,6 +591,47 @@
       flex-shrink: 0;
     }
 
+    /* Visual step screenshot callouts */
+    .step-screenshot-wrap {
+      margin-top: 10px;
+      margin-bottom: 8px;
+      border-radius: 9px;
+      overflow: hidden;
+      border: 1px solid #cbd5e1;
+      background: #0f172a;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      max-width: 480px;
+    }
+    .step-screenshot-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .step-screenshot-caption {
+      padding: 8px 12px;
+      font-size: 11.5px;
+      color: #e2e8f0;
+      background: #1e293b;
+      line-height: 1.45;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .step-screenshot-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #0284c7;
+      color: #ffffff;
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
     /* Pricing Section */
     .pricing-card {
       background: linear-gradient(180deg, #fbfbfd 0%, #f5f5f7 100%);
@@ -1345,36 +1386,65 @@
               Official, native Apple automation. <strong>Zero terminal commands, zero downloads, and zero Gatekeeper warnings.</strong> Installs in 1 click and populates your Apple Reminders list and widgets instantly.
             </p>
 
+            <!-- Reminders Pre-check Notice -->
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 9px; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: #166534; display: flex; align-items: flex-start; gap: 8px;">
+              <span style="font-size: 15px;">💡</span>
+              <div><strong>Quick Check Before You Start:</strong> Open the <strong>Apple Reminders</strong> app on your Mac at least once so macOS initializes your lists.</div>
+            </div>
+
             <ol class="steps-list">
               <li class="step-list-item">
                 <span class="step-circle">1</span>
-                <div>
+                <div style="flex: 1;">
                   <strong>Click to Install the Official Apple Shortcut:</strong>
-                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px;">Click the button below to open Apple's web page. Click <strong>Get Shortcut</strong> (you can close that browser tab right after).</div>
+                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px; margin-bottom: 8px;">Click the button below to open Apple's web page. Click the blue <strong>Get Shortcut</strong> button (you can close that browser tab right after).</div>
+                  <div style="margin-bottom: 10px;">
+                    <a href="https://www.icloud.com/shortcuts/602f704bb9c045c0a46f42fc37a9a8bf" target="_blank" class="btn-primary" id="btnInstallShortcut" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; padding: 8px 14px; border-radius: 8px; background: linear-gradient(180deg, #0071e3 0%, #005bb5 100%); color: #ffffff; box-shadow: 0 2px 8px rgba(0, 113, 227, 0.28);">
+                      <span>➕ 1-Click Install "SyncPullList" Shortcut</span>
+                      <span>→</span>
+                    </a>
+                  </div>
+                  <div class="step-screenshot-wrap">
+                    <img src="images/shortcut-step-icloud.png" alt="iCloud Get Shortcut screen" class="step-screenshot-img">
+                    <div class="step-screenshot-caption">
+                      <span class="step-screenshot-badge">Window 1</span>
+                      <span>Click the blue <strong>Get Shortcut</strong> button on the iCloud page.</span>
+                    </div>
+                  </div>
                 </div>
               </li>
               <li class="step-list-item">
                 <span class="step-circle">2</span>
-                <div>
+                <div style="flex: 1;">
                   <strong>Click "Add Shortcut":</strong>
-                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px;">macOS will open the Shortcuts app and ask: <em>"Add SyncPullList?"</em> Click the blue <strong>Add Shortcut</strong> button.</div>
+                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px; margin-bottom: 6px;">macOS will open the Shortcuts app and ask: <em>"Add SyncPullList?"</em> Click the blue <strong>Add Shortcut</strong> button.</div>
+                  <div class="step-screenshot-wrap">
+                    <img src="images/shortcut-step-add.png" alt="macOS Add Shortcut dialog" class="step-screenshot-img">
+                    <div class="step-screenshot-caption">
+                      <span class="step-screenshot-badge">Window 2</span>
+                      <span>Click the blue <strong>Add Shortcut</strong> button in the macOS window.</span>
+                    </div>
+                  </div>
                 </div>
               </li>
               <li class="step-list-item">
                 <span class="step-circle">3</span>
-                <div>
-                  <strong>Sync & View Widgets:</strong>
-                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px;">Whenever orders sell, click <strong>Sync Pull List</strong> in Chrome. If Chrome asks <em>"wants to open Shortcuts"</em>, check <strong>Always open Shortcuts</strong> and click <strong>Open Shortcuts</strong>. Your reminders populate immediately!</div>
+                <div style="flex: 1;">
+                  <strong>First Sync: Check "Always open Shortcuts":</strong>
+                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px; margin-bottom: 6px;">When you click <strong>Sync Pull List</strong> in Chrome for the first time, Chrome shows a safety prompt. Check the box <strong>"Always open Shortcuts"</strong> before clicking <strong>Open Shortcuts</strong> so all future syncs run with zero interruptions!</div>
+                  <div class="step-screenshot-wrap">
+                    <img src="images/shortcut-step-chrome-allow.png" alt="Chrome Always Open Shortcuts prompt" class="step-screenshot-img">
+                    <div class="step-screenshot-caption">
+                      <span class="step-screenshot-badge">Window 3</span>
+                      <span>Check <strong>Always open Shortcuts</strong>, then click <strong>Open Shortcuts</strong>.</span>
+                    </div>
+                  </div>
                 </div>
               </li>
             </ol>
 
             <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px;">
-              <a href="https://www.icloud.com/shortcuts/602f704bb9c045c0a46f42fc37a9a8bf" target="_blank" class="btn-primary" id="btnInstallShortcut" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; padding: 10px 16px; border-radius: 8px; background: linear-gradient(180deg, #0071e3 0%, #005bb5 100%); color: #ffffff; box-shadow: 0 2px 8px rgba(0, 113, 227, 0.28);">
-                <span>➕ 1-Click Install "SyncPullList" Shortcut</span>
-                <span>→</span>
-              </a>
-              <button type="button" class="btn-secondary" id="btnConfirmShortcutInstalled" style="font-size: 12.5px; padding: 9px 14px; border-radius: 8px;">
+              <button type="button" class="btn-primary" id="btnConfirmShortcutInstalled" style="font-size: 12.5px; padding: 9px 16px; border-radius: 8px;">
                 ✓ I've Added the Shortcut
               </button>
               <button type="button" class="btn-secondary" id="btnTestShortcutDirect" style="font-size: 12.5px; padding: 9px 14px; border-radius: 8px;">
