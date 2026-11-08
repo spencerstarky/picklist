@@ -591,43 +591,116 @@
       flex-shrink: 0;
     }
 
-    /* Visual step screenshot callouts */
-    .step-screenshot-wrap {
+    /* Razor-Sharp Minimal UI Mockup Cards */
+    .mockup-card {
       margin-top: 10px;
       margin-bottom: 8px;
-      border-radius: 9px;
+      border-radius: 12px;
       overflow: hidden;
-      border: 1px solid #cbd5e1;
-      background: #0f172a;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: #ffffff;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
       max-width: 480px;
     }
-    .step-screenshot-img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    .mockup-chrome-header {
+      background: #f8f9fa;
+      border-bottom: 1px solid #ededf0;
+      padding: 7px 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .step-screenshot-caption {
+    .mockup-window-dots {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .mockup-dot {
+      width: 8.5px;
+      height: 8.5px;
+      border-radius: 50%;
+    }
+    .mockup-dot.red { background: #ff5f56; }
+    .mockup-dot.yellow { background: #ffbd2e; }
+    .mockup-dot.green { background: #27c93f; }
+    .mockup-address-bar {
+      flex: 1;
+      background: #ffffff;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      padding: 3px 9px;
+      font-size: 11px;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mockup-canvas {
+      padding: 22px 18px;
+      background: #fafafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+    .mockup-app-icon {
+      width: 38px;
+      height: 38px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mockup-app-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .mockup-btn-primary {
+      background: linear-gradient(180deg, #0071e3 0%, #005bb5 100%);
+      color: #ffffff;
+      border-radius: 7px;
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 113, 227, 0.28);
+      position: relative;
+    }
+    .mockup-pointer-hand {
+      position: absolute;
+      bottom: -13px;
+      right: -10px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+      animation: mockFloat 1.8s ease-in-out infinite alternate;
+    }
+    @keyframes mockFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-4px); }
+    }
+    .mockup-caption-bar {
       padding: 8px 12px;
+      background: #ffffff;
+      border-top: 1px solid #f0f0f3;
       font-size: 11.5px;
-      color: #e2e8f0;
-      background: #1e293b;
-      line-height: 1.45;
+      color: #475569;
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .step-screenshot-badge {
-      display: inline-block;
+    .mockup-caption-tag {
       font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: #0284c7;
-      color: #ffffff;
       letter-spacing: 0.4px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #e0f2fe;
+      color: #0369a1;
       white-space: nowrap;
       flex-shrink: 0;
     }
@@ -1404,50 +1477,147 @@
                       <span>→</span>
                     </a>
                   </div>
-                  <div class="step-screenshot-wrap">
-                    <img src="images/shortcut-step-icloud.png" alt="1. Click Get Shortcut" class="step-screenshot-img">
-                    <div class="step-screenshot-caption">
-                      <span class="step-screenshot-badge">Step 1</span>
-                      <span>Click the blue <strong>Get Shortcut</strong> button on the iCloud page.</span>
+                  <!-- Minimal Mockup 1 -->
+                  <div class="mockup-card">
+                    <div class="mockup-chrome-header">
+                      <div class="mockup-window-dots">
+                        <span class="mockup-dot red"></span>
+                        <span class="mockup-dot yellow"></span>
+                        <span class="mockup-dot green"></span>
+                      </div>
+                      <div class="mockup-address-bar">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span>icloud.com/shortcuts</span>
+                      </div>
+                    </div>
+                    <div class="mockup-canvas">
+                      <div class="mockup-app-icon">
+                        <svg width="34" height="34" viewBox="0 0 32 32" fill="none">
+                          <rect x="4" y="9" width="18" height="18" rx="6" fill="#a855f7" />
+                          <rect x="10" y="5" width="18" height="18" rx="6" fill="#ec4899" fill-opacity="0.9" />
+                        </svg>
+                      </div>
+                      <div class="mockup-app-title">SyncPullList</div>
+                      <div style="position: relative; margin-top: 14px;">
+                        <div class="mockup-btn-primary">
+                          <span>Get Shortcut</span>
+                        </div>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" class="mockup-pointer-hand">
+                          <path d="M9 11.75V4.5C9 3.67 9.67 3 10.5 3C11.33 3 12 3.67 12 4.5V10.5H12.5C13.05 10.5 13.5 10.95 13.5 11.5V12H14C14.55 12 15 12.45 15 13V13.5H15.5C16.05 13.5 16.5 13.95 16.5 14.5V18.25C16.5 20.32 14.82 22 12.75 22H11C8.79 22 7 20.21 7 18V13.5L8.71 11.96C8.89 11.8 9 11.75 9 11.75Z" fill="#ffffff" stroke="#0f172a" stroke-width="1.5" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="mockup-caption-bar">
+                      <span class="mockup-caption-tag">Action</span>
+                      <span>Click <strong>Get Shortcut</strong> on Apple's page (close the tab after)</span>
                     </div>
                   </div>
                 </div>
               </li>
+
               <li class="step-list-item">
                 <span class="step-circle">2</span>
                 <div style="flex: 1;">
                   <strong>Click "Add Shortcut" in the macOS Prompt:</strong>
                   <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px; margin-bottom: 6px;">macOS will open the Shortcuts app and ask: <em>"Add SyncPullList?"</em> Click the blue <strong>Add Shortcut</strong> button.</div>
-                  <div class="step-screenshot-wrap">
-                    <img src="images/shortcut-step-add.png" alt="2. Click Add Shortcut" class="step-screenshot-img">
-                    <div class="step-screenshot-caption">
-                      <span class="step-screenshot-badge">Step 2</span>
-                      <span>Click the blue <strong>Add Shortcut</strong> button in the macOS window.</span>
+                  <!-- Minimal Mockup 2 -->
+                  <div class="mockup-card">
+                    <div class="mockup-chrome-header" style="background: #1e1e24; border-bottom: 1px solid #2d2d35;">
+                      <div class="mockup-window-dots">
+                        <span class="mockup-dot red"></span>
+                        <span class="mockup-dot yellow"></span>
+                        <span class="mockup-dot green"></span>
+                      </div>
+                      <span style="font-size: 11px; font-weight: 600; color: #94a3b8; margin: 0 auto; padding-right: 36px;">Shortcuts</span>
+                    </div>
+                    <div class="mockup-canvas" style="background: #18181f; padding: 20px 24px;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 330px; background: #22222b; border: 1px solid #33333f; border-radius: 12px; padding: 14px 16px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                          <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); display: flex; align-items: center; justify-content: center;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                          </div>
+                          <div style="text-align: left;">
+                            <div style="font-size: 13.5px; font-weight: 700; color: #ffffff;">SyncPullList</div>
+                            <div style="font-size: 11px; color: #94a3b8;">Shared Shortcut</div>
+                          </div>
+                        </div>
+                        <div style="position: relative;">
+                          <div class="mockup-btn-primary" style="padding: 7px 14px; font-size: 12px;">
+                            <span>Add Shortcut</span>
+                          </div>
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="mockup-pointer-hand" style="bottom: -12px; right: -8px;">
+                            <path d="M9 11.75V4.5C9 3.67 9.67 3 10.5 3C11.33 3 12 3.67 12 4.5V10.5H12.5C13.05 10.5 13.5 10.95 13.5 11.5V12H14C14.55 12 15 12.45 15 13V13.5H15.5C16.05 13.5 16.5 13.95 16.5 14.5V18.25C16.5 20.32 14.82 22 12.75 22H11C8.79 22 7 20.21 7 18V13.5L8.71 11.96C8.89 11.8 9 11.75 9 11.75Z" fill="#ffffff" stroke="#0f172a" stroke-width="1.5" stroke-linejoin="round"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mockup-caption-bar" style="background: #14141a; border-top: 1px solid #272733; color: #cbd5e1;">
+                      <span class="mockup-caption-tag" style="background: #0284c7; color: #ffffff;">Action</span>
+                      <span>Click the blue <strong>Add Shortcut</strong> button in macOS</span>
                     </div>
                   </div>
                 </div>
               </li>
+
               <li class="step-list-item">
                 <span class="step-circle">3</span>
                 <div style="flex: 1;">
                   <strong>Verify SyncPullList in Your Shortcuts App:</strong>
                   <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px; margin-bottom: 6px;">The <strong>SyncPullList</strong> shortcut is now safely registered in your Shortcuts library. You are ready to sync your daily orders!</div>
-                  <div class="step-screenshot-wrap">
-                    <img src="images/shortcut-step-library.png" alt="3. SyncPullList Ready in Shortcuts" class="step-screenshot-img">
-                    <div class="step-screenshot-caption">
-                      <span class="step-screenshot-badge" style="background: #059669;">Step 3</span>
-                      <span><strong>SyncPullList</strong> is now active in your Shortcuts library!</span>
+                  <!-- Minimal Mockup 3 -->
+                  <div class="mockup-card">
+                    <div class="mockup-chrome-header" style="background: #1e1e24; border-bottom: 1px solid #2d2d35;">
+                      <div class="mockup-window-dots">
+                        <span class="mockup-dot red"></span>
+                        <span class="mockup-dot yellow"></span>
+                        <span class="mockup-dot green"></span>
+                      </div>
+                      <span style="font-size: 11px; font-weight: 600; color: #94a3b8; margin: 0 auto; padding-right: 36px;">All Shortcuts</span>
+                    </div>
+                    <div class="mockup-canvas" style="background: #18181f; padding: 18px 24px;">
+                      <div style="display: flex; align-items: center; gap: 14px; width: 100%; max-width: 330px; background: #22222b; border: 1.5px solid #10b981; border-radius: 12px; padding: 14px 16px;">
+                        <div style="width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); display: flex; align-items: center; justify-content: center;">
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        </div>
+                        <div style="text-align: left; flex: 1;">
+                          <div style="font-size: 13.5px; font-weight: 700; color: #ffffff;">SyncPullList</div>
+                          <div style="font-size: 11px; color: #10b981; font-weight: 600; margin-top: 2px;">
+                            ● Ready to Sync
+                          </div>
+                        </div>
+                        <div style="width: 22px; height: 22px; border-radius: 50%; background: #10b981; display: flex; align-items: center; justify-content: center;">
+                          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mockup-caption-bar" style="background: #14141a; border-top: 1px solid #272733; color: #cbd5e1;">
+                      <span class="mockup-caption-tag" style="background: #059669; color: #ffffff;">Verified</span>
+                      <span>Active in your library! Click <strong>Sync Pull List</strong> in Chrome</span>
                     </div>
                   </div>
                 </div>
               </li>
             </ol>
 
-            <!-- Helpful Tip: Chrome Permission Prompt on First Sync -->
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 9px; padding: 12px 14px; margin-top: 14px; margin-bottom: 14px; font-size: 12px; color: #334155; display: flex; align-items: flex-start; gap: 10px;">
-              <span style="font-size: 16px;">⚡</span>
-              <div style="line-height: 1.5;">
-                <strong style="color: #0f172a;">Pro Tip for Your First Sync:</strong> When you click <em>Sync Pull List</em> in Chrome, a popup may ask <em>"wants to open Shortcuts"</em>. Check the box <strong>"Always open Shortcuts"</strong> before clicking <strong>Open Shortcuts</strong> so you are never prompted again!
+            <!-- Minimal Chrome Permission Tip Card -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 14px 18px; margin-top: 16px; margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                <span style="font-size: 14px;">⚡</span>
+                <strong style="font-size: 12.5px; color: var(--text);">Pro Tip: Your First Sync in Chrome</strong>
+              </div>
+              <div style="background: #1e1e24; border: 1px solid #2d2d35; border-radius: 10px; padding: 12px 16px; color: #ffffff; max-width: 440px;">
+                <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">app.nifty.ai wants to open Shortcuts.</div>
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: #e2e8f0; margin-bottom: 12px; background: rgba(56, 189, 248, 0.12); padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.35);">
+                  <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect width="16" height="16" rx="3.5" fill="#0071e3"/><path d="M12 5L6.5 10.5L4 8" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span><strong>Check this box:</strong> Always open Shortcuts</span>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                  <span style="font-size: 11px; padding: 4px 10px; border-radius: 6px; background: #2f2f38; color: #94a3b8;">Cancel</span>
+                  <span style="font-size: 11px; padding: 4px 12px; border-radius: 6px; background: #ffffff; color: #000000; font-weight: 600;">Open Shortcuts</span>
+                </div>
+              </div>
+              <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 8px;">
+                Checking <em>Always open Shortcuts</em> ensures future order syncs happen seamlessly in 1 click!
               </div>
             </div>
 
