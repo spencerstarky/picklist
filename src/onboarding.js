@@ -193,6 +193,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const btnInstallShortcut = document.getElementById("btnInstallShortcut");
   if (btnInstallShortcut) btnInstallShortcut.href = shortcutIcloudUrl;
+  document.querySelectorAll(".btn-install-shortcut").forEach((btn) => {
+    btn.href = shortcutIcloudUrl;
+  });
 
   // Step 1: Nifty session check
   const onboardingDotNifty = document.getElementById("onboardingDotNifty");
@@ -284,14 +287,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Handle clicking the official Apple Shortcut install link
-  if (btnInstallShortcut) {
-    btnInstallShortcut.addEventListener("click", () => {
-      chrome.storage.local.set({ shortcutInstalled: true }, () => {
-        showBridgeAlert("✓ Opening Apple Shortcuts! Click 'Add Shortcut' in the macOS dialog, then return here.", true);
-        setTimeout(() => checkBridge(false), 2000);
-      });
+  const onInstallClick = () => {
+    chrome.storage.local.set({ shortcutInstalled: true }, () => {
+      showBridgeAlert("✓ Opening Apple Shortcuts! Click 'Add Shortcut' in the macOS dialog, then return here.", true);
+      setTimeout(() => checkBridge(false), 2000);
     });
+  };
+  if (btnInstallShortcut) {
+    btnInstallShortcut.addEventListener("click", onInstallClick);
   }
+  document.querySelectorAll(".btn-install-shortcut").forEach((btn) => {
+    btn.addEventListener("click", onInstallClick);
+  });
 
   // Handle confirming shortcut is installed
   if (btnConfirmShortcutInstalled) {
