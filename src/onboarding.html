@@ -1360,7 +1360,7 @@
             <span class="dot" id="onboardingDotBridge"></span>
             <div>
               <strong id="onboardingTextBridge">Checking Apple Reminders status...</strong>
-              <div style="font-size: 12px; color: var(--text-muted);" id="onboardingSubBridge">1-Click Shortcut or Silent Background Helper</div>
+              <div style="font-size: 12px; color: var(--text-muted);" id="onboardingSubBridge">Official Apple Shortcut for Instant Sync</div>
             </div>
           </div>
           <button class="btn-secondary" id="btnTestBridge" style="white-space: nowrap;">⚡ Check / Test Status</button>
@@ -1372,14 +1372,14 @@
         <!-- Walkthrough Options Grid -->
         <div class="walkthrough-grid">
           
-          <!-- Option 1: 1-Click Native Apple Shortcut (Recommended) -->
+          <!-- Native Apple Shortcut (Official Setup) -->
           <div class="walkthrough-card primary">
             <div class="card-header-row">
               <div class="card-title-group">
                 <span style="font-size: 20px;">🍎</span>
-                <h3>Option 1: 1-Click Apple Shortcut</h3>
+                <h3>Official Apple Shortcut Setup</h3>
               </div>
-              <span class="badge-choice recommended">Recommended</span>
+              <span class="badge-choice recommended">Official Apple Integration</span>
             </div>
 
             <p class="card-desc">
@@ -1493,49 +1493,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <!-- Option 2: Silent Background Bridge (Advanced / Power User) -->
-          <div class="walkthrough-card">
-            <div class="card-header-row">
-              <div class="card-title-group">
-                <span style="font-size: 20px;">⚡</span>
-                <h3>Option 2: Silent Background Helper</h3>
-              </div>
-              <span class="badge-choice alternative">Zero App Flashes</span>
-            </div>
-
-            <p class="card-desc">
-              For power users who prefer 100% silent background execution without the Shortcuts app flashing during sync. Installs a local background daemon (LaunchAgent).
-            </p>
-
-            <ol class="steps-list">
-              <li class="step-list-item">
-                <span class="step-circle">1</span>
-                <div>
-                  <strong>Download Installer:</strong>
-                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px;">Download the self-contained setup script.</div>
-                </div>
-              </li>
-              <li class="step-list-item">
-                <span class="step-circle">2</span>
-                <div>
-                  <strong>Run in Terminal:</strong>
-                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px;">Open Terminal on your Mac and paste:</div>
-                  <div class="code-box" style="margin-top: 4px;">
-                    <code id="terminalCommandText">bash ~/Downloads/Install_Bridge.command</code>
-                    <button class="btn-copy" id="btnCopyTerminalCmd">📋 Copy</button>
-                  </div>
-                </div>
-              </li>
-            </ol>
-
-            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 8px;">
-              <button class="btn-secondary" id="btnDownloadInstaller">
-                <span>⬇️ Download Install_Bridge.command</span>
-              </button>
-            </div>
           </div>
 
         </div>

@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
         onboardingDotBridge.className = "dot";
         onboardingTextBridge.textContent = "Apple Reminders: Setup Required";
         if (onboardingSubBridge) {
-          onboardingSubBridge.textContent = "Install the 1-Click Shortcut below (Option 1) or run the silent helper (Option 2).";
+          onboardingSubBridge.textContent = "Install the official Apple Shortcut below to connect Reminders.";
         }
         if (userTriggered) {
           showBridgeAlert("Please click '➕ 1-Click Install Shortcut' below to activate Apple Reminders.", false);
