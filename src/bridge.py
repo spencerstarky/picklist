@@ -77,7 +77,13 @@ def check_reminders_access() -> bool:
     tell application "Reminders"
         set listName to "{TARGET_LIST}"
         if not (exists list listName) then
-            make new list with properties {{name:listName}}
+            try
+                set targetAcc to default account
+                make new list with properties {{name:listName}} at targetAcc
+            on error
+                set targetAcc to first account
+                make new list with properties {{name:listName}} at targetAcc
+            end try
         end if
         return (name of list listName)
     end tell
@@ -99,7 +105,13 @@ def get_existing_reminder_skus():
     tell application "Reminders"
         set listName to "{TARGET_LIST}"
         if not (exists list listName) then
-            make new list with properties {{name:listName}}
+            try
+                set targetAcc to default account
+                make new list with properties {{name:listName}} at targetAcc
+            on error
+                set targetAcc to first account
+                make new list with properties {{name:listName}} at targetAcc
+            end try
         end if
         tell list listName
             set AppleScript's text item delimiters to "|||"
@@ -393,7 +405,13 @@ def sync_items_to_reminders(items, clear_existing: bool = True, skip_completed: 
         'tell application "Reminders"',
         f'    set listName to "{TARGET_LIST}"',
         '    if not (exists list listName) then',
-        '        make new list with properties {name:listName}',
+        '        try',
+        '            set targetAcc to default account',
+        '            make new list with properties {name:listName} at targetAcc',
+        '        on error',
+        '            set targetAcc to first account',
+        '            make new list with properties {name:listName} at targetAcc',
+        '        end try',
         '    end if',
         '    set targetList to list listName',
         '    tell targetList to delete (every reminder whose completed is false)',
