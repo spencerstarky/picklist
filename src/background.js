@@ -972,11 +972,11 @@ async function fetchAndSyncOrders(options = {}) {
         });
         shortcutPayload = textLines.join("\n");
         const shortcutUrl = `shortcuts://run-shortcut?name=SyncPullList&input=text&text=${encodeURIComponent(shortcutPayload)}`;
-        chrome.tabs.create({ url: shortcutUrl, active: false }, (tab) => {
+        chrome.tabs.create({ url: shortcutUrl, active: true }, (tab) => {
           if (tab && tab.id) {
             setTimeout(() => {
               chrome.tabs.remove(tab.id).catch(() => {});
-            }, 15000);
+            }, 6000);
           }
         });
         dispatchMethod = "shortcuts";

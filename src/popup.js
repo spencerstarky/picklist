@@ -392,6 +392,9 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (created === 0) {
           statusBox.textContent = "No orders found in the selected window.";
           statusBox.className = "status-box";
+        } else if (res.method === "shortcuts") {
+          statusBox.textContent = `⚡ Sent ${created} item${created === 1 ? "" : "s"} to Apple Shortcuts! Click "Open" in Chrome.`;
+          statusBox.className = "status-box success";
         } else {
           statusBox.textContent = `✓ Added ${created} new item${created === 1 ? "" : "s"} to ${targetAppName}!`;
           statusBox.className = "status-box success";

@@ -312,12 +312,12 @@ document.addEventListener("DOMContentLoaded", () => {
           navigator.clipboard.writeText(testPayload).catch((e) => console.warn(e));
         }
         const shortcutUrl = `shortcuts://run-shortcut?name=SyncPullList&input=text&text=${encodeURIComponent(testPayload)}`;
-        chrome.tabs.create({ url: shortcutUrl, active: false }, (t) => {
+        chrome.tabs.create({ url: shortcutUrl, active: true }, (t) => {
           if (t && t.id) {
-            setTimeout(() => chrome.tabs.remove(t.id).catch(() => {}), 15000);
+            setTimeout(() => chrome.tabs.remove(t.id).catch(() => {}), 6000);
           }
         });
-        showBridgeAlert("⚡ Dispatched test item to 'SyncPullList'! Check your Apple Reminders app.", true);
+        showBridgeAlert("⚡ Dispatched test item to 'SyncPullList'! Click 'Open Shortcuts' in Chrome if prompted.", true);
         checkBridge(true);
       });
     });
