@@ -180,259 +180,69 @@ function parseInventoryItem(skuRaw, title = "", orderId = "") {
 // -------------------------------------------------------------
 
 /**
- * Extracts authorization code or error from a Google OAuth redirect URL.
+ * Invalidates an expired or revoked Google OAuth token in Chrome cache and storage.
  */
-function extractAuthCodeFromUrl(redirectedUrl) {
-  if (!redirectedUrl) return null;
-  const url = new URL(redirectedUrl);
-  const code = url.searchParams.get("code");
-  const error = url.searchParams.get("error") || (url.hash && new URLSearchParams(url.hash.replace(/^#/, "")).get("error"));
-  const errorDesc = url.searchParams.get("error_description") || (url.hash && new URLSearchParams(url.hash.replace(/^#/, "")).get("error_description"));
-
-  if (error) {
-    throw new Error(errorDesc || error);
+async function invalidateGoogleAuthToken(token) {
+  try {
+    if (chrome.identity && chrome.identity.removeCachedAuthToken && token) {
+      await new Promise((resolve) => {
+        chrome.identity.removeCachedAuthToken({ token }, () => resolve());
+      });
+    }
+  } catch (err) {
+    console.warn("[NiftySync] Error removing cached Google auth token:", err);
   }
-  return code;
+  await chrome.storage.local.remove(["google_access_token", "google_token_expiry"]);
 }
 
 /**
- * Exchanges an authorization code for access_token and permanent refresh_token.
- */
-async function exchangeCodeForTokens(code, redirectUri) {
-  const manifest = chrome.runtime.getManifest();
-  const clientId = manifest.oauth2?.client_id || (typeof CONFIG !== "undefined" ? CONFIG.GOOGLE_CLIENT_ID : "");
-  const clientSecret = (typeof CONFIG !== "undefined" && CONFIG.GOOGLE_CLIENT_SECRET)
-    ? CONFIG.GOOGLE_CLIENT_SECRET
-    : "";
-
-  if (!clientId || !clientSecret) {
-    throw new Error("Google OAuth configuration error: Client ID or Client Secret is missing in config.js.");
-  }
-
-  const params = new URLSearchParams({
-    client_id: clientId,
-    client_secret: clientSecret,
-    code: code,
-    grant_type: "authorization_code",
-    redirect_uri: redirectUri
-  });
-
-  const resp = await fetch("https://oauth2.googleapis.com/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params.toString()
-  });
-
-  const data = await resp.json();
-  if (!resp.ok) {
-    throw new Error(data.error_description || data.error || `Token exchange failed (HTTP ${resp.status})`);
-  }
-
-  const accessToken = data.access_token;
-  const refreshToken = data.refresh_token;
-  const expiresIn = parseInt(data.expires_in || "3600", 10);
-
-  const storageUpdate = {
-    google_access_token: accessToken,
-    google_token_expiry: Date.now() + (expiresIn * 1000),
-    googleConnected: true
-  };
-  if (refreshToken) {
-    storageUpdate.google_refresh_token = refreshToken;
-  }
-  await chrome.storage.local.set(storageUpdate);
-
-  return accessToken;
-}
-
-/**
- * Silently refreshes an expired access token using the stored permanent refresh_token.
- */
-async function refreshGoogleAccessToken(refreshToken) {
-  const manifest = chrome.runtime.getManifest();
-  const clientId = manifest.oauth2?.client_id || (typeof CONFIG !== "undefined" ? CONFIG.GOOGLE_CLIENT_ID : "");
-  const clientSecret = (typeof CONFIG !== "undefined" && CONFIG.GOOGLE_CLIENT_SECRET)
-    ? CONFIG.GOOGLE_CLIENT_SECRET
-    : "";
-
-  if (!clientId || !clientSecret) {
-    throw new Error("Google OAuth configuration error: Client ID or Client Secret is missing in config.js.");
-  }
-
-  const params = new URLSearchParams({
-    client_id: clientId,
-    client_secret: clientSecret,
-    refresh_token: refreshToken,
-    grant_type: "refresh_token"
-  });
-
-  const resp = await fetch("https://oauth2.googleapis.com/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params.toString()
-  });
-
-  const data = await resp.json();
-  if (!resp.ok) {
-    throw new Error(data.error_description || data.error || `Token refresh failed (HTTP ${resp.status})`);
-  }
-
-  const newAccessToken = data.access_token;
-  const expiresIn = parseInt(data.expires_in || "3600", 10);
-
-  await chrome.storage.local.set({
-    google_access_token: newAccessToken,
-    google_token_expiry: Date.now() + (expiresIn * 1000),
-    googleConnected: true
-  });
-
-  return newAccessToken;
-}
-
-/**
- * Retrieves a valid Google OAuth access token.
- * If token is expired, silently refreshes in the background using the permanent refresh_token.
- * Interactive login is only invoked once upon initial connection.
+ * Retrieves a valid Google OAuth access token using Chrome's native Identity API.
+ * Automatically handles user authorization (interactive=true) or silent background
+ * token retrieval/refresh (interactive=false).
+ * Zero bundled client secrets required.
  */
 async function getGoogleAuthToken(interactive = false) {
-  // 1. Check storage for valid, non-expired cached access token
+  // 1. Check storage for valid cached token
   const stored = await chrome.storage.local.get([
     "google_access_token",
-    "google_refresh_token",
     "google_token_expiry",
     "googleConnected"
   ]);
   const now = Date.now();
-
   if (stored.google_access_token && stored.google_token_expiry && stored.google_token_expiry > now + 60000) {
     return stored.google_access_token;
   }
 
-  // 2. If access token is expired, silently refresh in the background using permanent refresh_token (zero popups)
-  if (stored.google_refresh_token) {
-    try {
-      const refreshedToken = await refreshGoogleAccessToken(stored.google_refresh_token);
-      if (refreshedToken) {
-        return refreshedToken;
-      }
-    } catch (refreshErr) {
-      console.warn("[NiftySync] Silent token refresh failed:", refreshErr);
-      if (refreshErr.message && refreshErr.message.includes("invalid_grant")) {
-        // User revoked permissions in Google account
-        await chrome.storage.local.remove(["google_access_token", "google_refresh_token", "google_token_expiry"]);
-        await chrome.storage.local.set({ googleConnected: false });
-      }
-    }
+  // 2. Request token via native Chrome Identity service
+  if (!chrome.identity || !chrome.identity.getAuthToken) {
+    throw new Error("Chrome Identity API is not available in this browser environment.");
   }
-
-  // 3. Non-interactive requests (background alarms, status queries) return null if not authenticated
-  if (!interactive) {
-    return null;
-  }
-
-  // 4. Interactive authorization (initial connection): Request offline access for permanent refresh_token
-  const manifest = chrome.runtime.getManifest();
-  const clientId = manifest.oauth2?.client_id || (typeof CONFIG !== "undefined" ? CONFIG.GOOGLE_CLIENT_ID : "");
-  const redirectUri = chrome.identity.getRedirectURL(); // e.g. https://<ext-id>.chromiumapp.org/
-  const scopes = (manifest.oauth2?.scopes && manifest.oauth2.scopes.length > 0)
-    ? manifest.oauth2.scopes.join(" ")
-    : "https://www.googleapis.com/auth/tasks";
-
-  const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
-  authUrl.searchParams.set("client_id", clientId);
-  authUrl.searchParams.set("response_type", "code");
-  authUrl.searchParams.set("access_type", "offline");
-  authUrl.searchParams.set("prompt", "consent");
-  authUrl.searchParams.set("redirect_uri", redirectUri);
-  authUrl.searchParams.set("scope", scopes);
 
   return new Promise((resolve, reject) => {
-    let resolved = false;
-    const width = 550;
-    const height = 700;
-
-    // Helper fallback for launchWebAuthFlow
-    const runLaunchWebAuthFlow = () => {
-      if (!chrome.identity || !chrome.identity.launchWebAuthFlow) {
-        return reject(new Error("Google OAuth is not available in this browser environment."));
+    chrome.identity.getAuthToken({ interactive }, async (token) => {
+      if (chrome.runtime.lastError) {
+        const errMsg = chrome.runtime.lastError.message || "";
+        console.warn("[NiftySync] chrome.identity.getAuthToken warning:", errMsg);
+        if (!interactive) {
+          return resolve(null);
+        }
+        return reject(new Error(errMsg));
       }
-      chrome.identity.launchWebAuthFlow(
-        { url: authUrl.href, interactive: true },
-        async (redirectedUrl) => {
-          if (chrome.runtime.lastError) return reject(new Error(chrome.runtime.lastError.message));
-          if (!redirectedUrl) return reject(new Error("Google sign-in was closed or cancelled."));
-          try {
-            const code = extractAuthCodeFromUrl(redirectedUrl);
-            if (!code) {
-              throw new Error("No authorization code was returned by Google.");
-            }
-            const token = await exchangeCodeForTokens(code, redirectUri);
-            resolve(token);
-          } catch (err) {
-            reject(err);
-          }
-        }
-      );
-    };
 
-    // Use chrome.windows.create to explicitly open window at full 550x700 size
-    if (chrome.windows && chrome.windows.create) {
-      chrome.windows.create(
-        {
-          url: authUrl.href,
-          type: "popup",
-          width,
-          height,
-          focused: true
-        },
-        (createdWin) => {
-          if (chrome.runtime.lastError || !createdWin) {
-            return runLaunchWebAuthFlow();
-          }
+      if (!token) {
+        if (!interactive) return resolve(null);
+        return reject(new Error("No authorization token returned by Google sign-in."));
+      }
 
-          const winId = createdWin.id;
+      // Cache token (Google OAuth tokens default to 1 hour = 3600s)
+      await chrome.storage.local.set({
+        google_access_token: token,
+        google_token_expiry: Date.now() + 3500 * 1000,
+        googleConnected: true
+      });
 
-          const cleanup = () => {
-            try { chrome.tabs.onUpdated.removeListener(onTabUpdated); } catch (_) {}
-            try { chrome.windows.onRemoved.removeListener(onWinRemoved); } catch (_) {}
-          };
-
-          const onTabUpdated = async (tabId, changeInfo) => {
-            if (!changeInfo.url) return;
-            if (changeInfo.url.startsWith(redirectUri)) {
-              resolved = true;
-              cleanup();
-              try { chrome.windows.remove(winId); } catch (_) {}
-
-              try {
-                const code = extractAuthCodeFromUrl(changeInfo.url);
-                if (!code) {
-                  throw new Error("No authorization code was returned by Google.");
-                }
-                const token = await exchangeCodeForTokens(code, redirectUri);
-                resolve(token);
-              } catch (err) {
-                reject(new Error(`Failed to complete Google sign-in: ${err.message}`));
-              }
-            }
-          };
-
-          const onWinRemoved = (removedWinId) => {
-            if (removedWinId === winId) {
-              cleanup();
-              if (!resolved) {
-                reject(new Error("Google sign-in window was closed before completion."));
-              }
-            }
-          };
-
-          chrome.tabs.onUpdated.addListener(onTabUpdated);
-          chrome.windows.onRemoved.addListener(onWinRemoved);
-        }
-      );
-    } else {
-      runLaunchWebAuthFlow();
-    }
+      resolve(token);
+    });
   });
 }
 
@@ -441,17 +251,29 @@ async function getGoogleAuthToken(interactive = false) {
  */
 async function checkGoogleTasksStatus() {
   try {
-    const token = await getGoogleAuthToken(false);
+    let token = await getGoogleAuthToken(false);
     if (!token) return { connected: false };
 
-    const resp = await fetch(`${GOOGLE_TASKS_API}/users/@me/lists`, {
+    let resp = await fetch(`${GOOGLE_TASKS_API}/users/@me/lists`, {
       headers: { Authorization: `Bearer ${token}` }
     });
-    if (resp.ok) {
+
+    if (resp.status === 401) {
+      // Token expired, clear cache and retry once silently
+      await invalidateGoogleAuthToken(token);
+      token = await getGoogleAuthToken(false);
+      if (token) {
+        resp = await fetch(`${GOOGLE_TASKS_API}/users/@me/lists`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      }
+    }
+
+    if (resp && resp.ok) {
       const data = await resp.json();
       return { connected: true, data };
     }
-    return { connected: false, error: `Google API returned status ${resp.status}` };
+    return { connected: false, error: `Google API returned status ${resp ? resp.status : "unknown"}` };
   } catch (err) {
     return { connected: false, error: err.message };
   }
@@ -586,12 +408,23 @@ function extractTaskKeys(task) {
  * Syncs pull list items into Google Tasks
  */
 async function syncWithGoogleTasks(items, options = {}) {
-  const token = await getGoogleAuthToken(true);
+  let token = await getGoogleAuthToken(true);
   const targetTitle = (typeof CONFIG !== "undefined" && CONFIG.GOOGLE_TASKS_LIST_NAME)
     ? CONFIG.GOOGLE_TASKS_LIST_NAME
     : "Daily Pull List";
 
-  const listId = await getOrCreateGoogleTaskList(token, targetTitle);
+  let listId;
+  try {
+    listId = await getOrCreateGoogleTaskList(token, targetTitle);
+  } catch (err) {
+    if (err.message && err.message.includes("401")) {
+      await invalidateGoogleAuthToken(token);
+      token = await getGoogleAuthToken(true);
+      listId = await getOrCreateGoogleTaskList(token, targetTitle);
+    } else {
+      throw err;
+    }
+  }
 
   // Load persistent completed history from local storage
   const stored = await chrome.storage.local.get("persistedCompletedKeys");
