@@ -1396,7 +1396,7 @@
               <li class="step-list-item">
                 <span class="step-circle">1</span>
                 <div style="flex: 1;">
-                  <strong>Click to Install the Official Apple Shortcut:</strong>
+                  <strong>Open the Installer & Click "Get Shortcut":</strong>
                   <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px; margin-bottom: 8px;">Click the button below to open Apple's web page. Click the blue <strong>Get Shortcut</strong> button (you can close that browser tab right after).</div>
                   <div style="margin-bottom: 10px;">
                     <a href="https://www.icloud.com/shortcuts/602f704bb9c045c0a46f42fc37a9a8bf" target="_blank" class="btn-primary" id="btnInstallShortcut" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; padding: 8px 14px; border-radius: 8px; background: linear-gradient(180deg, #0071e3 0%, #005bb5 100%); color: #ffffff; box-shadow: 0 2px 8px rgba(0, 113, 227, 0.28);">
@@ -1405,9 +1405,9 @@
                     </a>
                   </div>
                   <div class="step-screenshot-wrap">
-                    <img src="images/shortcut-step-icloud.png" alt="iCloud Get Shortcut screen" class="step-screenshot-img">
+                    <img src="images/shortcut-step-icloud.png" alt="1. Click Get Shortcut" class="step-screenshot-img">
                     <div class="step-screenshot-caption">
-                      <span class="step-screenshot-badge">Window 1</span>
+                      <span class="step-screenshot-badge">Step 1</span>
                       <span>Click the blue <strong>Get Shortcut</strong> button on the iCloud page.</span>
                     </div>
                   </div>
@@ -1416,12 +1416,12 @@
               <li class="step-list-item">
                 <span class="step-circle">2</span>
                 <div style="flex: 1;">
-                  <strong>Click "Add Shortcut":</strong>
+                  <strong>Click "Add Shortcut" in the macOS Prompt:</strong>
                   <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px; margin-bottom: 6px;">macOS will open the Shortcuts app and ask: <em>"Add SyncPullList?"</em> Click the blue <strong>Add Shortcut</strong> button.</div>
                   <div class="step-screenshot-wrap">
-                    <img src="images/shortcut-step-add.png" alt="macOS Add Shortcut dialog" class="step-screenshot-img">
+                    <img src="images/shortcut-step-add.png" alt="2. Click Add Shortcut" class="step-screenshot-img">
                     <div class="step-screenshot-caption">
-                      <span class="step-screenshot-badge">Window 2</span>
+                      <span class="step-screenshot-badge">Step 2</span>
                       <span>Click the blue <strong>Add Shortcut</strong> button in the macOS window.</span>
                     </div>
                   </div>
@@ -1430,18 +1430,26 @@
               <li class="step-list-item">
                 <span class="step-circle">3</span>
                 <div style="flex: 1;">
-                  <strong>First Sync: Check "Always open Shortcuts":</strong>
-                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px; margin-bottom: 6px;">When you click <strong>Sync Pull List</strong> in Chrome for the first time, Chrome shows a safety prompt. Check the box <strong>"Always open Shortcuts"</strong> before clicking <strong>Open Shortcuts</strong> so all future syncs run with zero interruptions!</div>
+                  <strong>Verify SyncPullList in Your Shortcuts App:</strong>
+                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px; margin-bottom: 6px;">The <strong>SyncPullList</strong> shortcut is now safely registered in your Shortcuts library. You are ready to sync your daily orders!</div>
                   <div class="step-screenshot-wrap">
-                    <img src="images/shortcut-step-chrome-allow.png" alt="Chrome Always Open Shortcuts prompt" class="step-screenshot-img">
+                    <img src="images/shortcut-step-library.png" alt="3. SyncPullList Ready in Shortcuts" class="step-screenshot-img">
                     <div class="step-screenshot-caption">
-                      <span class="step-screenshot-badge">Window 3</span>
-                      <span>Check <strong>Always open Shortcuts</strong>, then click <strong>Open Shortcuts</strong>.</span>
+                      <span class="step-screenshot-badge" style="background: #059669;">Step 3</span>
+                      <span><strong>SyncPullList</strong> is now active in your Shortcuts library!</span>
                     </div>
                   </div>
                 </div>
               </li>
             </ol>
+
+            <!-- Helpful Tip: Chrome Permission Prompt on First Sync -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 9px; padding: 12px 14px; margin-top: 14px; margin-bottom: 14px; font-size: 12px; color: #334155; display: flex; align-items: flex-start; gap: 10px;">
+              <span style="font-size: 16px;">⚡</span>
+              <div style="line-height: 1.5;">
+                <strong style="color: #0f172a;">Pro Tip for Your First Sync:</strong> When you click <em>Sync Pull List</em> in Chrome, a popup may ask <em>"wants to open Shortcuts"</em>. Check the box <strong>"Always open Shortcuts"</strong> before clicking <strong>Open Shortcuts</strong> so you are never prompted again!
+              </div>
+            </div>
 
             <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px;">
               <button type="button" class="btn-primary" id="btnConfirmShortcutInstalled" style="font-size: 12.5px; padding: 9px 16px; border-radius: 8px;">
