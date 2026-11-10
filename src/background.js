@@ -725,6 +725,24 @@ async function syncWithGoogleTasks(items, options = {}) {
  * Main ingestion, normalization, sorting, and dispatch workflow.
  */
 async function fetchAndSyncOrders(options = {}) {
+  // 0. Verify License Status
+  const storedLicense = await chrome.storage.local.get(["isPaid", "userEmail"]);
+  if (!storedLicense.isPaid && typeof extpay !== "undefined" && extpay) {
+    try {
+      const user = await extpay.getUser();
+      if (!user || !user.paid) {
+        const errorMsg = "Payment required. Please unlock lifetime access ($29.99).";
+        await chrome.storage.local.set({ lastError: errorMsg, isPaid: false });
+        return { success: false, error: errorMsg };
+      }
+      await chrome.storage.local.set({ isPaid: true, userEmail: user.email || "" });
+    } catch (_) {
+      const errorMsg = "Payment required. Please unlock lifetime access ($29.99).";
+      await chrome.storage.local.set({ lastError: errorMsg, isPaid: false });
+      return { success: false, error: errorMsg };
+    }
+  }
+
   const token = await getSessionToken();
   if (!token) {
     const errorMsg = "Please log into Nifty in Chrome to sync.";
