@@ -1605,7 +1605,7 @@
       padding: 16px 28px !important;
       width: 100% !important;
       cursor: pointer !important;
-      display: flex !important;
+      display: flex;
       align-items: center !important;
       justify-content: center !important;
       gap: 8px !important;
@@ -1660,7 +1660,7 @@
       padding: 16px 28px !important;
       width: 100% !important;
       cursor: pointer !important;
-      display: flex !important;
+      display: flex;
       align-items: center !important;
       justify-content: center !important;
       gap: 8px !important;
@@ -1672,6 +1672,10 @@
       filter: brightness(1.06) !important;
       transform: translateY(-1.5px) !important;
       box-shadow: 0 6px 22px rgba(37, 99, 235, 0.45) !important;
+    }
+
+    .btn-hidden {
+      display: none !important;
     }
 
     .cta-trust-line {
@@ -1940,7 +1944,7 @@
                 <span>⚡ Unlock Lifetime Access</span>
                 <span id="btnPriceTag">($29.99)</span>
               </button>
-              <button class="btn-primary btn-continue-step2" id="btnContinueToStep2" style="display: none;">
+              <button class="btn-primary btn-continue-step2 btn-hidden" id="btnContinueToStep2" style="display: none !important;">
                 <span>Continue to Step 2: Connect to Nifty →</span>
               </button>
             </div>

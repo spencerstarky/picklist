@@ -621,13 +621,21 @@ echo "=================================================================="
     const checkoutRestoreRow = document.getElementById("checkoutRestoreRow");
 
     if (btnExtPayCheckout) {
-      btnExtPayCheckout.style.display = "none";
+      btnExtPayCheckout.style.setProperty("display", "none", "important");
+      btnExtPayCheckout.classList.add("btn-hidden");
     }
     if (btnContinueToStep2) {
-      btnContinueToStep2.style.display = "flex";
+      btnContinueToStep2.style.setProperty("display", "flex", "important");
+      btnContinueToStep2.classList.remove("btn-hidden");
     }
-    if (checkoutTrustLine) checkoutTrustLine.style.display = "none";
-    if (checkoutRestoreRow) checkoutRestoreRow.style.display = "none";
+    if (checkoutTrustLine) {
+      checkoutTrustLine.style.setProperty("display", "none", "important");
+      checkoutTrustLine.classList.add("btn-hidden");
+    }
+    if (checkoutRestoreRow) {
+      checkoutRestoreRow.style.setProperty("display", "none", "important");
+      checkoutRestoreRow.classList.add("btn-hidden");
+    }
     if (btnExtPayLogin) btnExtPayLogin.style.display = "none";
     if (paymentStatusBox) paymentStatusBox.style.display = "none";
 
