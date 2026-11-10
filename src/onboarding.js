@@ -87,10 +87,9 @@ function toggleMockItem(el, type) {
 }
 
 function updateMockCounter(type) {
-  const containerId = type === "google" ? "destGoogleContainer" : "destAppleContainer";
-  const pillId = type === "google" ? "mock-counter-google" : "mock-counter-apple";
-  const container = document.getElementById(containerId);
-  const pill = document.getElementById(pillId);
+  const container = document.getElementById(type === "google" ? "demoGoogleContainer" : "demoAppleContainer")
+                 || document.getElementById(type === "google" ? "destGoogleContainer" : "destAppleContainer");
+  const pill = document.getElementById(type === "google" ? "mock-counter-google" : "mock-counter-apple");
   if (!container || !pill) return;
 
   const items = container.querySelectorAll(".mock-item");
@@ -114,8 +113,8 @@ function updateMockCounter(type) {
 }
 
 function resetMockList(type) {
-  const containerId = type === "google" ? "destGoogleContainer" : "destAppleContainer";
-  const container = document.getElementById(containerId);
+  const container = document.getElementById(type === "google" ? "demoGoogleContainer" : "demoAppleContainer")
+                 || document.getElementById(type === "google" ? "destGoogleContainer" : "destAppleContainer");
   if (!container) return;
   const completed = container.querySelectorAll(".mock-item.completed");
   completed.forEach(item => item.classList.remove("completed"));
@@ -123,8 +122,21 @@ function resetMockList(type) {
   updateMockCounter(type);
 }
 
+function switchDemo(platform) {
+  const tabDemoApple = document.getElementById("tabDemoApple");
+  const tabDemoGoogle = document.getElementById("tabDemoGoogle");
+  const demoAppleContainer = document.getElementById("demoAppleContainer");
+  const demoGoogleContainer = document.getElementById("demoGoogleContainer");
+
+  if (tabDemoApple) tabDemoApple.classList.toggle("active", platform === "apple");
+  if (tabDemoGoogle) tabDemoGoogle.classList.toggle("active", platform === "google");
+  if (demoAppleContainer) demoAppleContainer.style.display = platform === "apple" ? "block" : "none";
+  if (demoGoogleContainer) demoGoogleContainer.style.display = platform === "google" ? "block" : "none";
+}
+
 // Make accessible to onclick handlers
 window.switchOnboardingDest = switchOnboardingDest;
+window.switchDemo = switchDemo;
 window.goToStep = goToStep;
 window.toggleMockItem = toggleMockItem;
 window.resetMockList = resetMockList;
@@ -185,6 +197,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-switch-dest]").forEach((btn) => {
     btn.addEventListener("click", () => {
       switchOnboardingDest(btn.dataset.switchDest);
+    });
+  });
+
+  // Handle all data-switch-demo buttons
+  document.querySelectorAll("[data-switch-demo]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      switchDemo(btn.dataset.switchDemo);
     });
   });
 
@@ -664,7 +683,7 @@ echo "=================================================================="
   document.addEventListener("click", (e) => {
     const mockItem = e.target.closest(".mock-item");
     if (mockItem) {
-      const platform = mockItem.getAttribute("data-platform") || (mockItem.closest("#destGoogleContainer") ? "google" : "apple");
+      const platform = mockItem.getAttribute("data-platform") || (mockItem.closest("#demoGoogleContainer, #destGoogleContainer") ? "google" : "apple");
       toggleMockItem(mockItem, platform);
       return;
     }
