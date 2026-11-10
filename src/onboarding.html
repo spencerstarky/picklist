@@ -47,8 +47,8 @@
     /* Container */
     .container {
       width: 100%;
-      max-width: 880px;
-      padding: 36px 20px 80px;
+      max-width: 740px;
+      padding: 32px 20px 70px;
     }
 
     /* Header */
@@ -1499,282 +1499,165 @@
     }
 
     /* ==========================================================================
-       Step 1 Hero Layout: Side-by-Side Interactive Mockup & Center-of-Attention CTA
+       Step 1: Clean, Focused Center-of-Attention CTA & Live Demo Stage
        ========================================================================== */
-    .step1-hero-grid {
-      display: grid;
-      grid-template-columns: 310px 1fr;
-      gap: 22px;
-      align-items: stretch;
-      margin-top: 18px;
-    }
-
-    @media (max-width: 800px) {
-      .step1-hero-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-    }
-
-    .step1-demo-col {
-      background: linear-gradient(180deg, #fbfbfd 0%, #f4f6f9 100%);
+    .cta-hero-card {
+      background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px 12px 16px 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
-    }
-
-    .demo-col-header {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 12px;
-      align-items: center;
-    }
-
-    .demo-col-badge {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #1e293b;
-    }
-
-    .tap-hint-pill {
-      font-size: 10.5px;
-      font-weight: 600;
-      color: #64748b;
-      background: #e2e8f0;
-      padding: 2px 8px;
-      border-radius: 99px;
-    }
-
-    .demo-phone-stage {
-      width: 300px;
-      height: 614px;
-      position: relative;
-      margin: 0 auto;
-    }
-
-    .demo-bottom-hint {
-      margin-top: 12px;
-      font-size: 11.5px;
-      color: #64748b;
+      border-radius: 16px;
+      padding: 24px 26px;
       text-align: center;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 6px 12px;
-      width: 100%;
-      box-sizing: border-box;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    /* Right Column: Hero Center-of-Attention CTA Card */
-    .step1-cta-col {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .hero-cta-card {
-      background: #ffffff;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 18px;
-      padding: 24px 22px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      box-sizing: border-box;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-cta-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #059669 100%);
-    }
-
-    .cta-top-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    .badge-deal.gold-badge {
+    .cta-hero-badge {
+      display: inline-block;
       background: var(--gold-gradient);
       color: #ffffff;
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 700;
-      padding: 3px 9px;
+      padding: 3px 10px;
       border-radius: 6px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      margin-bottom: 6px;
     }
 
-    .zero-sub-pill {
-      font-size: 11px;
-      font-weight: 600;
-      color: #059669;
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      padding: 2.5px 8px;
-      border-radius: 99px;
-    }
-
-    .hero-pricing-header {
-      margin-bottom: 12px;
-      text-align: left;
-    }
-
-    .price-tag-large {
-      font-size: 38px;
+    .cta-hero-price {
+      font-size: 40px;
       font-weight: 800;
-      color: #0f172a;
+      color: #1d1d1f;
       letter-spacing: -0.03em;
       line-height: 1.1;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      flex-wrap: wrap;
+      margin: 4px 0 2px;
     }
 
-    .price-tag-large .price-period {
+    .cta-hero-price .price-period {
       font-size: 14px;
       font-weight: 500;
-      color: #64748b;
+      color: #86868b;
       letter-spacing: normal;
     }
 
-    .price-sub-text {
+    .cta-hero-sub {
       font-size: 12.5px;
-      color: #64748b;
-      line-height: 1.45;
-      margin: 0;
+      color: #86868b;
+      margin-bottom: 16px;
     }
 
-    /* CENTER OF ATTENTION CTA BUTTON */
-    .cta-action-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      margin: 12px 0 16px 0;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 16px 14px;
-    }
-
-    .btn-unlock-lifetime {
+    .btn-unlock-hero {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
       color: #ffffff !important;
       border: none !important;
       border-radius: 12px !important;
       font-size: 16px !important;
       font-weight: 700 !important;
-      padding: 15px 22px !important;
+      padding: 14px 24px !important;
       width: 100% !important;
+      max-width: 380px !important;
       cursor: pointer !important;
-      display: flex !important;
+      display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
       gap: 7px !important;
-      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4) !important;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
       transition: all 0.2s ease !important;
-      position: relative;
+      margin-bottom: 10px;
     }
 
-    .btn-unlock-lifetime:hover {
+    .btn-unlock-hero:hover {
       filter: brightness(1.06) !important;
       transform: translateY(-1.5px) !important;
-      box-shadow: 0 6px 22px rgba(16, 185, 129, 0.5) !important;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45) !important;
     }
 
-    .btn-unlock-lifetime:active {
-      transform: translateY(0) !important;
-    }
-
-    .trust-micro-badges {
+    .cta-trust-line {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #475569;
-      flex-wrap: wrap;
-    }
-
-    .btn-restore-login {
-      background: transparent !important;
-      border: 1px solid #cbd5e1 !important;
-      color: #475569 !important;
-      font-size: 11.5px !important;
-      font-weight: 600 !important;
-      padding: 6px 14px !important;
-      border-radius: 8px !important;
-      cursor: pointer !important;
-      transition: all 0.15s ease !important;
-    }
-
-    .btn-restore-login:hover {
-      background: #ffffff !important;
-      color: #0f172a !important;
-      border-color: #94a3b8 !important;
-    }
-
-    /* CTA Value Pillars Stack */
-    .cta-features-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 4px;
-      border-top: 1px solid #f1f5f9;
-      padding-top: 14px;
-    }
-
-    .cta-feature-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      text-align: left;
-    }
-
-    .cta-feat-icon {
-      font-size: 15px;
-      line-height: 1.2;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .cta-feat-content strong {
-      display: block;
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #0f172a;
-      line-height: 1.25;
-      margin-bottom: 2px;
-    }
-
-    .cta-feat-content span {
-      display: block;
       font-size: 11.5px;
-      color: #64748b;
-      line-height: 1.4;
+      color: #86868b;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .btn-restore-link {
+      background: none;
+      border: none;
+      color: #48484a;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    .btn-restore-link:hover {
+      color: var(--primary);
+    }
+
+    .cta-pills-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 14px;
+      border-top: 1px solid #f2f2f7;
+    }
+
+    .val-pill {
+      background: #f5f5f7;
+      color: #48484a;
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    /* Clean Demo Stage */
+    .demo-stage-wrapper {
+      max-width: 480px;
+      margin: 0 auto;
+      text-align: center;
+      padding-top: 10px;
+      border-top: 1px solid #f2f2f7;
+    }
+
+    .demo-stage-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .demo-stage-title {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #1d1d1f;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .demo-stage-phone {
+      width: 300px;
+      height: 614px;
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .demo-stage-hint {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #86868b;
+      text-align: center;
     }
 
   </style>
@@ -1821,239 +1704,188 @@
 
     <!-- STEP 1: Interactive Preview & Lifetime License -->
     <div class="step-panel active" id="panel-1">
-      <div style="text-align: center; margin-bottom: 8px;">
-        <span class="badge-deal gold-badge" style="font-size: 11px; padding: 4px 12px; margin-bottom: 8px; display: inline-block;">Step 1 of 3 • Lifetime License</span>
-        <h2 style="font-size: 25px; margin-bottom: 4px; letter-spacing: -0.02em;">Experience PickList & Unlock Lifetime Access</h2>
-        <p class="panel-desc" style="max-width: 620px; margin: 0 auto; font-size: 13.5px; color: #64748b;">
-          Test the interactive checklist below to see sold orders turn into a sequenced walking list, then unlock lifetime access to start pulling orders 3x faster.
+      <!-- CENTER OF ATTENTION: Primary Purchase & CTA Card -->
+      <div class="cta-hero-card">
+        <span class="cta-hero-badge">⚡ Lifetime License</span>
+        
+        <div class="cta-hero-price" id="displayPrice">
+          $29.99 <span class="price-period">one-time flat fee</span>
+        </div>
+        <p class="cta-hero-sub">
+          Pay once. Unlimited syncs forever across all your devices with zero monthly fees.
         </p>
+
+        <!-- Big Emerald Centerpiece CTA Button -->
+        <div>
+          <button class="btn-primary btn-unlock-hero" id="btnExtPayCheckout">
+            <span>⚡ Unlock Lifetime Access</span>
+            <span id="btnPriceTag">($29.99)</span>
+          </button>
+        </div>
+
+        <div class="cta-trust-line">
+          <span>🔒 Secure Stripe Checkout</span>
+          <span>•</span>
+          <span>🛡️ 14-Day Money-Back Guarantee</span>
+          <span>•</span>
+          <button type="button" class="btn-restore-link" id="btnExtPayLogin">Already paid? Restore / Log In</button>
+        </div>
+
+        <!-- Dynamic Success Banner that shows once paid -->
+        <div id="paymentSuccessBox" style="display: none; background: #ecfdf5; border: 1.5px solid #10b981; border-radius: 12px; padding: 12px; margin-bottom: 12px; text-align: center;">
+          <div style="font-size: 15px; font-weight: 700; color: #065f46; margin-bottom: 2px;">🎉 Lifetime Access Active!</div>
+          <div style="font-size: 12.5px; color: #047857; margin-bottom: 8px;" id="paidUserEmailText">Your license is unlocked.</div>
+          <button class="btn-primary" id="btnContinueToStep2" style="background: var(--primary-gradient); font-size: 13px; padding: 8px 18px;">
+            Continue to Step 2: Connect Nifty →
+          </button>
+        </div>
+
+        <div id="paymentStatusBox" style="display: none;"></div>
+
+        <!-- Value Highlights Pills -->
+        <div class="cta-pills-row">
+          <span class="val-pill">⏱️ Saves 30–60 Min Daily</span>
+          <span class="val-pill">🔢 Lowest SKU First Route</span>
+          <span class="val-pill">📱 Apple Reminders & Google Tasks</span>
+        </div>
       </div>
 
-      <!-- Hero Two-Column Showcase Grid -->
-      <div class="step1-hero-grid">
-        <!-- LEFT COLUMN: Interactive Phone Demo -->
-        <div class="step1-demo-col">
-          <div class="demo-col-header">
-            <div class="demo-col-badge">
-              <span>📱 Interactive Live Preview</span>
-              <span class="tap-hint-pill">Tap items to test!</span>
-            </div>
-
-            <!-- Segmented Demo Selector -->
-            <div class="segmented-control" style="width: 100%; max-width: 280px; margin: 0;">
-              <button type="button" class="segment-btn active" id="tabDemoApple" data-switch-demo="apple" onclick="switchDemo('apple')">
-                <span class="btn-icon">🍎</span>
-                <span>Apple Reminders</span>
-              </button>
-              <button type="button" class="segment-btn" id="tabDemoGoogle" data-switch-demo="google" onclick="switchDemo('google')">
-                <span class="btn-icon">📋</span>
-                <span>Google Tasks</span>
-              </button>
-            </div>
+      <!-- INTERACTIVE LIVE PREVIEW (Spacious & Clean) -->
+      <div class="demo-stage-wrapper">
+        <div class="demo-stage-header">
+          <div class="demo-stage-title">
+            <span>📱 Interactive Live Preview</span>
           </div>
 
-          <!-- Phone Viewport Stage -->
-          <div class="demo-phone-stage">
-            <!-- Apple Reminders Demo Screen -->
-            <div id="demoAppleContainer">
-              <div class="iphone-device-wrapper">
-                <div class="iphone-mockup-viewport">
-                  <img src="images/iphone-mockup-reminders.png?v=2" alt="iPhone Apple Reminders Pull List Widget" class="iphone-mockup-bg">
-
-                  <!-- Pixel-Aligned Interactive Reminders Widget Overlay -->
-                  <div class="iphone-widget-interactive-overlay checklist-mock" id="checklist-mock-apple">
-                    <div class="widget-live-header">
-                      <div class="widget-header-left">
-                        <span class="widget-count-number" id="widget-count-apple">6</span>
-                        <span class="widget-title-text">Daily Pull List</span>
-                      </div>
-                      <div class="widget-header-right">
-                        <span class="mock-counter-pill" id="mock-counter-apple">6 left</span>
-                        <button class="btn-mock-reset" id="btn-reset-apple" data-platform="apple" title="Reset checklist">↺</button>
-                      </div>
-                    </div>
-
-                    <div class="widget-live-list">
-                      <div class="mock-item" data-platform="apple">
-                        <div class="mock-circle">✓</div>
-                        <span class="mock-sku">11053</span>
-                        <span class="mock-text">Metallica Tour T-Shirt (eBay • $45)</span>
-                      </div>
-                      <div class="mock-item" data-platform="apple">
-                        <div class="mock-circle">✓</div>
-                        <span class="mock-sku">10999</span>
-                        <span class="mock-text">Patagonia Fjord Flannel (Posh • $58)</span>
-                      </div>
-                      <div class="mock-item" data-platform="apple">
-                        <div class="mock-circle">✓</div>
-                        <span class="mock-sku">10842</span>
-                        <span class="mock-text">Carhartt Detroit Jacket (Whatnot • $135)</span>
-                      </div>
-                      <div class="mock-item" data-platform="apple">
-                        <div class="mock-circle">✓</div>
-                        <span class="mock-sku" style="background: rgba(52, 199, 89, 0.15); color: #15803d;">B-104</span>
-                        <span class="mock-text">North Face Goretex (Depop • $110)</span>
-                      </div>
-                      <div class="mock-item" data-platform="apple">
-                        <div class="mock-circle">✓</div>
-                        <span class="mock-sku" style="background: rgba(255, 149, 0, 0.15); color: #b45309;">Coats</span>
-                        <span class="mock-text">Handmade Wool Sweater (Etsy • $54)</span>
-                      </div>
-                      <div class="mock-item" data-platform="apple">
-                        <div class="mock-circle">✓</div>
-                        <span class="mock-sku" style="background: rgba(142, 142, 147, 0.15); color: #48484a;">No SKU</span>
-                        <span class="mock-text">Vintage Levi's 501 (Mercari • $38)</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Google Tasks Demo Screen -->
-            <div id="demoGoogleContainer" style="display: none;">
-              <div class="iphone-device-wrapper">
-                <div class="iphone-mockup-viewport">
-                  <img src="images/iphone-mockup-tasks.png?v=2" alt="iPhone Google Tasks Daily Pull List" class="iphone-mockup-bg">
-
-                  <!-- Pixel-Aligned Interactive Google Tasks Overlay -->
-                  <div class="iphone-tasks-interactive-overlay checklist-mock" id="checklist-mock-google">
-                    <div class="tasks-live-header">
-                      <div class="tasks-header-title">
-                        <span>📋 Daily Pull List</span>
-                      </div>
-                      <div style="display: flex; align-items: center; gap: 5px;">
-                        <span class="mock-counter-pill google" id="mock-counter-google">6 left</span>
-                        <button class="btn-mock-reset" id="btn-reset-google" data-platform="google" title="Reset checklist">↺</button>
-                      </div>
-                    </div>
-
-                    <div class="tasks-live-list">
-                      <div class="mock-item" data-platform="google">
-                        <div class="mock-circle google">✓</div>
-                        <span class="mock-sku">11053</span>
-                        <span class="mock-text">Metallica Tour T-Shirt (eBay • $45)</span>
-                      </div>
-                      <div class="mock-item" data-platform="google">
-                        <div class="mock-circle google">✓</div>
-                        <span class="mock-sku">10999</span>
-                        <span class="mock-text">Patagonia Fjord Flannel (Posh • $58)</span>
-                      </div>
-                      <div class="mock-item" data-platform="google">
-                        <div class="mock-circle google">✓</div>
-                        <span class="mock-sku">10842</span>
-                        <span class="mock-text">Carhartt Detroit Jacket (Whatnot • $135)</span>
-                      </div>
-                      <div class="mock-item" data-platform="google">
-                        <div class="mock-circle google">✓</div>
-                        <span class="mock-sku" style="background: rgba(52, 199, 89, 0.15); color: #15803d;">B-104</span>
-                        <span class="mock-text">North Face Goretex (Depop • $110)</span>
-                      </div>
-                      <div class="mock-item" data-platform="google">
-                        <div class="mock-circle google">✓</div>
-                        <span class="mock-sku" style="background: rgba(255, 149, 0, 0.15); color: #b45309;">Coats</span>
-                        <span class="mock-text">Handmade Wool Sweater (Etsy • $54)</span>
-                      </div>
-                      <div class="mock-item" data-platform="google">
-                        <div class="mock-circle google">✓</div>
-                        <span class="mock-sku" style="background: rgba(142, 142, 147, 0.15); color: #48484a;">No SKU</span>
-                        <span class="mock-text">Vintage Levi's 501 (Mercari • $38)</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="demo-bottom-hint">
-            👈 <strong>Interactive Preview:</strong> Tap any item on screen to simulate live pulling!
+          <!-- Segmented Demo Selector -->
+          <div class="segmented-control" style="max-width: 280px; margin: 0;">
+            <button type="button" class="segment-btn active" id="tabDemoApple" data-switch-demo="apple" onclick="switchDemo('apple')">
+              <span class="btn-icon">🍎</span>
+              <span>Apple Reminders</span>
+            </button>
+            <button type="button" class="segment-btn" id="tabDemoGoogle" data-switch-demo="google" onclick="switchDemo('google')">
+              <span class="btn-icon">📋</span>
+              <span>Google Tasks</span>
+            </button>
           </div>
         </div>
 
-        <!-- RIGHT COLUMN: Center of Attention CTA & Value Card -->
-        <div class="step1-cta-col">
-          <div class="hero-cta-card">
-            <div class="cta-top-row">
-              <span class="badge-deal gold-badge">⚡ Lifetime License</span>
-              <span class="zero-sub-pill">Zero Monthly Subscriptions</span>
-            </div>
+        <!-- Phone Silhouette Viewport -->
+        <div class="demo-stage-phone">
+          <!-- Apple Reminders Demo Screen -->
+          <div id="demoAppleContainer">
+            <div class="iphone-device-wrapper">
+              <div class="iphone-mockup-viewport">
+                <img src="images/iphone-mockup-reminders.png?v=2" alt="iPhone Apple Reminders Pull List Widget" class="iphone-mockup-bg">
 
-            <div class="hero-pricing-header">
-              <div class="price-tag-large" id="displayPrice">
-                $29.99 <span class="price-period">one-time flat fee</span>
-              </div>
-              <p class="price-sub-text">
-                Pay once via secure Stripe checkout. Use on all your devices forever with unlimited syncs and zero renewals.
-              </p>
-            </div>
+                <!-- Interactive Reminders Widget Overlay -->
+                <div class="iphone-widget-interactive-overlay checklist-mock" id="checklist-mock-apple">
+                  <div class="widget-live-header">
+                    <div class="widget-header-left">
+                      <span class="widget-count-number" id="widget-count-apple">6</span>
+                      <span class="widget-title-text">Daily Pull List</span>
+                    </div>
+                    <div class="widget-header-right">
+                      <span class="mock-counter-pill" id="mock-counter-apple">6 left</span>
+                      <button class="btn-mock-reset" id="btn-reset-apple" data-platform="apple" title="Reset checklist">↺</button>
+                    </div>
+                  </div>
 
-            <!-- PRIMARY CENTER OF ATTENTION CTA BUTTON -->
-            <div class="cta-action-group">
-              <button class="btn-primary btn-unlock-lifetime" id="btnExtPayCheckout">
-                <span>⚡ Unlock Lifetime Access</span>
-                <span id="btnPriceTag">($29.99)</span>
-              </button>
-
-              <div class="trust-micro-badges">
-                <span>🔒 Secure Stripe Checkout</span>
-                <span>•</span>
-                <span>🛡️ 14-Day Guarantee</span>
-              </div>
-
-              <button class="btn-secondary btn-restore-login" id="btnExtPayLogin">
-                Already paid? Restore / Log In →
-              </button>
-
-              <div id="paymentStatusBox" style="font-size: 11px; color: #64748b; font-weight: 500; text-align: center; margin-top: 2px;">
-                Instant automatic license activation upon payment.
-              </div>
-            </div>
-
-            <!-- Dynamic Success Banner that shows once paid -->
-            <div id="paymentSuccessBox" style="display: none; background: #ecfdf5; border: 1.5px solid #10b981; border-radius: 12px; padding: 14px; margin-bottom: 14px; text-align: center;">
-              <div style="font-size: 15px; font-weight: 700; color: #065f46; margin-bottom: 3px;">🎉 Lifetime Access Active!</div>
-              <div style="font-size: 12.5px; color: #047857; margin-bottom: 10px;" id="paidUserEmailText">Your license is unlocked.</div>
-              <button class="btn-primary" id="btnContinueToStep2" style="background: var(--primary-gradient); font-size: 13.5px; padding: 9px 20px;">
-                Continue to Step 2: Connect Nifty →
-              </button>
-            </div>
-
-            <!-- Value Pillars Stack -->
-            <div class="cta-features-stack">
-              <div class="cta-feature-row">
-                <div class="cta-feat-icon">⏱️</div>
-                <div class="cta-feat-content">
-                  <strong>Save 30–60 Min Every Morning</strong>
-                  <span>Walk your inventory in one continuous route. Never pace back and forth looking for items.</span>
-                </div>
-              </div>
-
-              <div class="cta-feature-row">
-                <div class="cta-feat-icon">🔢</div>
-                <div class="cta-feat-content">
-                  <strong>Smart SKU & Location Sequencing</strong>
-                  <span>Numeric SKUs sort ascending first, followed by designated location bins and unlocated items.</span>
-                </div>
-              </div>
-
-              <div class="cta-feature-row">
-                <div class="cta-feat-icon">📱</div>
-                <div class="cta-feat-content">
-                  <strong>Apple Reminders & Google Tasks Cloud Sync</strong>
-                  <span>Pull orders straight from your iPhone home screen widget, Android phone, iPad, or desktop.</span>
-                </div>
-              </div>
-
-              <div class="cta-feature-row">
-                <div class="cta-feat-icon">🛡️</div>
-                <div class="cta-feat-content">
-                  <strong>100% Risk-Free 14-Day Guarantee</strong>
-                  <span>If it doesn't instantly streamline your fulfillment workflow, receive a full refund.</span>
+                  <div class="widget-live-list">
+                    <div class="mock-item" data-platform="apple">
+                      <div class="mock-circle">✓</div>
+                      <span class="mock-sku">11053</span>
+                      <span class="mock-text">Metallica Tour T-Shirt (eBay • $45)</span>
+                    </div>
+                    <div class="mock-item" data-platform="apple">
+                      <div class="mock-circle">✓</div>
+                      <span class="mock-sku">10999</span>
+                      <span class="mock-text">Patagonia Fjord Flannel (Posh • $58)</span>
+                    </div>
+                    <div class="mock-item" data-platform="apple">
+                      <div class="mock-circle">✓</div>
+                      <span class="mock-sku">10842</span>
+                      <span class="mock-text">Carhartt Detroit Jacket (Whatnot • $135)</span>
+                    </div>
+                    <div class="mock-item" data-platform="apple">
+                      <div class="mock-circle">✓</div>
+                      <span class="mock-sku" style="background: rgba(52, 199, 89, 0.15); color: #15803d;">B-104</span>
+                      <span class="mock-text">North Face Goretex (Depop • $110)</span>
+                    </div>
+                    <div class="mock-item" data-platform="apple">
+                      <div class="mock-circle">✓</div>
+                      <span class="mock-sku" style="background: rgba(255, 149, 0, 0.15); color: #b45309;">Coats</span>
+                      <span class="mock-text">Handmade Wool Sweater (Etsy • $54)</span>
+                    </div>
+                    <div class="mock-item" data-platform="apple">
+                      <div class="mock-circle">✓</div>
+                      <span class="mock-sku" style="background: rgba(142, 142, 147, 0.15); color: #48484a;">No SKU</span>
+                      <span class="mock-text">Vintage Levi's 501 (Mercari • $38)</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- Google Tasks Demo Screen -->
+          <div id="demoGoogleContainer" style="display: none;">
+            <div class="iphone-device-wrapper">
+              <div class="iphone-mockup-viewport">
+                <img src="images/iphone-mockup-tasks.png?v=2" alt="iPhone Google Tasks Daily Pull List" class="iphone-mockup-bg">
+
+                <!-- Interactive Google Tasks Overlay -->
+                <div class="iphone-tasks-interactive-overlay checklist-mock" id="checklist-mock-google">
+                  <div class="tasks-live-header">
+                    <div class="tasks-header-title">
+                      <span>📋 Daily Pull List</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                      <span class="mock-counter-pill google" id="mock-counter-google">6 left</span>
+                      <button class="btn-mock-reset" id="btn-reset-google" data-platform="google" title="Reset checklist">↺</button>
+                    </div>
+                  </div>
+
+                  <div class="tasks-live-list">
+                    <div class="mock-item" data-platform="google">
+                      <div class="mock-circle google">✓</div>
+                      <span class="mock-sku">11053</span>
+                      <span class="mock-text">Metallica Tour T-Shirt (eBay • $45)</span>
+                    </div>
+                    <div class="mock-item" data-platform="google">
+                      <div class="mock-circle google">✓</div>
+                      <span class="mock-sku">10999</span>
+                      <span class="mock-text">Patagonia Fjord Flannel (Posh • $58)</span>
+                    </div>
+                    <div class="mock-item" data-platform="google">
+                      <div class="mock-circle google">✓</div>
+                      <span class="mock-sku">10842</span>
+                      <span class="mock-text">Carhartt Detroit Jacket (Whatnot • $135)</span>
+                    </div>
+                    <div class="mock-item" data-platform="google">
+                      <div class="mock-circle google">✓</div>
+                      <span class="mock-sku" style="background: rgba(52, 199, 89, 0.15); color: #15803d;">B-104</span>
+                      <span class="mock-text">North Face Goretex (Depop • $110)</span>
+                    </div>
+                    <div class="mock-item" data-platform="google">
+                      <div class="mock-circle google">✓</div>
+                      <span class="mock-sku" style="background: rgba(255, 149, 0, 0.15); color: #b45309;">Coats</span>
+                      <span class="mock-text">Handmade Wool Sweater (Etsy • $54)</span>
+                    </div>
+                    <div class="mock-item" data-platform="google">
+                      <div class="mock-circle google">✓</div>
+                      <span class="mock-sku" style="background: rgba(142, 142, 147, 0.15); color: #48484a;">No SKU</span>
+                      <span class="mock-text">Vintage Levi's 501 (Mercari • $38)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-stage-hint">
+          👈 Tap any item on the iPhone screen to test checking it off!
         </div>
       </div>
     </div>
