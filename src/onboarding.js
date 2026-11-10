@@ -591,7 +591,9 @@ echo "=================================================================="
 
   function applyPaidState(user) {
     isUserPaid = true;
-    chrome.storage.local.set({ isPaid: true, userEmail: user?.email || "" });
+    if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.set({ isPaid: true, userEmail: user?.email || "" });
+    }
 
     // Unlock Stepper Tabs
     const tab2 = document.getElementById("tab-step-2");
@@ -614,29 +616,42 @@ echo "=================================================================="
     const lockNotice = document.getElementById("stepLockNotice");
     if (lockNotice) lockNotice.style.display = "none";
 
+    const btnContinueToStep2 = document.getElementById("btnContinueToStep2");
+    const checkoutTrustLine = document.getElementById("checkoutTrustLine");
+    const checkoutRestoreRow = document.getElementById("checkoutRestoreRow");
+
     if (btnExtPayCheckout) {
-      btnExtPayCheckout.textContent = "✓ Lifetime Access Active";
-      btnExtPayCheckout.disabled = true;
-      btnExtPayCheckout.style.background = "#059669";
-      btnExtPayCheckout.style.cursor = "default";
-      btnExtPayCheckout.style.boxShadow = "none";
+      btnExtPayCheckout.style.display = "none";
     }
+    if (btnContinueToStep2) {
+      btnContinueToStep2.style.display = "flex";
+    }
+    if (checkoutTrustLine) checkoutTrustLine.style.display = "none";
+    if (checkoutRestoreRow) checkoutRestoreRow.style.display = "none";
     if (btnExtPayLogin) btnExtPayLogin.style.display = "none";
     if (paymentStatusBox) paymentStatusBox.style.display = "none";
-    if (paidUserEmailText && user?.email) {
-      paidUserEmailText.textContent = `License verified for ${user.email}. All setup steps unlocked!`;
+
+    if (paidUserEmailText) {
+      if (user?.email) {
+        paidUserEmailText.textContent = `License verified for ${user.email}. All setup steps unlocked!`;
+      } else {
+        paidUserEmailText.textContent = "License verified. All setup steps unlocked!";
+      }
     }
     if (paymentSuccessBox) {
       paymentSuccessBox.style.display = "block";
     }
   }
+  window.applyPaidState = applyPaidState;
 
   // Pre-check storage cache for instant rendering
-  chrome.storage.local.get(["isPaid", "userEmail"], (res) => {
-    if (res && res.isPaid) {
-      applyPaidState({ email: res.userEmail || "" });
-    }
-  });
+  if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+    chrome.storage.local.get(["isPaid", "userEmail"], (res) => {
+      if (res && res.isPaid) {
+        applyPaidState({ email: res.userEmail || "" });
+      }
+    });
+  }
 
   if (extpay) {
     // Check payment status with ExtensionPay server

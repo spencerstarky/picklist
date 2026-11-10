@@ -1619,6 +1619,61 @@
       box-shadow: 0 6px 22px rgba(16, 185, 129, 0.45) !important;
     }
 
+    .payment-success-card {
+      background: #ecfdf5;
+      border: 1.5px solid #10b981;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .paid-active-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #059669;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 6px;
+      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
+    }
+
+    .paid-email-text {
+      font-size: 12.5px;
+      color: #047857;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .btn-continue-step2 {
+      background: var(--primary-gradient) !important;
+      color: #ffffff !important;
+      border: none !important;
+      border-radius: 12px !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      padding: 16px 28px !important;
+      width: 100% !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .btn-continue-step2:hover {
+      filter: brightness(1.06) !important;
+      transform: translateY(-1.5px) !important;
+      box-shadow: 0 6px 22px rgba(37, 99, 235, 0.45) !important;
+    }
+
     .cta-trust-line {
       display: flex;
       align-items: center;
@@ -1869,31 +1924,35 @@
               Pay once, use forever. Live walking pull lists sequenced on your phone with zero monthly subscriptions.
             </p>
 
-            <!-- Big Centerpiece CTA Button -->
+            <!-- Dynamic Success Card that shows once paid -->
+            <div id="paymentSuccessBox" class="payment-success-card" style="display: none;">
+              <div class="paid-active-badge">
+                <span class="paid-badge-icon">✓</span> Lifetime Access Active
+              </div>
+              <div class="paid-email-text" id="paidUserEmailText">
+                License verified. All setup steps unlocked!
+              </div>
+            </div>
+
+            <!-- Big Centerpiece Action Buttons -->
             <div class="cta-btn-wrapper">
               <button class="btn-primary btn-unlock-spacious" id="btnExtPayCheckout">
                 <span>⚡ Unlock Lifetime Access</span>
                 <span id="btnPriceTag">($29.99)</span>
               </button>
+              <button class="btn-primary btn-continue-step2" id="btnContinueToStep2" style="display: none;">
+                <span>Continue to Step 2: Connect to Nifty →</span>
+              </button>
             </div>
 
-            <div class="cta-trust-line">
+            <div class="cta-trust-line" id="checkoutTrustLine">
               <span>🔒 Secure Stripe Checkout</span>
               <span>•</span>
               <span>🛡️ 14-Day Money-Back Guarantee</span>
             </div>
 
-            <div class="cta-restore-row">
+            <div class="cta-restore-row" id="checkoutRestoreRow">
               <button type="button" class="btn-restore-link" id="btnExtPayLogin">Already paid? Restore / Log In</button>
-            </div>
-
-            <!-- Dynamic Success Banner that shows once paid -->
-            <div id="paymentSuccessBox" style="display: none; background: #ecfdf5; border: 1.5px solid #10b981; border-radius: 12px; padding: 14px; margin-bottom: 16px; text-align: center;">
-              <div style="font-size: 15px; font-weight: 700; color: #065f46; margin-bottom: 2px;">🎉 Lifetime Access Active!</div>
-              <div style="font-size: 12.5px; color: #047857; margin-bottom: 8px;" id="paidUserEmailText">Your license is unlocked.</div>
-              <button class="btn-primary" id="btnContinueToStep2" style="background: var(--primary-gradient); font-size: 13px; padding: 8px 18px;">
-                Continue to Step 2: Connect Nifty →
-              </button>
             </div>
 
             <div id="paymentStatusBox" style="display: none;"></div>
