@@ -1479,6 +1479,74 @@
       font-weight: 500;
     }
 
+    /* Nifty Partner Deal Banner */
+    .partner-deal-banner {
+      background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+      border: 1.5px solid #a7f3d0;
+      border-radius: 16px;
+      padding: 24px 30px;
+      margin: 36px 0 44px 0;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08);
+    }
+
+    .partner-deal-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #065f46;
+      background: #d1fae5;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .partner-deal-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .partner-deal-text h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #065f46;
+      margin-bottom: 6px;
+    }
+
+    .partner-deal-text p {
+      font-size: 13.5px;
+      color: #047857;
+      line-height: 1.5;
+      max-width: 620px;
+      margin: 0;
+    }
+
+    .btn-partner-deal {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff !important;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-partner-deal:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1.5px);
+      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+    }
+
     /* Responsive */
     @media (max-width: 860px) {
       .hero h1 { font-size: 32px; }
@@ -1867,6 +1935,21 @@
       </div>
     </section>
 
+    <!-- Nifty Affiliate Partner Banner -->
+    <section class="partner-deal-banner">
+      <div class="partner-deal-badge">Special Partner Deal</div>
+      <div class="partner-deal-content">
+        <div class="partner-deal-text">
+          <h3>New to Nifty? Cross-post & auto-delist in seconds</h3>
+          <p>Nifty automatically delists sold inventory across eBay, Poshmark, Mercari, Depop, Etsy & Whatnot the second an item sells. Sign up through our partner link for an exclusive discount.</p>
+        </div>
+        <a href="https://nifty.ai/?referral=SOURCEDANDSOLD" target="_blank" class="btn-partner-deal">
+          <span>Get Nifty (Partner Offer)</span>
+          <span>→</span>
+        </a>
+      </div>
+    </section>
+
     <!-- Sleek 3-Card Workflow Grid (Placed Directly Under Chrome Demo) -->
     <section class="workflow-cards-grid" id="how-it-works">
       <div class="workflow-card">
@@ -2182,6 +2265,7 @@
       <div style="margin-top: 10px; font-size: 12px; color: var(--text-muted); display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
         <a href="terms.html" target="_blank" style="color: var(--text-muted); text-decoration: none;">Terms of Service</a> •
         <a href="privacy.html" target="_blank" style="color: var(--text-muted); text-decoration: none;">Privacy Policy</a> •
+        <a href="https://nifty.ai/?referral=SOURCEDANDSOLD" target="_blank" style="color: #059669; text-decoration: none; font-weight: 600;">Nifty Partner Deal (SOURCEDANDSOLD) ↗</a> •
         <a href="onboarding.html" style="color: var(--accent); text-decoration: none; font-weight: 600;">Setup Wizard →</a>
       </div>
     </footer>

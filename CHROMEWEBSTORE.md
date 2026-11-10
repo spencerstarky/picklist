@@ -100,10 +100,10 @@ All sales and order data is processed in-memory and transferred directly to the 
 ## Privacy Policy & Terms
 
 **Privacy Policy URL** [REQUIRED]  
-`https://spencerreselling.com/privacy-policy` (or hosted `src/privacy.html`)
+`https://spencerstarky.github.io/picklist/privacy.html` (or `https://spencerreselling.com/privacy-policy`)
 
 **Terms of Service URL** [RECOMMENDED]  
-`https://spencerreselling.com/terms` (or hosted `src/terms.html`)
+`https://spencerstarky.github.io/picklist/terms.html` (or `https://spencerreselling.com/terms`)
 
 ## Distribution
 

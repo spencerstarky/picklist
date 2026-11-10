@@ -369,10 +369,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (res.authenticated) {
         dotNifty.className = "dot active";
         textNifty.textContent = "Nifty Active";
+        if (pillNifty) pillNifty.href = "https://app.nifty.ai";
         if (referralBox) referralBox.style.display = "none";
       } else {
         dotNifty.className = "dot error";
         textNifty.textContent = "Log In Required";
+        if (pillNifty) {
+          pillNifty.href = (typeof CONFIG !== "undefined" && CONFIG.NIFTY_REFERRAL_URL)
+            ? CONFIG.NIFTY_REFERRAL_URL
+            : "https://nifty.ai/?referral=SOURCEDANDSOLD";
+        }
         if (referralBox) referralBox.style.display = "block";
       }
 
