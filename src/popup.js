@@ -80,6 +80,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnPopupLogin) {
       btnPopupLogin.addEventListener("click", () => extpay.openLoginPage());
     }
+
+    const btnPaywallViewDemo = document.getElementById("btnPaywallViewDemo");
+    if (btnPaywallViewDemo) {
+      btnPaywallViewDemo.addEventListener("click", (e) => {
+        e.preventDefault();
+        chrome.tabs.create({ url: chrome.runtime.getURL("src/onboarding.html") });
+      });
+    }
+
     if (extpay.onPaid) {
       extpay.onPaid.addListener((user) => {
         chrome.storage.local.set({ isPaid: true, userEmail: user?.email || "" });
