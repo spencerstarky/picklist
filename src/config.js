@@ -15,7 +15,7 @@ const CONFIG = {
 
   // Google Tasks Configuration (For non-Apple users on Windows, Android & ChromeOS)
   GOOGLE_TASKS_LIST_NAME: "Daily Pull List",
-  GOOGLE_CLIENT_ID: "231991706388-ronnrq67mcfgg7e39aaj1rp7mop9obgc.apps.googleusercontent.com",
+  GOOGLE_CLIENT_ID: "231991706388-rgnnobu4pvfr6ittf978q6oadrveefsu.apps.googleusercontent.com",
 
   // Official Apple Shortcut 1-Click Install link (Zero terminal, zero Gatekeeper)
   APPLE_SHORTCUT_ICLOUD_URL: "https://www.icloud.com/shortcuts/602f704bb9c045c0a46f42fc37a9a8bf"
