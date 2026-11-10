@@ -520,114 +520,139 @@
     <span class="badge-ver">v1.0.0</span>
   </div>
 
-  <!-- Destination Platform Toggle -->
-  <div class="segmented-control" id="destControl">
-    <button type="button" class="segment-btn active" data-dest="apple" id="btnDestApple">
-      <span>🍎 Apple Reminders</span>
+  <!-- Paywall Lock Overlay (Shown to unpaid users) -->
+  <div id="paywallContainer" style="display: none; text-align: center; padding: 20px 14px; background: #ffffff; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.04); margin-bottom: 12px;">
+    <div style="display: inline-block; font-size: 10px; font-weight: 700; background: rgba(0, 113, 227, 0.1); color: var(--primary); padding: 3px 8px; border-radius: 99px; text-transform: uppercase; margin-bottom: 8px;">
+      🔒 Lifetime License Required
+    </div>
+    <div style="font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">
+      Unlock PickList
+    </div>
+    <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.45;">
+      Automate your daily pull list directly into Apple Reminders & Google Tasks.
+    </p>
+    <div style="font-size: 22px; font-weight: 800; color: #10b981; margin-bottom: 14px;">
+      $29.99 <span style="font-size: 11px; font-weight: 500; color: var(--text-muted);">one-time flat fee</span>
+    </div>
+    <button class="btn-sync" id="btnPopupCheckout" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-bottom: 8px; width: 100%; border: none; font-size: 13.5px; padding: 12px; cursor: pointer;">
+      ⚡ Unlock Lifetime Access ($29.99)
     </button>
-    <button type="button" class="segment-btn" data-dest="google" id="btnDestGoogle">
-      <span>📋 Google Tasks</span>
+    <button class="btn-secondary" id="btnPopupLogin" style="width: 100%; font-size: 11px; padding: 6px; background: transparent; border: 1px solid var(--border-color); border-radius: 7px; color: var(--text-secondary); cursor: pointer;">
+      Already paid? Restore / Log In →
     </button>
   </div>
 
-  <div class="pills-row">
-    <a href="https://app.nifty.ai" target="_blank" class="status-pill" id="pillNifty" title="Click to open Nifty.ai">
-      <span class="dot" id="dotNifty"></span>
-      <span id="textNifty">Checking Nifty...</span>
-    </a>
-    <div class="status-pill" id="pillBridge" title="Destination Status">
-      <span class="dot" id="dotBridge"></span>
-      <span id="textBridge">Checking Status...</span>
+  <div id="mainControlsContainer">
+    <!-- Destination Platform Toggle -->
+    <div class="segmented-control" id="destControl">
+      <button type="button" class="segment-btn active" data-dest="apple" id="btnDestApple">
+        <span>🍎 Apple Reminders</span>
+      </button>
+      <button type="button" class="segment-btn" data-dest="google" id="btnDestGoogle">
+        <span>📋 Google Tasks</span>
+      </button>
     </div>
-  </div>
 
-  <div class="timeframe-card">
-    <div class="timeframe-header">
-      <label for="lookbackSelect" class="timeframe-label">Pull Orders Sold In:</label>
-      <span id="timeframeBadge" class="timeframe-badge">1 Day</span>
-    </div>
-    <select id="lookbackSelect" class="timeframe-select">
-      <option value="since-last-sync" id="optSinceLastSync" style="display: none;">Since Last Sync</option>
-      <option value="24" selected>Past 24 Hours</option>
-      <option value="48">Past 48 Hours</option>
-      <option value="72">Past 72 Hours</option>
-      <option value="auto">Smart Auto (72h Mon / 24h Weekdays)</option>
-      <option value="custom">Custom Hours...</option>
-    </select>
-    <div class="custom-row" id="customRow" style="display: none; margin-top: 6px;">
-      <input type="number" id="customHoursInput" min="1" max="720" value="36">
-      <span>hours lookback</span>
-    </div>
-    <div id="lookbackPreview" class="lookback-preview">
-      <span class="preview-icon">🕒</span>
-      <span id="lookbackPreviewText" class="preview-text">Pulls orders sold since yesterday</span>
-    </div>
-  </div>
-
-  <button id="syncBtn" class="btn-sync">
-    <span id="btnIcon">⚡</span>
-    <span id="btnText">Sync Pull List Now</span>
-  </button>
-
-  <div id="statusBox" class="status-box">Ready to sync</div>
-
-  <!-- Advanced Settings Collapsible -->
-  <details class="advanced-details" id="advancedDetails">
-    <summary class="advanced-summary">
-      <span class="summary-title">⚙️ Advanced Settings</span>
-      <span class="summary-arrow">▼</span>
-    </summary>
-    <div class="advanced-content">
-
-      <div class="control-group">
-        <label for="scheduleSelect">Daily Auto-Send Time</label>
-        <select id="scheduleSelect">
-          <option value="6">6:00 AM Weekdays</option>
-          <option value="7">7:00 AM Weekdays</option>
-          <option value="8" selected>8:00 AM Weekdays (Default)</option>
-          <option value="9">9:00 AM Weekdays</option>
-          <option value="10">10:00 AM Weekdays</option>
-          <option value="12">12:00 PM Weekdays</option>
-          <option value="off">Off (Manual Only)</option>
-        </select>
-      </div>
-
-      <div class="control-group" style="margin-bottom: 0;">
-        <label for="sortSelect">Pull List Sort Strategy</label>
-        <select id="sortSelect">
-          <option value="hybrid-desc" selected>Smart Hybrid (Racks → Bins → No SKU)</option>
-          <option value="alpha">Bins & Locations (A → Z Alphabetical)</option>
-          <option value="sku-desc">Numeric Sequence (999 → 1 Descending)</option>
-          <option value="sku-asc">Numeric Sequence (1 → 999 Ascending)</option>
-          <option value="marketplace">Platform Grouped (eBay, Posh, Depop, Mercari, Etsy, Whatnot)</option>
-          <option value="recent">Order Date (Newest Sold First)</option>
-        </select>
+    <div class="pills-row">
+      <a href="https://app.nifty.ai" target="_blank" class="status-pill" id="pillNifty" title="Click to open Nifty.ai">
+        <span class="dot" id="dotNifty"></span>
+        <span id="textNifty">Checking Nifty...</span>
+      </a>
+      <div class="status-pill" id="pillBridge" title="Destination Status">
+        <span class="dot" id="dotBridge"></span>
+        <span id="textBridge">Checking Status...</span>
       </div>
     </div>
-  </details>
 
-  <!-- Nifty Referral Card -->
-  <div class="referral-box" id="referralBox">
-    <div class="referral-header">
-      <strong style="color: var(--text-main);">New to Nifty?</strong>
-      <span class="badge-partner">Partner Offer</span>
+    <div class="timeframe-card">
+      <div class="timeframe-header">
+        <label for="lookbackSelect" class="timeframe-label">Pull Orders Sold In:</label>
+        <span id="timeframeBadge" class="timeframe-badge">1 Day</span>
+      </div>
+      <select id="lookbackSelect" class="timeframe-select">
+        <option value="since-last-sync" id="optSinceLastSync" style="display: none;">Since Last Sync</option>
+        <option value="24" selected>Past 24 Hours</option>
+        <option value="48">Past 48 Hours</option>
+        <option value="72">Past 72 Hours</option>
+        <option value="auto">Smart Auto (72h Mon / 24h Weekdays)</option>
+        <option value="custom">Custom Hours...</option>
+      </select>
+      <div class="custom-row" id="customRow" style="display: none; margin-top: 6px;">
+        <input type="number" id="customHoursInput" min="1" max="720" value="36">
+        <span>hours lookback</span>
+      </div>
+      <div id="lookbackPreview" class="lookback-preview">
+        <span class="preview-icon">🕒</span>
+        <span id="lookbackPreviewText" class="preview-text">Pulls orders sold since yesterday</span>
+      </div>
     </div>
-    <p>Sign up to auto-delist across eBay, Poshmark, Mercari, Depop, Etsy & Whatnot.</p>
-    <a href="https://nifty.ai/?referral=SOURCEDANDSOLD" target="_blank" class="referral-link" id="popupReferralLink">
-      Sign up with partner link →
-    </a>
-  </div>
 
-  <div class="footer">
-    <div style="display: flex; gap: 8px; align-items: center;">
-      <a href="#" id="openGuideLink" title="View product overview, problems solved, and video walkthrough">📖 Guide</a>
-      <span style="color: var(--text-muted); font-size: 10px;">•</span>
-      <a href="#" id="openSetupLink" title="Open 3-step setup wizard">⚙️ Setup</a>
+    <button id="syncBtn" class="btn-sync">
+      <span id="btnIcon">⚡</span>
+      <span id="btnText">Sync Pull List Now</span>
+    </button>
+
+    <div id="statusBox" class="status-box">Ready to sync</div>
+
+    <!-- Advanced Settings Collapsible -->
+    <details class="advanced-details" id="advancedDetails">
+      <summary class="advanced-summary">
+        <span class="summary-title">⚙️ Advanced Settings</span>
+        <span class="summary-arrow">▼</span>
+      </summary>
+      <div class="advanced-content">
+
+        <div class="control-group">
+          <label for="scheduleSelect">Daily Auto-Send Time</label>
+          <select id="scheduleSelect">
+            <option value="6">6:00 AM Weekdays</option>
+            <option value="7">7:00 AM Weekdays</option>
+            <option value="8" selected>8:00 AM Weekdays (Default)</option>
+            <option value="9">9:00 AM Weekdays</option>
+            <option value="10">10:00 AM Weekdays</option>
+            <option value="12">12:00 PM Weekdays</option>
+            <option value="off">Off (Manual Only)</option>
+          </select>
+        </div>
+
+        <div class="control-group" style="margin-bottom: 0;">
+          <label for="sortSelect">Pull List Sort Strategy</label>
+          <select id="sortSelect">
+            <option value="hybrid-desc" selected>Smart Hybrid (Racks → Bins → No SKU)</option>
+            <option value="alpha">Bins & Locations (A → Z Alphabetical)</option>
+            <option value="sku-desc">Numeric Sequence (999 → 1 Descending)</option>
+            <option value="sku-asc">Numeric Sequence (1 → 999 Ascending)</option>
+            <option value="marketplace">Platform Grouped (eBay, Posh, Depop, Mercari, Etsy, Whatnot)</option>
+            <option value="recent">Order Date (Newest Sold First)</option>
+          </select>
+        </div>
+      </div>
+    </details>
+
+    <!-- Nifty Referral Card -->
+    <div class="referral-box" id="referralBox">
+      <div class="referral-header">
+        <strong style="color: var(--text-main);">New to Nifty?</strong>
+        <span class="badge-partner">Partner Offer</span>
+      </div>
+      <p>Sign up to auto-delist across eBay, Poshmark, Mercari, Depop, Etsy & Whatnot.</p>
+      <a href="https://nifty.ai/?referral=SOURCEDANDSOLD" target="_blank" class="referral-link" id="popupReferralLink">
+        Sign up with partner link →
+      </a>
     </div>
-    <span id="targetListLabel" style="font-size: 10px;">List: "Daily Pull List"</span>
+
+    <div class="footer">
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <a href="#" id="openGuideLink" title="View product overview, problems solved, and video walkthrough">📖 Guide</a>
+        <span style="color: var(--text-muted); font-size: 10px;">•</span>
+        <a href="#" id="openSetupLink" title="Open 3-step setup wizard">⚙️ Setup</a>
+      </div>
+      <span id="targetListLabel" style="font-size: 10px;">List: "Daily Pull List"</span>
+    </div>
   </div>
 
   <script src="config.js"></script>
+  <script src="ExtPay.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

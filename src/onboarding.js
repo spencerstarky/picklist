@@ -4,7 +4,19 @@
  * Supports Apple Reminders & Google Tasks destinations
  */
 
+let isUserPaid = false;
+
 function goToStep(stepNum) {
+  const stepLockNotice = document.getElementById("stepLockNotice");
+  if (!isUserPaid && stepNum > 1) {
+    if (stepLockNotice) {
+      stepLockNotice.style.display = "block";
+      stepLockNotice.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    return;
+  }
+  if (stepLockNotice) stepLockNotice.style.display = "none";
+
   document.querySelectorAll(".step-tab").forEach((tab) => {
     tab.classList.toggle("active", parseInt(tab.dataset.step, 10) === stepNum);
   });
@@ -521,13 +533,36 @@ echo "=================================================================="
     btnTestGoogle.addEventListener("click", () => checkGoogleTasks(true));
   }
 
-  // Step 4: ExtensionPay Integration
+  // Demo Platform Switcher (Step 1)
+  const tabDemoApple = document.getElementById("tabDemoApple");
+  const tabDemoGoogle = document.getElementById("tabDemoGoogle");
+  const demoAppleContainer = document.getElementById("demoAppleContainer");
+  const demoGoogleContainer = document.getElementById("demoGoogleContainer");
+
+  function switchDemo(platform) {
+    if (tabDemoApple) tabDemoApple.classList.toggle("active", platform === "apple");
+    if (tabDemoGoogle) tabDemoGoogle.classList.toggle("active", platform === "google");
+    if (demoAppleContainer) demoAppleContainer.style.display = platform === "apple" ? "block" : "none";
+    if (demoGoogleContainer) demoGoogleContainer.style.display = platform === "google" ? "block" : "none";
+  }
+
+  if (tabDemoApple) tabDemoApple.addEventListener("click", () => switchDemo("apple"));
+  if (tabDemoGoogle) tabDemoGoogle.addEventListener("click", () => switchDemo("google"));
+
+  const btnContinueToStep2 = document.getElementById("btnContinueToStep2");
+  if (btnContinueToStep2) {
+    btnContinueToStep2.addEventListener("click", () => goToStep(2));
+  }
+
+  // Step 1: ExtensionPay Lifetime Access Integration
   const extpayId = (typeof CONFIG !== "undefined" && CONFIG.EXTPAY_ID) ? CONFIG.EXTPAY_ID : "nifty-pull-list";
   const extpay = typeof ExtPay !== "undefined" ? ExtPay(extpayId) : null;
 
   const btnExtPayCheckout = document.getElementById("btnExtPayCheckout");
   const btnExtPayLogin = document.getElementById("btnExtPayLogin");
   const paymentStatusBox = document.getElementById("paymentStatusBox");
+  const paymentSuccessBox = document.getElementById("paymentSuccessBox");
+  const paidUserEmailText = document.getElementById("paidUserEmailText");
   const displayPrice = document.getElementById("displayPrice");
   const btnPriceTag = document.getElementById("btnPriceTag");
 
@@ -535,19 +570,60 @@ echo "=================================================================="
   if (displayPrice) displayPrice.innerHTML = `${priceText} <span style="font-size: 18px; font-weight: 500; color: var(--text-muted);">one-time flat fee</span>`;
   if (btnPriceTag) btnPriceTag.textContent = `(${priceText})`;
 
+  function applyPaidState(user) {
+    isUserPaid = true;
+    chrome.storage.local.set({ isPaid: true, userEmail: user?.email || "" });
+
+    // Unlock Stepper Tabs
+    const tab2 = document.getElementById("tab-step-2");
+    const tab3 = document.getElementById("tab-step-3");
+    if (tab2) {
+      tab2.classList.remove("locked");
+      tab2.classList.add("paid-unlocked");
+    }
+    if (tab3) {
+      tab3.classList.remove("locked");
+      tab3.classList.add("paid-unlocked");
+    }
+    const num1 = document.getElementById("step-num-1");
+    if (num1) num1.innerHTML = `<span style="color:#10b981; font-weight:700;">✓</span> Step 1`;
+    const num2 = document.getElementById("step-num-2");
+    if (num2) num2.textContent = "Step 2";
+    const num3 = document.getElementById("step-num-3");
+    if (num3) num3.textContent = "Step 3";
+
+    const lockNotice = document.getElementById("stepLockNotice");
+    if (lockNotice) lockNotice.style.display = "none";
+
+    if (btnExtPayCheckout) {
+      btnExtPayCheckout.textContent = "✓ Lifetime Access Active";
+      btnExtPayCheckout.disabled = true;
+      btnExtPayCheckout.style.background = "#059669";
+      btnExtPayCheckout.style.cursor = "default";
+      btnExtPayCheckout.style.boxShadow = "none";
+    }
+    if (btnExtPayLogin) btnExtPayLogin.style.display = "none";
+    if (paymentStatusBox) paymentStatusBox.style.display = "none";
+    if (paidUserEmailText && user?.email) {
+      paidUserEmailText.textContent = `License verified for ${user.email}. All setup steps unlocked!`;
+    }
+    if (paymentSuccessBox) {
+      paymentSuccessBox.style.display = "block";
+    }
+  }
+
+  // Pre-check storage cache for instant rendering
+  chrome.storage.local.get(["isPaid", "userEmail"], (res) => {
+    if (res && res.isPaid) {
+      applyPaidState({ email: res.userEmail || "" });
+    }
+  });
+
   if (extpay) {
-    // Check payment status
+    // Check payment status with ExtensionPay server
     extpay.getUser().then((user) => {
       if (user && user.paid) {
-        if (paymentStatusBox) {
-          paymentStatusBox.textContent = `✓ Lifetime Access Active (${user.email || "Paid User"})`;
-          paymentStatusBox.style.color = "#10b981";
-        }
-        if (btnExtPayCheckout) {
-          btnExtPayCheckout.textContent = "✓ Lifetime Access Active";
-          btnExtPayCheckout.disabled = true;
-          btnExtPayCheckout.style.background = "#059669";
-        }
+        applyPaidState(user);
       }
     }).catch((err) => {
       console.log("[ExtPay] User check:", err);
@@ -567,14 +643,9 @@ echo "=================================================================="
 
     if (extpay.onPaid) {
       extpay.onPaid.addListener((user) => {
-        if (paymentStatusBox) {
-          paymentStatusBox.textContent = `🎉 Payment confirmed for ${user.email}! Lifetime access unlocked.`;
-          paymentStatusBox.style.color = "#10b981";
-        }
-        if (btnExtPayCheckout) {
-          btnExtPayCheckout.textContent = "✓ Lifetime Access Active";
-          btnExtPayCheckout.disabled = true;
-        }
+        applyPaidState(user);
+        // Automatically advance to Step 2: Connect Nifty
+        setTimeout(() => goToStep(2), 1500);
       });
     }
   }

@@ -1462,6 +1462,42 @@
       color: var(--primary);
       text-decoration: underline;
     }
+  
+    /* Stepper Lock & Unlock */
+    .step-tab.locked {
+      opacity: 0.6;
+      background: #fafafa !important;
+      cursor: not-allowed !important;
+    }
+    .step-tab.locked:hover {
+      border-color: var(--border) !important;
+      background: #fafafa !important;
+    }
+    .badge-lock-icon {
+      font-size: 11px;
+      margin-right: 3px;
+    }
+    .step-lock-notice {
+      display: none;
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+      color: #92400e;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      margin-bottom: 20px;
+      text-align: center;
+      animation: fadeIn 0.2s ease;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08);
+    }
+    .step-demo-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
   </style>
 </head>
 <body>
@@ -1484,24 +1520,310 @@
     </div>
 
     <!-- Stepper Navigation -->
+    <div id="stepLockNotice" class="step-lock-notice">
+      🔒 <strong>License Required:</strong> Please unlock Lifetime Access ($29.99) or restore your existing purchase on Step 1 to continue setup.
+    </div>
+
     <div class="steps-nav">
-      <div class="step-tab active" data-step="1">
-        <div class="step-num">Step 1</div>
-        <div class="step-title">Connect Nifty</div>
+      <div class="step-tab active" data-step="1" id="tab-step-1">
+        <div class="step-num" id="step-num-1">Step 1</div>
+        <div class="step-title" id="step-title-1">Preview & Unlock</div>
       </div>
-      <div class="step-tab" data-step="2">
-        <div class="step-num">Step 2</div>
-        <div class="step-title">Reminders & Tasks</div>
+      <div class="step-tab locked" data-step="2" id="tab-step-2">
+        <div class="step-num" id="step-num-2"><span class="badge-lock-icon">🔒</span>Step 2</div>
+        <div class="step-title" id="step-title-2">Connect Nifty</div>
       </div>
-      <div class="step-tab" data-step="3">
-        <div class="step-num">Step 3</div>
-        <div class="step-title">Lifetime Access</div>
+      <div class="step-tab locked" data-step="3" id="tab-step-3">
+        <div class="step-num" id="step-num-3"><span class="badge-lock-icon">🔒</span>Step 3</div>
+        <div class="step-title" id="step-title-3">Task App Setup</div>
       </div>
     </div>
 
-    <!-- STEP 1: Connect Nifty & Referral -->
+
+    <!-- STEP 1: Interactive Preview & Lifetime License -->
     <div class="step-panel active" id="panel-1">
-      <h2>Step 1: Authenticate with Nifty</h2>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <span class="badge-deal" style="font-size: 11px; padding: 4px 12px; margin-bottom: 10px; display: inline-block;">Step 1 of 3</span>
+        <h2 style="font-size: 26px; margin-bottom: 6px;">Experience PickList & Unlock Lifetime Access</h2>
+        <p class="panel-desc" style="max-width: 580px; margin: 0 auto; font-size: 14.5px;">
+          Try the interactive live demo below to see how sold orders transform into a sequenced walking pull list on your phone.
+        </p>
+      </div>
+
+      <!-- Live Interactive Demo Box -->
+      <div class="step-demo-box">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+          <div style="font-size: 13.5px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 6px;">
+            <span>📱 Interactive Live Preview</span>
+            <span style="font-size: 11px; font-weight: 500; color: #64748b; background: #e2e8f0; padding: 2px 8px; border-radius: 99px;">Tap items to test!</span>
+          </div>
+
+          <!-- Segmented Demo Selector -->
+          <div class="segmented-control" style="max-width: 280px; margin: 0;">
+            <button type="button" class="segment-btn active" id="tabDemoApple" data-switch-demo="apple">
+              <span class="btn-icon">🍎</span>
+              <span>Apple Reminders</span>
+            </button>
+            <button type="button" class="segment-btn" id="tabDemoGoogle" data-switch-demo="google">
+              <span class="btn-icon">📋</span>
+              <span>Google Tasks</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Apple Demo Screen -->
+        <div id="demoAppleContainer">
+          <!-- Live Preview & Widget Showcase -->
+        <div class="iphone-showcase-container">
+          <!-- Standard iPhone 16 Pro Silhouette Frame -->
+          <div class="iphone-device-wrapper">
+            <div class="iphone-mockup-viewport">
+              <img src="images/iphone-mockup-reminders.png?v=2" alt="iPhone 16 Pro Apple Reminders Pull List Widget" class="iphone-mockup-bg">
+
+              <!-- Pixel-Aligned Interactive Reminders Widget Overlay -->
+              <div class="iphone-widget-interactive-overlay checklist-mock" id="checklist-mock-apple">
+                <div class="widget-live-header">
+                  <div class="widget-header-left">
+                    <span class="widget-count-number" id="widget-count-apple">6</span>
+                    <span class="widget-title-text">Daily Pull List</span>
+                  </div>
+                  <div class="widget-header-right">
+                    <span class="mock-counter-pill" id="mock-counter-apple">6 left</span>
+                    <button class="btn-mock-reset" id="btn-reset-apple" data-platform="apple" title="Reset checklist">↺</button>
+                  </div>
+                </div>
+
+                <div class="widget-live-list">
+                  <div class="mock-item" data-platform="apple">
+                    <div class="mock-circle">✓</div>
+                    <span class="mock-sku">11053</span>
+                    <span class="mock-text">Metallica Tour T-Shirt (eBay • $45)</span>
+                  </div>
+                  <div class="mock-item" data-platform="apple">
+                    <div class="mock-circle">✓</div>
+                    <span class="mock-sku">10999</span>
+                    <span class="mock-text">Patagonia Fjord Flannel (Posh • $58)</span>
+                  </div>
+                  <div class="mock-item" data-platform="apple">
+                    <div class="mock-circle">✓</div>
+                    <span class="mock-sku">10842</span>
+                    <span class="mock-text">Carhartt Detroit Jacket (Whatnot • $135)</span>
+                  </div>
+                  <div class="mock-item" data-platform="apple">
+                    <div class="mock-circle">✓</div>
+                    <span class="mock-sku" style="background: rgba(52, 199, 89, 0.15); color: #15803d;">B-104</span>
+                    <span class="mock-text">North Face Goretex (Depop • $110)</span>
+                  </div>
+                  <div class="mock-item" data-platform="apple">
+                    <div class="mock-circle">✓</div>
+                    <span class="mock-sku" style="background: rgba(255, 149, 0, 0.15); color: #b45309;">Coats</span>
+                    <span class="mock-text">Handmade Wool Sweater (Etsy • $54)</span>
+                  </div>
+                  <div class="mock-item" data-platform="apple">
+                    <div class="mock-circle">✓</div>
+                    <span class="mock-sku" style="background: rgba(142, 142, 147, 0.15); color: #48484a;">No SKU</span>
+                    <span class="mock-text">Vintage Levi's 501 (Mercari • $38)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Companion Showcase Info Card -->
+          <div class="showcase-companion-card">
+            <div class="companion-badge-pill">🍎 Interactive iPhone Widget</div>
+            <h3 class="companion-title">Zero-Unlock Inventory Picking</h3>
+            <p class="companion-desc">
+              Walk your inventory floor and check off items directly on your iPhone home screen widget. You don't even have to unlock your phone or launch an app.
+            </p>
+
+            <ul class="companion-features-list">
+              <li class="companion-feature-item">
+                <div class="companion-feature-icon">🔢</div>
+                <div class="companion-feature-text">
+                  <strong>Walking Route Sequenced</strong>
+                  <span>Numeric SKUs sort ascending first, followed by location bins and unlocated items.</span>
+                </div>
+              </li>
+              <li class="companion-feature-item">
+                <div class="companion-feature-icon">☁️</div>
+                <div class="companion-feature-text">
+                  <strong>Instant iCloud Sync</strong>
+                  <span>Checkoffs instantly reflect across your Mac, iPhone, iPad, and Apple Watch.</span>
+                </div>
+              </li>
+              <li class="companion-feature-item">
+                <div class="companion-feature-icon">🔊</div>
+                <div class="companion-feature-text">
+                  <strong>Tactile Audio Feedback</strong>
+                  <span>Subtle click audio confirms every pull so your eyes stay focused on the clothing racks.</span>
+                </div>
+              </li>
+            </ul>
+
+            <div class="companion-action-box">
+              <div class="companion-action-hint">👈 <strong>Interactive Demo:</strong> Tap any item on the iPhone screen to test checking it off!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Google Demo Screen -->
+        <div id="demoGoogleContainer" style="display: none;">
+          <!-- Google Tasks Live Mock Preview & Widget Showcase -->
+        <div class="iphone-showcase-container">
+          <!-- Standard iPhone Silhouette Frame for Google Tasks -->
+          <div class="iphone-device-wrapper">
+            <div class="iphone-mockup-viewport">
+              <img src="images/iphone-mockup-tasks.png?v=2" alt="iPhone Google Tasks Daily Pull List" class="iphone-mockup-bg">
+
+              <!-- Pixel-Aligned Interactive Google Tasks Overlay -->
+              <div class="iphone-tasks-interactive-overlay checklist-mock" id="checklist-mock-google">
+                <div class="tasks-live-header">
+                  <div class="tasks-header-title">
+                    <span>📋 Daily Pull List</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 5px;">
+                    <span class="mock-counter-pill google" id="mock-counter-google">6 left</span>
+                    <button class="btn-mock-reset" id="btn-reset-google" data-platform="google" title="Reset checklist">↺</button>
+                  </div>
+                </div>
+
+                <div class="tasks-live-list">
+                  <div class="mock-item" data-platform="google">
+                    <div class="mock-circle google">✓</div>
+                    <span class="mock-sku">11053</span>
+                    <span class="mock-text">Metallica Tour T-Shirt (eBay • $45)</span>
+                  </div>
+                  <div class="mock-item" data-platform="google">
+                    <div class="mock-circle google">✓</div>
+                    <span class="mock-sku">10999</span>
+                    <span class="mock-text">Patagonia Fjord Flannel (Posh • $58)</span>
+                  </div>
+                  <div class="mock-item" data-platform="google">
+                    <div class="mock-circle google">✓</div>
+                    <span class="mock-sku">10842</span>
+                    <span class="mock-text">Carhartt Detroit Jacket (Whatnot • $135)</span>
+                  </div>
+                  <div class="mock-item" data-platform="google">
+                    <div class="mock-circle google">✓</div>
+                    <span class="mock-sku" style="background: rgba(52, 199, 89, 0.15); color: #15803d;">B-104</span>
+                    <span class="mock-text">North Face Goretex (Depop • $110)</span>
+                  </div>
+                  <div class="mock-item" data-platform="google">
+                    <div class="mock-circle google">✓</div>
+                    <span class="mock-sku" style="background: rgba(255, 149, 0, 0.15); color: #b45309;">Coats</span>
+                    <span class="mock-text">Handmade Wool Sweater (Etsy • $54)</span>
+                  </div>
+                  <div class="mock-item" data-platform="google">
+                    <div class="mock-circle google">✓</div>
+                    <span class="mock-sku" style="background: rgba(142, 142, 147, 0.15); color: #48484a;">No SKU</span>
+                    <span class="mock-text">Vintage Levi's 501 (Mercari • $38)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Companion Showcase Info Card -->
+          <div class="showcase-companion-card">
+            <div class="companion-badge-pill google">📋 Universal Google Tasks</div>
+            <h3 class="companion-title">Cross-Platform Mobile Pulling</h3>
+            <p class="companion-desc">
+              Syncs orders straight to your Google account under "Daily Pull List". Pull orders from any phone while your laptop stays safely at your packing station.
+            </p>
+
+            <ul class="companion-features-list">
+              <li class="companion-feature-item">
+                <div class="companion-feature-icon">📱</div>
+                <div class="companion-feature-text">
+                  <strong>Universal Mobile Apps</strong>
+                  <span>Official Google Tasks app for iPhone, iPad, Android phones, and Android tablets.</span>
+                </div>
+              </li>
+              <li class="companion-feature-item">
+                <div class="companion-feature-icon">⚡</div>
+                <div class="companion-feature-text">
+                  <strong>Zero Terminal Daemons</strong>
+                  <span>Direct cloud API connection. No scripts or background terminal daemons required.</span>
+                </div>
+              </li>
+              <li class="companion-feature-item">
+                <div class="companion-feature-icon">🖥️</div>
+                <div class="companion-feature-text">
+                  <strong>Gmail & Calendar Side-Panel</strong>
+                  <span>Keep your active pick list docked directly in your desktop browser workspace.</span>
+                </div>
+              </li>
+              <li class="companion-feature-item">
+                <div class="companion-feature-icon">🔢</div>
+                <div class="companion-feature-text">
+                  <strong>Walking Route Sequenced</strong>
+                  <span>Sorted by lowest SKU first, with designated location bins and unlocated items grouped logically.</span>
+                </div>
+              </li>
+            </ul>
+
+            <div class="companion-action-box">
+              <div class="companion-action-hint">👈 <strong>Interactive Demo:</strong> Tap any item on the phone screen to test checking it off!</div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- Pricing & Checkout Card -->
+      <div class="pricing-card" style="margin-top: 24px;">
+        <span class="badge-deal">Lifetime License</span>
+        <div class="price-tag" id="displayPrice">$29.99 <span style="font-size: 18px; font-weight: 500; color: var(--text-muted);">one-time flat fee</span></div>
+        <div class="price-sub">Pay once via secure Stripe checkout. Use on all your devices forever with zero monthly subscriptions.</div>
+
+        <div class="feature-grid" style="margin: 22px 0 20px 0; text-align: left;">
+          <div class="feature-item">
+            <h3>⏱️ 30–60 Min Saved Daily</h3>
+            <p>Never walk back and forth looking for items. Pull in a single physical sweep.</p>
+          </div>
+          <div class="feature-item">
+            <h3>🚶‍♂️ Smart SKU Sequencing</h3>
+            <p>Sorted by lowest SKU first, with designated location bins and unlocated items grouped logically.</p>
+          </div>
+          <div class="feature-item">
+            <h3>📱 Mac, iPhone, Android & PC</h3>
+            <p>Live sync to Apple Reminders or Google Tasks on any phone or computer.</p>
+          </div>
+          <div class="feature-item">
+            <h3>🛡️ 14-Day Guarantee</h3>
+            <p>100% money-back guarantee if it doesn't instantly speed up your mornings.</p>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <button class="btn-primary" id="btnExtPayCheckout" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); font-size: 16px; padding: 15px 32px; width: 100%; max-width: 360px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);">
+            <span>⚡ Unlock Lifetime Access</span>
+            <span id="btnPriceTag">($29.99)</span>
+          </button>
+          
+          <button class="btn-secondary" id="btnExtPayLogin" style="font-size: 12px; padding: 7px 16px;">
+            Already paid? Restore / Log In →
+          </button>
+        </div>
+
+        <div id="paymentStatusBox" style="font-size: 12px; color: #64748b; font-weight: 500;">
+          🔒 Secure 256-bit encrypted checkout powered by Stripe.
+        </div>
+
+        <!-- Dynamic Success Banner that shows once paid -->
+        <div id="paymentSuccessBox" style="display: none; background: #ecfdf5; border: 1.5px solid #10b981; border-radius: 12px; padding: 16px; margin-top: 16px; text-align: center;">
+          <div style="font-size: 16px; font-weight: 700; color: #065f46; margin-bottom: 4px;">🎉 Lifetime Access Active!</div>
+          <div style="font-size: 13px; color: #047857; margin-bottom: 12px;" id="paidUserEmailText">Your license is unlocked.</div>
+          <button class="btn-primary" id="btnContinueToStep2" style="background: var(--primary-gradient); font-size: 14px; padding: 10px 24px;">
+            Continue to Step 2: Connect Nifty →
+          </button>
+        </div>
+      </div>
+    </div>
+
+<div class="step-panel" id="panel-2">
+      <h2>Step 2: Authenticate with Nifty</h2>
       <p class="panel-desc">This extension works with zero password entry. As long as you are signed into Nifty in Chrome, it pulls your multi-channel sales automatically.</p>
 
       <!-- Referral Opportunity -->
@@ -1532,15 +1854,19 @@
       </div>
 
       <div class="actions-row">
-        <div></div>
-        <button class="btn-primary" data-goto-step="2">Next: Choose Task App →</button>
+        <button class="btn-secondary" data-goto-step="1">← Back to License</button>
+        <button class="btn-primary" data-goto-step="3">Next: Task App Setup →</button>
       </div>
     </div>
 
     <!-- STEP 2: Reminders & Tasks Destination Walkthrough -->
-    <div class="step-panel" id="panel-2">
-      <h2>Step 2: Choose Your Task App</h2>
-      <p class="panel-desc">Where would you like your daily pull lists to be sent? Choose between Apple Reminders (for Apple users) or Google Tasks (for Windows, Android, Chromebook, or universal access).</p>
+    
+
+
+    <!-- STEP 3: Choose Task App Setup -->
+    <div class="step-panel" id="panel-3">
+      <h2>Step 3: Connect Your Task App</h2>
+      <p class="panel-desc">Choose where your pull list syncs. You can switch between Apple Reminders and Google Tasks anytime.</p>
 
       <!-- Segmented Platform Selector -->
       <div class="segmented-control-wrapper">
@@ -1556,7 +1882,7 @@
         </div>
       </div>
 
-      <!-- ================= APPLE REMINDERS CONTAINER ================= -->
+      <!-- Apple Reminders Setup -->
       <div id="destAppleContainer">
         <!-- Live Connection Status Banner -->
         <div class="status-check-box" style="border-left: 4px solid var(--primary); background: #ffffff;">
@@ -1758,105 +2084,10 @@
             </ol>
           </div>
         </div>
-
-        <!-- Live Preview & Widget Showcase -->
-        <div class="iphone-showcase-container">
-          <!-- Standard iPhone 16 Pro Silhouette Frame -->
-          <div class="iphone-device-wrapper">
-            <div class="iphone-mockup-viewport">
-              <img src="images/iphone-mockup-reminders.png?v=2" alt="iPhone 16 Pro Apple Reminders Pull List Widget" class="iphone-mockup-bg">
-
-              <!-- Pixel-Aligned Interactive Reminders Widget Overlay -->
-              <div class="iphone-widget-interactive-overlay checklist-mock" id="checklist-mock-apple">
-                <div class="widget-live-header">
-                  <div class="widget-header-left">
-                    <span class="widget-count-number" id="widget-count-apple">6</span>
-                    <span class="widget-title-text">Daily Pull List</span>
-                  </div>
-                  <div class="widget-header-right">
-                    <span class="mock-counter-pill" id="mock-counter-apple">6 left</span>
-                    <button class="btn-mock-reset" id="btn-reset-apple" data-platform="apple" title="Reset checklist">↺</button>
-                  </div>
-                </div>
-
-                <div class="widget-live-list">
-                  <div class="mock-item" data-platform="apple">
-                    <div class="mock-circle">✓</div>
-                    <span class="mock-sku">11053</span>
-                    <span class="mock-text">Metallica Tour T-Shirt (eBay • $45)</span>
-                  </div>
-                  <div class="mock-item" data-platform="apple">
-                    <div class="mock-circle">✓</div>
-                    <span class="mock-sku">10999</span>
-                    <span class="mock-text">Patagonia Fjord Flannel (Posh • $58)</span>
-                  </div>
-                  <div class="mock-item" data-platform="apple">
-                    <div class="mock-circle">✓</div>
-                    <span class="mock-sku">10842</span>
-                    <span class="mock-text">Carhartt Detroit Jacket (Whatnot • $135)</span>
-                  </div>
-                  <div class="mock-item" data-platform="apple">
-                    <div class="mock-circle">✓</div>
-                    <span class="mock-sku" style="background: rgba(52, 199, 89, 0.15); color: #15803d;">B-104</span>
-                    <span class="mock-text">North Face Goretex (Depop • $110)</span>
-                  </div>
-                  <div class="mock-item" data-platform="apple">
-                    <div class="mock-circle">✓</div>
-                    <span class="mock-sku" style="background: rgba(255, 149, 0, 0.15); color: #b45309;">Coats</span>
-                    <span class="mock-text">Handmade Wool Sweater (Etsy • $54)</span>
-                  </div>
-                  <div class="mock-item" data-platform="apple">
-                    <div class="mock-circle">✓</div>
-                    <span class="mock-sku" style="background: rgba(142, 142, 147, 0.15); color: #48484a;">No SKU</span>
-                    <span class="mock-text">Vintage Levi's 501 (Mercari • $38)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Companion Showcase Info Card -->
-          <div class="showcase-companion-card">
-            <div class="companion-badge-pill">🍎 Interactive iPhone Widget</div>
-            <h3 class="companion-title">Zero-Unlock Inventory Picking</h3>
-            <p class="companion-desc">
-              Walk your inventory floor and check off items directly on your iPhone home screen widget. You don't even have to unlock your phone or launch an app.
-            </p>
-
-            <ul class="companion-features-list">
-              <li class="companion-feature-item">
-                <div class="companion-feature-icon">🔢</div>
-                <div class="companion-feature-text">
-                  <strong>Walking Route Sequenced</strong>
-                  <span>Numeric SKUs sort ascending first, followed by location bins and unlocated items.</span>
-                </div>
-              </li>
-              <li class="companion-feature-item">
-                <div class="companion-feature-icon">☁️</div>
-                <div class="companion-feature-text">
-                  <strong>Instant iCloud Sync</strong>
-                  <span>Checkoffs instantly reflect across your Mac, iPhone, iPad, and Apple Watch.</span>
-                </div>
-              </li>
-              <li class="companion-feature-item">
-                <div class="companion-feature-icon">🔊</div>
-                <div class="companion-feature-text">
-                  <strong>Tactile Audio Feedback</strong>
-                  <span>Subtle click audio confirms every pull so your eyes stay focused on the clothing racks.</span>
-                </div>
-              </li>
-            </ul>
-
-            <div class="companion-action-box">
-              <div class="companion-action-hint">👈 <strong>Interactive Demo:</strong> Tap any item on the iPhone screen to test checking it off!</div>
-            </div>
-          </div>
-        </div>
       </div>
 
-      <!-- ================= GOOGLE TASKS CONTAINER ================= -->
+      <!-- Google Tasks Setup -->
       <div id="destGoogleContainer" style="display: none;">
-        <!-- Live Connection Status Banner -->
         <div class="status-check-box" style="border-left: 4px solid #1a73e8; background: #ffffff;">
           <div class="status-indicator">
             <span class="dot" id="onboardingDotGoogle"></span>
@@ -1914,146 +2145,14 @@
             </ol>
           </div>
         </div>
-
-        <!-- Google Tasks Live Mock Preview & Widget Showcase -->
-        <div class="iphone-showcase-container">
-          <!-- Standard iPhone Silhouette Frame for Google Tasks -->
-          <div class="iphone-device-wrapper">
-            <div class="iphone-mockup-viewport">
-              <img src="images/iphone-mockup-tasks.png?v=2" alt="iPhone Google Tasks Daily Pull List" class="iphone-mockup-bg">
-
-              <!-- Pixel-Aligned Interactive Google Tasks Overlay -->
-              <div class="iphone-tasks-interactive-overlay checklist-mock" id="checklist-mock-google">
-                <div class="tasks-live-header">
-                  <div class="tasks-header-title">
-                    <span>📋 Daily Pull List</span>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 5px;">
-                    <span class="mock-counter-pill google" id="mock-counter-google">6 left</span>
-                    <button class="btn-mock-reset" id="btn-reset-google" data-platform="google" title="Reset checklist">↺</button>
-                  </div>
-                </div>
-
-                <div class="tasks-live-list">
-                  <div class="mock-item" data-platform="google">
-                    <div class="mock-circle google">✓</div>
-                    <span class="mock-sku">11053</span>
-                    <span class="mock-text">Metallica Tour T-Shirt (eBay • $45)</span>
-                  </div>
-                  <div class="mock-item" data-platform="google">
-                    <div class="mock-circle google">✓</div>
-                    <span class="mock-sku">10999</span>
-                    <span class="mock-text">Patagonia Fjord Flannel (Posh • $58)</span>
-                  </div>
-                  <div class="mock-item" data-platform="google">
-                    <div class="mock-circle google">✓</div>
-                    <span class="mock-sku">10842</span>
-                    <span class="mock-text">Carhartt Detroit Jacket (Whatnot • $135)</span>
-                  </div>
-                  <div class="mock-item" data-platform="google">
-                    <div class="mock-circle google">✓</div>
-                    <span class="mock-sku" style="background: rgba(52, 199, 89, 0.15); color: #15803d;">B-104</span>
-                    <span class="mock-text">North Face Goretex (Depop • $110)</span>
-                  </div>
-                  <div class="mock-item" data-platform="google">
-                    <div class="mock-circle google">✓</div>
-                    <span class="mock-sku" style="background: rgba(255, 149, 0, 0.15); color: #b45309;">Coats</span>
-                    <span class="mock-text">Handmade Wool Sweater (Etsy • $54)</span>
-                  </div>
-                  <div class="mock-item" data-platform="google">
-                    <div class="mock-circle google">✓</div>
-                    <span class="mock-sku" style="background: rgba(142, 142, 147, 0.15); color: #48484a;">No SKU</span>
-                    <span class="mock-text">Vintage Levi's 501 (Mercari • $38)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Companion Showcase Info Card -->
-          <div class="showcase-companion-card">
-            <div class="companion-badge-pill google">📋 Universal Google Tasks</div>
-            <h3 class="companion-title">Cross-Platform Mobile Pulling</h3>
-            <p class="companion-desc">
-              Syncs orders straight to your Google account under "Daily Pull List". Pull orders from any phone while your laptop stays safely at your packing station.
-            </p>
-
-            <ul class="companion-features-list">
-              <li class="companion-feature-item">
-                <div class="companion-feature-icon">📱</div>
-                <div class="companion-feature-text">
-                  <strong>Universal Mobile Apps</strong>
-                  <span>Official Google Tasks app for iPhone, iPad, Android phones, and Android tablets.</span>
-                </div>
-              </li>
-              <li class="companion-feature-item">
-                <div class="companion-feature-icon">⚡</div>
-                <div class="companion-feature-text">
-                  <strong>Zero Terminal Daemons</strong>
-                  <span>Direct cloud API connection. No scripts or background terminal daemons required.</span>
-                </div>
-              </li>
-              <li class="companion-feature-item">
-                <div class="companion-feature-icon">🖥️</div>
-                <div class="companion-feature-text">
-                  <strong>Gmail & Calendar Side-Panel</strong>
-                  <span>Keep your active pick list docked directly in your desktop browser workspace.</span>
-                </div>
-              </li>
-              <li class="companion-feature-item">
-                <div class="companion-feature-icon">🔢</div>
-                <div class="companion-feature-text">
-                  <strong>Walking Route Sequenced</strong>
-                  <span>Sorted by lowest SKU first, with designated location bins and unlocated items grouped logically.</span>
-                </div>
-              </li>
-            </ul>
-
-            <div class="companion-action-box">
-              <div class="companion-action-hint">👈 <strong>Interactive Demo:</strong> Tap any item on the phone screen to test checking it off!</div>
-            </div>
-          </div>
-        </div>
       </div>
 
-      <div class="actions-row">
-        <button class="btn-secondary" data-goto-step="1">← Back</button>
-        <button class="btn-primary" data-goto-step="3">Next: Lifetime Access →</button>
-      </div>
-    </div>
-
-    <!-- STEP 3: Lifetime License & Launch -->
-    <div class="step-panel" id="panel-3">
-      <h2>Step 3: Start Pulling Faster</h2>
-      <p class="panel-desc">Save 30–60 minutes every single morning. Never pull without a sequence again.</p>
-
-      <div class="pricing-card">
-        <span class="badge-deal">Lifetime Access</span>
-        <div class="price-tag" id="displayPrice">$29.99 <span style="font-size: 18px; font-weight: 500; color: var(--text-muted);">one-time flat fee</span></div>
-        <div class="price-sub">Pay once via secure Stripe checkout. Use on all your devices forever with zero monthly subscriptions.</div>
-
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 16px;">
-          <button class="btn-primary" id="btnExtPayCheckout" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); font-size: 15px; padding: 14px 28px;">
-            <span>⚡ Unlock Lifetime Access</span>
-            <span id="btnPriceTag">($29.99)</span>
-          </button>
-          
-          <button class="btn-secondary" id="btnExtPayLogin" style="font-size: 12px; padding: 6px 14px;">
-            Already paid? Restore / Log In →
-          </button>
-        </div>
-
-        <div id="paymentStatusBox" style="font-size: 12px; color: #94a3b8;">
-          🛡️ 14-Day Money-Back Guarantee included with every purchase.
-        </div>
-      </div>
-
-      <div style="text-align: center; margin: 16px auto 8px auto; max-width: 480px; font-size: 12.5px; color: #475569; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 16px; line-height: 1.4;">
+      <div style="text-align: center; margin: 24px auto 12px auto; max-width: 480px; font-size: 12.5px; color: #475569; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 16px; line-height: 1.4;">
         💡 <strong>Pro Tip:</strong> Click the puzzle-piece icon (🧩) in your Chrome toolbar and click the <strong>Pin (📌)</strong> next to PickList so it's always one click away!
       </div>
 
       <div class="actions-row">
-        <button class="btn-secondary" data-goto-step="2">← Back</button>
+        <button class="btn-secondary" data-goto-step="2">← Back to Nifty</button>
         <button class="btn-primary" id="btnFinishOnboarding" style="background: var(--primary-gradient);">
           Open Extension & Start Syncing ✓
         </button>

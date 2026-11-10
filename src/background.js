@@ -1062,6 +1062,19 @@ async function fetchAndSyncOrders(options = {}) {
 chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   if (req.action === "syncNow") {
     (async () => {
+      // Enforce license verification
+      const stored = await chrome.storage.local.get("isPaid");
+      if (!stored.isPaid && typeof extpay !== "undefined" && extpay) {
+        try {
+          const user = await extpay.getUser();
+          if (!user || !user.paid) {
+            return sendResponse({ success: false, error: "Payment required. Please unlock lifetime access ($29.99)." });
+          }
+          await chrome.storage.local.set({ isPaid: true, userEmail: user.email || "" });
+        } catch (_) {
+          return sendResponse({ success: false, error: "Payment required. Please unlock lifetime access ($29.99)." });
+        }
+      }
       const result = await fetchAndSyncOrders(req.options || {});
       sendResponse(result);
     })();

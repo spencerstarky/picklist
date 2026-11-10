@@ -29,6 +29,65 @@ document.addEventListener("DOMContentLoaded", () => {
   const lookbackPreviewText = document.getElementById("lookbackPreviewText");
   let lastSyncTimestampCached = null;
 
+  // Paywall & License Management
+  const extpayId = (typeof CONFIG !== "undefined" && CONFIG.EXTPAY_ID) ? CONFIG.EXTPAY_ID : "nifty-pull-list";
+  const extpay = typeof ExtPay !== "undefined" ? ExtPay(extpayId) : null;
+  const paywallContainer = document.getElementById("paywallContainer");
+  const mainControlsContainer = document.getElementById("mainControlsContainer");
+  const btnPopupCheckout = document.getElementById("btnPopupCheckout");
+  const btnPopupLogin = document.getElementById("btnPopupLogin");
+  const badgeVer = document.querySelector(".badge-ver");
+
+  function setPaidState(isPaid) {
+    if (isPaid) {
+      if (paywallContainer) paywallContainer.style.display = "none";
+      if (mainControlsContainer) mainControlsContainer.style.display = "";
+      if (syncBtn) syncBtn.disabled = false;
+      if (badgeVer) {
+        badgeVer.textContent = "✓ PRO";
+        badgeVer.style.color = "#10b981";
+        badgeVer.style.background = "rgba(16, 185, 129, 0.1)";
+        badgeVer.style.borderColor = "rgba(16, 185, 129, 0.25)";
+        badgeVer.style.fontWeight = "700";
+      }
+    } else {
+      if (paywallContainer) paywallContainer.style.display = "block";
+      if (mainControlsContainer) mainControlsContainer.style.display = "none";
+      if (syncBtn) syncBtn.disabled = true;
+    }
+  }
+
+  // Pre-load from storage cache for instant, zero-flicker UI
+  chrome.storage.local.get(["isPaid", "userEmail"], (res) => {
+    if (res && res.isPaid) {
+      setPaidState(true);
+    } else {
+      setPaidState(false);
+    }
+  });
+
+  // Verify in background with ExtPay
+  if (extpay) {
+    extpay.getUser().then((user) => {
+      const isPaid = !!(user && user.paid);
+      chrome.storage.local.set({ isPaid, userEmail: user?.email || "" });
+      setPaidState(isPaid);
+    }).catch(e => console.log("[ExtPay] User check:", e));
+
+    if (btnPopupCheckout) {
+      btnPopupCheckout.addEventListener("click", () => extpay.openPaymentPage());
+    }
+    if (btnPopupLogin) {
+      btnPopupLogin.addEventListener("click", () => extpay.openLoginPage());
+    }
+    if (extpay.onPaid) {
+      extpay.onPaid.addListener((user) => {
+        chrome.storage.local.set({ isPaid: true, userEmail: user?.email || "" });
+        setPaidState(true);
+      });
+    }
+  }
+
   let currentDestination = "apple";
 
   // Destination Switcher (Apple Reminders vs. Google Tasks)
