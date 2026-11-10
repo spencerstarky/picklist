@@ -23,10 +23,11 @@
     "https://oauth2.googleapis.com/*",
     "https://accounts.google.com/*",
     "https://extensionpay.com/*",
-    "https://*.chromiumapp.org/*"
+    "https://*.chromiumapp.org/*",
+    "https://*.workers.dev/*"
   ],
   "oauth2": {
-    "client_id": "231991706388-rgnnobu4pvfr6ittf978q6oadrveefsu.apps.googleusercontent.com",
+    "client_id": "231991706388-ronnrq67mcfgg7e39aaj1rp7mop9obgc.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/tasks"
     ]
