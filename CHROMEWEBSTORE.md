@@ -41,7 +41,7 @@ For questions, support, or feature requests, contact picklist.help@gmail.com.
 Productivity
 
 **Single Purpose** [REQUIRED]
-Syncs sold items from Nifty into a SKU-sorted Apple Reminders checklist for physical inventory pulling.
+Syncs sold items from Nifty into a SKU-sorted Apple Reminders or Google Tasks checklist for physical inventory pulling.
 
 **Primary Language** [REQUIRED]
 English
@@ -65,16 +65,23 @@ English
 
 | Permission | Type | Justification |
 |------------|------|---------------|
-| `cookies` | permissions | Used to read the existing authenticated session token from Nifty so the user does not need to manually enter credentials. |
-| `alarms` | permissions | Used to schedule the automated 8:00 AM weekday pull list compilation in the background. |
-| `storage` | permissions | Stores the last sync timestamp, item count, and user preferences locally on the device for status display. |
-| `https://app.nifty.ai/*` | host_permissions | Allows reading the session cookie and verifying the active login state on Nifty. |
-| `https://api.nifty.ai/*` | host_permissions | Allows retrieving recent sold orders directly from Nifty's order analytics endpoint. |
-| `http://127.0.0.1:8989/*` | host_permissions | Allows communicating with the local macOS Reminders bridge daemon to insert items without manual Shortcuts configuration. |
-| `http://localhost:8989/*` | host_permissions | Alternative loopback address for the local macOS Reminders bridge daemon. |
-| `https://tasks.googleapis.com/*` | host_permissions | Communicates with the official Google Tasks API to create and manage pull list items. |
-| `https://oauth2.googleapis.com/*` | host_permissions | Used for secure Google Tasks OAuth authentication token refresh. |
-| `https://extensionpay.com/*` | host_permissions | Communicates with ExtensionPay API to verify flat-fee license purchase status and handle user login. |
+| `cookies` | permissions | Reads the existing session cookie from Nifty so the user is authenticated automatically without manual password entry. |
+| `alarms` | permissions | Schedules the daily background pull list compilation (e.g. 8:00 AM) without keeping a persistent background tab open. |
+| `storage` | permissions | Saves user sync preferences (lookback window, destination task app, last sync counts) locally on the device. |
+| `identity` | permissions | Powers secure Google Tasks OAuth authentication via `chrome.identity.launchWebAuthFlow` without exposing API client secrets. |
+| `tabs` | permissions | Detects active Nifty tabs to help the user connect their account and opens the setup walkthrough and guide pages. |
+| `clipboardWrite` | permissions | Allows the user to one-click copy terminal commands and setup shortcuts from the onboarding and guide pages. |
+| `https://app.nifty.ai/*` | host_permissions | Verifies active login state and session validity on Nifty web app. |
+| `https://api.nifty.ai/*` | host_permissions | Retrieves the user's sold multi-channel orders from Nifty's order analytics endpoint. |
+| `http://127.0.0.1:8989/*` | host_permissions | Communicates with the local macOS Reminders bridge daemon to insert pull list tasks. |
+| `http://localhost:8989/*` | host_permissions | Loopback fallback address for the local macOS Reminders bridge daemon. |
+| `https://tasks.googleapis.com/*` | host_permissions | Communicates with the official Google Tasks REST API to create and manage pull list items. |
+| `https://www.googleapis.com/*` | host_permissions | Queries Google user profile and task list endpoints during Google Tasks integration. |
+| `https://oauth2.googleapis.com/*` | host_permissions | Exchanges and refreshes Google OAuth tokens securely. |
+| `https://accounts.google.com/*` | host_permissions | Handles the user sign-in and authorization screen for Google Tasks. |
+| `https://extensionpay.com/*` | host_permissions | Connects to ExtensionPay to verify paid license status and process Stripe checkout. |
+| `https://*.chromiumapp.org/*` | host_permissions | OAuth redirect callback URL used by Chrome Identity (`launchWebAuthFlow`). |
+| `https://*.workers.dev/*` | host_permissions | Secure Cloudflare proxy worker for Google Tasks token exchange without client secrets. |
 
 ## Privacy & Data Use
 
