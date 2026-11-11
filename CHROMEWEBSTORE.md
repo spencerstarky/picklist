@@ -14,7 +14,7 @@ PickList
 Automatically sync sold inventory from Nifty into Apple Reminders and Google Tasks sorted by physical warehouse SKU for fast order pulling.
 
 **Detailed Description** [REQUIRED]
-Stop wasting time walking back and forth between racks, shelves, and bins. PickList automatically gathers your recent multi-channel sales across eBay, Poshmark, Mercari, Depop, Etsy, and Whatnot from Nifty, sorts them sequentially by physical warehouse SKU, and sends them straight to your Apple Reminders or Google Tasks checklist.
+Stop wasting time walking back and forth between racks, shelves, and bins. PickList automatically gathers your recent multi-channel sales from your connected Nifty account, sorts them sequentially by physical warehouse SKU, and sends them straight to your Apple Reminders or Google Tasks checklist.
 
 Walk the floor with your iPhone or iPad every morning with a clean, ordered pull list ready to check off.
 
@@ -122,4 +122,5 @@ support@spencerreselling.com
 
 | Version | Date | Changes | Status |
 |---------|------|---------|--------|
-| 1.0.0 | 2026-11-02 | Initial production release with automated bridge and descending SKU sorting | Draft |
+| 1.0.0 | 2026-11-10 | Initial public store release with automated bridge and descending SKU sorting | Live |
+| 1.0.1 | 2026-11-11 | Human-friendly error translation, disk space recovery handling, Nifty prerequisite notices, and upgraded partner deal flow | Ready for submission |

@@ -217,6 +217,23 @@ document.addEventListener("DOMContentLoaded", () => {
   if (referralBtn) referralBtn.href = referralUrl;
   if (footerReferralLink) footerReferralLink.href = referralUrl;
 
+  // Copy Promo Code in Onboarding
+  const btnCopyOnboardingPromo = document.getElementById("btnCopyOnboardingPromo");
+  if (btnCopyOnboardingPromo) {
+    btnCopyOnboardingPromo.addEventListener("click", () => {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText("SOURCEDANDSOLD").then(() => {
+          btnCopyOnboardingPromo.textContent = "✓ Copied!";
+          btnCopyOnboardingPromo.style.background = "#bbf7d0";
+          setTimeout(() => {
+            btnCopyOnboardingPromo.textContent = "📋 Copy Code";
+            btnCopyOnboardingPromo.style.background = "";
+          }, 2000);
+        });
+      }
+    });
+  }
+
   // Inject Apple Shortcut iCloud Link from CONFIG
   const shortcutIcloudUrl = (typeof CONFIG !== "undefined" && CONFIG.APPLE_SHORTCUT_ICLOUD_URL)
     ? CONFIG.APPLE_SHORTCUT_ICLOUD_URL

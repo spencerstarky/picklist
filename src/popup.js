@@ -185,6 +185,28 @@ document.addEventListener("DOMContentLoaded", () => {
     referralLinkEl.href = CONFIG.NIFTY_REFERRAL_URL;
   }
 
+  // Copy Promo Code Button Handler
+  const btnCopyPromoCode = document.getElementById("btnCopyPromoCode");
+  if (btnCopyPromoCode) {
+    btnCopyPromoCode.addEventListener("click", () => {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText("SOURCEDANDSOLD").then(() => {
+          btnCopyPromoCode.textContent = "✓ Copied!";
+          btnCopyPromoCode.style.background = "#bbf7d0";
+          setTimeout(() => {
+            btnCopyPromoCode.textContent = "📋 Copy";
+            btnCopyPromoCode.style.background = "";
+          }, 2000);
+        });
+      }
+    });
+  }
+
+  const footerPartnerLink = document.getElementById("footerPartnerLink");
+  if (footerPartnerLink && typeof CONFIG !== "undefined" && CONFIG.NIFTY_REFERRAL_URL) {
+    footerPartnerLink.href = CONFIG.NIFTY_REFERRAL_URL;
+  }
+
   function formatTimeDescription(d) {
     if (!d || isNaN(d.getTime())) return "previous sync";
     const now = new Date();
@@ -291,6 +313,79 @@ document.addEventListener("DOMContentLoaded", () => {
         statusBox.textContent = "Ready to sync";
         statusBox.className = "status-box";
       }, 2000);
+    });
+  }
+
+  /**
+   * Converts low-level OS, Chrome, and LevelDB errors into clear, actionable user messages.
+   */
+  function formatFriendlyError(raw) {
+    if (!raw) return "An unexpected error occurred. Please try again.";
+    const msg = typeof raw === "string" ? raw : (raw.message || String(raw));
+
+    // 1. Out of disk space (Chrome LevelDB / OS disk errors)
+    if (
+      msg.includes("FILE_ERROR_NO_SPACE") ||
+      msg.includes("NO_SPACE") ||
+      msg.includes("ENOSPC") ||
+      /disk.*full/i.test(msg) ||
+      /no space left/i.test(msg)
+    ) {
+      return "⚠️ Your Mac is out of disk space. Please empty your Trash or delete unused files to allow Chrome to save data. (Click to dismiss)";
+    }
+
+    // 2. Chrome storage quota exceeded
+    if (msg.includes("QUOTA_BYTES") || msg.includes("QUOTA_EXCEEDED")) {
+      return "⚠️ Extension storage limit reached. Please clear old completed items or sync history.";
+    }
+
+    // 3. LevelDB internal database corruption / lock error
+    if (msg.includes("IO error") || msg.includes("LevelDB") || msg.includes("ChromeMethodBFE")) {
+      return "⚠️ Chrome storage error. Please restart Google Chrome or check free disk space.";
+    }
+
+    // 4. Network offline / server unreachable
+    if (
+      msg.includes("Failed to fetch") ||
+      msg.includes("NetworkError") ||
+      msg.includes("ERR_INTERNET_DISCONNECTED") ||
+      msg.includes("ERR_NETWORK_CHANGED")
+    ) {
+      return "⚠️ Network connection issue. Please check your internet connection and try again.";
+    }
+
+    // 5. Nifty auth/session expired
+    if (
+      msg.includes("401") ||
+      msg.includes("Unauthorized") ||
+      msg.includes("Invalid session") ||
+      msg.includes("Please log into Nifty")
+    ) {
+      return "⚠️ Your Nifty session expired. Please sign into Nifty in Chrome and try again.";
+    }
+
+    // 6. Bridge connection refused
+    if (msg.includes("ECONNREFUSED") || msg.includes("127.0.0.1:8989") || msg.includes("localhost:8989")) {
+      return "⚠️ Apple Reminders bridge is offline. Launch the bridge or switch to Apple Shortcuts mode.";
+    }
+
+    // 7. Google Tasks permission/token expired
+    if (msg.includes("invalid_grant") || msg.includes("Token expired") || msg.includes("403")) {
+      return "⚠️ Google Tasks authorization expired. Click the Google Tasks button to reconnect.";
+    }
+
+    return msg;
+  }
+
+  // Click on error box to dismiss
+  if (statusBox) {
+    statusBox.addEventListener("click", () => {
+      if (statusBox.classList.contains("error")) {
+        statusBox.textContent = "Ready to sync";
+        statusBox.className = "status-box";
+        statusBox.removeAttribute("title");
+        chrome.storage.local.remove("lastError");
+      }
     });
   }
 
@@ -415,8 +510,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // 3. Error state if any
       const storage = res.storage || {};
       if (storage.lastError) {
-        statusBox.textContent = storage.lastError;
+        statusBox.textContent = formatFriendlyError(storage.lastError);
         statusBox.className = "status-box error";
+        statusBox.title = "Click to dismiss error";
       }
     });
   }
@@ -428,6 +524,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnText.textContent = "Syncing...";
     statusBox.textContent = "Retrieving orders & checking pull list...";
     statusBox.className = "status-box";
+    statusBox.removeAttribute("title");
 
     let lookbackHours = lookbackSelect.value;
     if (lookbackHours === "custom") {
@@ -447,8 +544,9 @@ document.addEventListener("DOMContentLoaded", () => {
       btnText.textContent = "Sync Pull List Now";
 
       if (chrome.runtime.lastError) {
-        statusBox.textContent = chrome.runtime.lastError.message || "Failed to communicate with extension.";
+        statusBox.textContent = formatFriendlyError(chrome.runtime.lastError.message || "Failed to communicate with extension.");
         statusBox.className = "status-box error";
+        statusBox.title = "Click to dismiss error";
         return;
       }
 
@@ -474,8 +572,9 @@ document.addEventListener("DOMContentLoaded", () => {
           statusBox.className = "status-box success";
         }
       } else {
-        statusBox.textContent = res?.error || "Sync failed. Check connection.";
+        statusBox.textContent = formatFriendlyError(res?.error || "Sync failed. Check connection.");
         statusBox.className = "status-box error";
+        statusBox.title = "Click to dismiss error";
       }
 
       refreshStatus();

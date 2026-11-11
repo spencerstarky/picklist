@@ -96,6 +96,67 @@ async function checkBridgeStatus() {
 }
 
 /**
+ * Translates low-level browser, OS, and network exceptions into human-friendly messages.
+ */
+function formatFriendlyError(raw) {
+  if (!raw) return "An unexpected error occurred. Please try again.";
+  const msg = typeof raw === "string" ? raw : (raw.message || String(raw));
+
+  // 1. Out of disk space (Chrome LevelDB / OS disk errors)
+  if (
+    msg.includes("FILE_ERROR_NO_SPACE") ||
+    msg.includes("NO_SPACE") ||
+    msg.includes("ENOSPC") ||
+    /disk.*full/i.test(msg) ||
+    /no space left/i.test(msg)
+  ) {
+    return "⚠️ Your Mac is out of disk space. Please empty your Trash or delete unused files to allow Chrome to save data.";
+  }
+
+  // 2. Chrome storage quota exceeded
+  if (msg.includes("QUOTA_BYTES") || msg.includes("QUOTA_EXCEEDED")) {
+    return "⚠️ Extension storage limit reached. Please clear old completed items or sync history.";
+  }
+
+  // 3. LevelDB internal database corruption / lock error
+  if (msg.includes("IO error") || msg.includes("LevelDB") || msg.includes("ChromeMethodBFE")) {
+    return "⚠️ Chrome storage error. Please restart Google Chrome or check free disk space.";
+  }
+
+  // 4. Network offline / server unreachable
+  if (
+    msg.includes("Failed to fetch") ||
+    msg.includes("NetworkError") ||
+    msg.includes("ERR_INTERNET_DISCONNECTED") ||
+    msg.includes("ERR_NETWORK_CHANGED")
+  ) {
+    return "⚠️ Network connection issue. Please check your internet connection and try again.";
+  }
+
+  // 5. Nifty auth/session expired
+  if (
+    msg.includes("401") ||
+    msg.includes("Unauthorized") ||
+    msg.includes("Invalid session") ||
+    msg.includes("Please log into Nifty")
+  ) {
+    return "⚠️ Your Nifty session expired. Please sign into Nifty in Chrome and try again.";
+  }
+
+  // 6. Bridge connection refused
+  if (msg.includes("ECONNREFUSED") || msg.includes("127.0.0.1:8989") || msg.includes("localhost:8989")) {
+    return "⚠️ Apple Reminders bridge is offline. Launch the bridge or switch to Apple Shortcuts mode.";
+  }
+
+  // 7. Google Tasks permission/token expired
+  if (msg.includes("invalid_grant") || msg.includes("Token expired") || msg.includes("403")) {
+    return "⚠️ Google Tasks authorization expired. Click the Google Tasks button to reconnect.";
+  }
+
+  return msg;
+}
+
+/**
  * Intelligently classifies and formats an item's inventory tracking system:
  * Handles:
  * 1. Pure Numeric SKUs: "11053", "8109", "SKU 10464" -> bucket 1
@@ -1069,8 +1130,13 @@ async function fetchAndSyncOrders(options = {}) {
     };
   } catch (err) {
     console.error("[NiftySync] Error during order sync:", err);
-    await chrome.storage.local.set({ lastError: err.message });
-    return { success: false, error: err.message };
+    const friendly = formatFriendlyError(err.message);
+    try {
+      await chrome.storage.local.set({ lastError: friendly });
+    } catch (storageErr) {
+      console.warn("[NiftySync] Failed to persist error to storage:", storageErr);
+    }
+    return { success: false, error: friendly };
   }
 }
 

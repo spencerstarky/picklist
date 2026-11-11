@@ -211,10 +211,32 @@
       line-height: 1.5;
     }
 
-    /* Referral Banner */
+    /* Referral Banner & Prerequisite Box */
+    .step1-prereq-box {
+      margin-top: 14px;
+      margin-bottom: 14px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      background: #f8fafc;
+      padding: 10px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      text-align: left;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.45;
+    }
+
+    .step1-prereq-box a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
     .referral-card {
-      background: linear-gradient(135deg, #f0f7ff 0%, #e8f2fe 100%);
-      border: 1px solid #d0e4ff;
+      background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+      border: 1px solid #a7f3d0;
       border-radius: 14px;
       padding: 22px 24px;
       margin-bottom: 24px;
@@ -227,7 +249,7 @@
     .referral-content h3 {
       font-size: 16px;
       font-weight: 700;
-      color: var(--text);
+      color: #065f46;
       margin-bottom: 6px;
       display: flex;
       align-items: center;
@@ -236,12 +258,57 @@
 
     .referral-content p {
       font-size: 13px;
-      color: var(--text-secondary);
-      max-width: 440px;
+      color: #047857;
+      max-width: 480px;
+      line-height: 1.4;
+    }
+
+    .onboarding-promo-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      border: 1px dashed #059669;
+      border-radius: 8px;
+      padding: 6px 12px;
+      margin-top: 10px;
+    }
+
+    .promo-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #065f46;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .promo-code-val {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-weight: 800;
+      color: #047857;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-copy-onboarding-promo {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-copy-onboarding-promo:hover {
+      background: #d1fae5;
+      border-color: #059669;
     }
 
     .badge-deal {
-      background: var(--gold-gradient);
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #ffffff;
       font-size: 10px;
       font-weight: 700;
@@ -252,15 +319,15 @@
     }
 
     .btn-referral {
-      background: var(--primary-gradient);
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #ffffff;
       text-decoration: none;
-      padding: 11px 20px;
+      padding: 12px 22px;
       border-radius: 9px;
-      font-weight: 600;
-      font-size: 13px;
+      font-weight: 700;
+      font-size: 13.5px;
       white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25);
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
       transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
@@ -270,7 +337,7 @@
     .btn-referral:hover {
       filter: brightness(1.05);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 113, 227, 0.35);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
     }
 
     /* Buttons */
@@ -1959,6 +2026,14 @@
               <button type="button" class="btn-restore-link" id="btnExtPayLogin">Already paid? Restore / Log In</button>
             </div>
 
+            <!-- Prerequisite Requirement Card -->
+            <div class="step1-prereq-box">
+              <span style="font-size: 15px; flex-shrink: 0;">ℹ️</span>
+              <div>
+                <strong>System Prerequisite:</strong> Requires an active <a href="https://nifty.ai/?referral=SOURCEDANDSOLD" target="_blank">Nifty (nifty.ai)</a> subscription. PickList works as the warehouse order-pulling companion to your active Nifty sales.
+              </div>
+            </div>
+
             <div id="paymentStatusBox" style="display: none;"></div>
 
             <!-- 3 Clean Minimal Feature Checkmarks -->
@@ -1989,13 +2064,19 @@
       <div class="referral-card">
         <div class="referral-content">
           <h3>
-            <span>New to Nifty? Start Here</span>
+            <span>Active Nifty Subscription Required</span>
             <span class="badge-deal">Partner Deal</span>
           </h3>
-          <p>Nifty is the fastest multi-channel inventory tool for online resellers. Auto-delist instantly across eBay, Poshmark, Mercari, Depop, Etsy, and Whatnot so you never double-sell.</p>
+          <p>PickList connects directly with your active Nifty subscription to pull sales from eBay, Poshmark, Mercari, Depop, Etsy, and Whatnot. If you're new to Nifty, use our official partner code below for exclusive pricing.</p>
+          
+          <div class="onboarding-promo-pill">
+            <span class="promo-label">Partner Promo Code:</span>
+            <span class="promo-code-val" id="onboardingPromoVal">SOURCEDANDSOLD</span>
+            <button type="button" class="btn-copy-onboarding-promo" id="btnCopyOnboardingPromo">📋 Copy Code</button>
+          </div>
         </div>
         <a href="https://nifty.ai/?referral=SOURCEDANDSOLD" target="_blank" class="btn-referral" id="referralBtn">
-          <span>Create Nifty Account</span>
+          <span>Claim Partner Deal & Sign Up</span>
           <span>→</span>
         </a>
       </div>
