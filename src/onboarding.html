@@ -490,15 +490,37 @@
     }
 
     .dot {
-      width: 9px;
-      height: 9px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      background: var(--gold);
+      background: #94a3b8;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
     }
 
     .dot.active {
-      background: var(--success);
-      box-shadow: 0 0 8px rgba(52, 199, 89, 0.5);
+      background: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+    }
+
+    .dot.checking {
+      background: #3b82f6;
+      animation: pulseDot 1.2s infinite;
+    }
+
+    .dot.warning {
+      background: #f59e0b;
+      box-shadow: 0 0 6px rgba(245, 158, 11, 0.3);
+    }
+
+    .dot.error {
+      background: #ef4444;
+      box-shadow: 0 0 6px rgba(239, 68, 68, 0.3);
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.15); }
     }
 
     /* Walkthrough & Bridge Setup Cards */
@@ -2185,7 +2207,7 @@
         <div class="status-indicator">
           <span class="dot" id="onboardingDotNifty"></span>
           <div>
-            <strong id="onboardingTextNifty">Checking Nifty session...</strong>
+            <strong id="onboardingTextNifty">Nifty Session (Ready to Check)</strong>
             <div style="font-size: 11px; color: var(--text-muted);" id="onboardingSubNifty">Make sure you have an active tab on app.nifty.ai</div>
           </div>
         </div>
@@ -2240,7 +2262,7 @@
           <div class="status-indicator">
             <span class="dot" id="onboardingDotBridge"></span>
             <div>
-              <strong id="onboardingTextBridge">Checking Apple Reminders status...</strong>
+              <strong id="onboardingTextBridge">Apple Reminders (Ready to Connect)</strong>
               <div style="font-size: 12px; color: var(--text-muted);" id="onboardingSubBridge">Official Apple Shortcut for Instant Sync</div>
             </div>
           </div>
@@ -2443,7 +2465,7 @@
           <div class="status-indicator">
             <span class="dot" id="onboardingDotGoogle"></span>
             <div>
-              <strong id="onboardingTextGoogle">Checking Google Tasks connection...</strong>
+              <strong id="onboardingTextGoogle">Google Tasks (Ready to Connect)</strong>
               <div style="font-size: 12px; color: var(--text-muted);" id="onboardingSubGoogle">Direct cloud sync via official Google Tasks API (no local scripts needed)</div>
             </div>
           </div>

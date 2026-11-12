@@ -28,6 +28,13 @@ function goToStep(stepNum) {
   }
   window.location.hash = `#step-${stepNum}`;
   window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (stepNum === 2 || stepNum === 3) {
+    if (typeof checkBridge === "function") checkBridge(false);
+    if (typeof checkGoogleTasks === "function") checkGoogleTasks(false);
+  } else if (stepNum === 1) {
+    if (typeof checkNifty === "function") checkNifty();
+  }
 }
 
 function switchOnboardingDest(dest) {
@@ -295,20 +302,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function checkBridge(userTriggered = false) {
     if (!onboardingTextBridge) return;
-    onboardingTextBridge.textContent = "Checking Apple Reminders status...";
-    chrome.runtime.sendMessage({ action: "checkStatus" }, (res) => {
+
+    if (btnTestBridge && userTriggered) {
+      btnTestBridge.disabled = true;
+      btnTestBridge.textContent = "⚡ Testing...";
+    }
+    if (onboardingDotBridge && userTriggered) {
+      onboardingDotBridge.className = "dot checking";
+    }
+
+    // Fast-path: pre-check storage for instant UI rendering
+    if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.get(["shortcutInstalled", "syncDestination"], (stored) => {
+        if (stored && stored.shortcutInstalled) {
+          if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
+          if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (SyncPullList Shortcut)";
+          if (onboardingSubBridge) {
+            onboardingSubBridge.textContent = "Official Apple Shortcut is active • Syncs directly to Reminders app & widgets";
+          }
+        }
+      });
+    }
+
+    let resolved = false;
+    const timeoutTimer = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        if (btnTestBridge) {
+          btnTestBridge.disabled = false;
+          btnTestBridge.textContent = "⚡ Check / Test Status";
+        }
+      }
+    }, 4500);
+
+    const handleBridgeResult = (res) => {
+      if (resolved) return;
+      resolved = true;
+      clearTimeout(timeoutTimer);
+
+      if (btnTestBridge) {
+        btnTestBridge.disabled = false;
+        btnTestBridge.textContent = "⚡ Check / Test Status";
+      }
+
       if (res && res.bridgeConnected) {
-        onboardingDotBridge.className = "dot active";
-        onboardingTextBridge.textContent = "Apple Reminders Active (Silent Bridge Running)";
+        if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
+        if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (Silent Bridge Running)";
         if (onboardingSubBridge) {
           onboardingSubBridge.textContent = "Background daemon active on port 8989 • Target: 'Daily Pull List' • iCloud Ready";
         }
         if (userTriggered) {
-          showBridgeAlert("✓ Connected! Apple Reminders silent bridge is active and ready for background sync.", true);
+          showBridgeAlert("✓ Connected! Apple Reminders silent bridge is active on port 8989 and ready for background sync.", true);
         }
       } else if (res && res.shortcutInstalled) {
-        onboardingDotBridge.className = "dot active";
-        onboardingTextBridge.textContent = "Apple Reminders Active (SyncPullList Shortcut)";
+        if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
+        if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (SyncPullList Shortcut)";
         if (onboardingSubBridge) {
           onboardingSubBridge.textContent = "Official Apple Shortcut is active • Syncs directly to Reminders app & widgets";
         }
@@ -316,16 +364,53 @@ document.addEventListener("DOMContentLoaded", () => {
           showBridgeAlert("✓ 'SyncPullList' shortcut is active! Clicking Sync in Chrome will populate your Reminders.", true);
         }
       } else {
-        onboardingDotBridge.className = "dot";
-        onboardingTextBridge.textContent = "Apple Reminders: Setup Required";
-        if (onboardingSubBridge) {
-          onboardingSubBridge.textContent = "Install the official Apple Shortcut below to connect Reminders.";
-        }
-        if (userTriggered) {
-          showBridgeAlert("Please click '➕ 1-Click Install Shortcut' below to activate Apple Reminders.", false);
-        }
+        // Fallback: check if local daemon responds directly on port 8989
+        fetch("http://127.0.0.1:8989/health")
+          .then((r) => r.ok ? r.json() : null)
+          .then((health) => {
+            if (health && health.status === "ok") {
+              if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
+              if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (Silent Bridge Running)";
+              if (onboardingSubBridge) {
+                onboardingSubBridge.textContent = "Background daemon active on port 8989 • Target: 'Daily Pull List' • iCloud Ready";
+              }
+              if (userTriggered) {
+                showBridgeAlert("✓ Connected! Apple Reminders silent bridge is active on port 8989 and ready for background sync.", true);
+              }
+            } else {
+              if (onboardingDotBridge) onboardingDotBridge.className = "dot";
+              if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders: Setup Required";
+              if (onboardingSubBridge) {
+                onboardingSubBridge.textContent = "Install the official Apple Shortcut below to connect Reminders.";
+              }
+              if (userTriggered) {
+                showBridgeAlert("No connection detected yet. If you already added the shortcut, click '✓ I've Added It' below to confirm.", false);
+              }
+            }
+          })
+          .catch(() => {
+            if (onboardingDotBridge) onboardingDotBridge.className = "dot";
+            if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders: Setup Required";
+            if (onboardingSubBridge) {
+              onboardingSubBridge.textContent = "Install the official Apple Shortcut below to connect Reminders.";
+            }
+            if (userTriggered) {
+              showBridgeAlert("No connection detected yet. If you already added the shortcut, click '✓ I've Added It' below to confirm.", false);
+            }
+          });
       }
-    });
+    };
+
+    if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.sendMessage) {
+      chrome.runtime.sendMessage({ action: "checkStatus" }, (res) => {
+        if (chrome.runtime.lastError) {
+          console.warn("checkStatus bridge error:", chrome.runtime.lastError);
+        }
+        handleBridgeResult(res);
+      });
+    } else {
+      handleBridgeResult(null);
+    }
   }
   window.checkBridge = checkBridge;
 
@@ -336,6 +421,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handle clicking the official Apple Shortcut install link
   const onInstallClick = () => {
     chrome.storage.local.set({ shortcutInstalled: true }, () => {
+      if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
+      if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (SyncPullList Shortcut)";
       showBridgeAlert("✓ Opening Apple Shortcuts! Click 'Add Shortcut' in the macOS dialog, then return here.", true);
       setTimeout(() => checkBridge(false), 2000);
     });
@@ -351,6 +438,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnConfirmShortcutInstalled) {
     btnConfirmShortcutInstalled.addEventListener("click", () => {
       chrome.storage.local.set({ shortcutInstalled: true }, () => {
+        if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
+        if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (SyncPullList Shortcut)";
+        if (onboardingSubBridge) {
+          onboardingSubBridge.textContent = "Official Apple Shortcut is active • Syncs directly to Reminders app & widgets";
+        }
         showBridgeAlert("✓ Confirmed! 'SyncPullList' shortcut marked active. Reminders is ready to sync!", true);
         checkBridge(true);
       });
@@ -361,6 +453,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnTestShortcutDirect) {
     btnTestShortcutDirect.addEventListener("click", () => {
       chrome.storage.local.set({ shortcutInstalled: true }, () => {
+        if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
+        if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (SyncPullList Shortcut)";
+        if (onboardingSubBridge) {
+          onboardingSubBridge.textContent = "Official Apple Shortcut is active • Syncs directly to Reminders app & widgets";
+        }
         const testPayload = "SKU 11053 — Metallica 2025 Tour Tee (Test Sync)";
         if (navigator.clipboard) {
           navigator.clipboard.writeText(testPayload).catch((e) => console.warn(e));
@@ -508,11 +605,56 @@ echo "=================================================================="
 
   function checkGoogleTasks(userTriggered = false) {
     if (!onboardingTextGoogle) return;
-    onboardingTextGoogle.textContent = "Checking Google Tasks connection...";
-    chrome.runtime.sendMessage({ action: "checkStatus" }, (res) => {
+
+    if (btnTestGoogle && userTriggered) {
+      btnTestGoogle.disabled = true;
+      btnTestGoogle.textContent = "⚡ Testing...";
+    }
+    if (onboardingDotGoogle && userTriggered) {
+      onboardingDotGoogle.className = "dot checking";
+    }
+
+    // Fast-path: pre-check storage for instant rendering
+    if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.get(["googleConnected", "google_refresh_token"], (stored) => {
+        if (stored && (stored.googleConnected || stored.google_refresh_token)) {
+          if (onboardingDotGoogle) onboardingDotGoogle.className = "dot active";
+          if (onboardingTextGoogle) onboardingTextGoogle.textContent = "Connected to Google Tasks ✓";
+          if (onboardingSubGoogle) {
+            onboardingSubGoogle.textContent = 'Target List: "Daily Pull List" • Ready to sync!';
+          }
+          if (btnConnectGoogle) {
+            btnConnectGoogle.textContent = "✓ Google Tasks Authorized";
+            btnConnectGoogle.style.background = "#15803d";
+          }
+        }
+      });
+    }
+
+    let resolved = false;
+    const timeoutTimer = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        if (btnTestGoogle) {
+          btnTestGoogle.disabled = false;
+          btnTestGoogle.textContent = "⚡ Test Access";
+        }
+      }
+    }, 4500);
+
+    const handleGoogleResult = (res) => {
+      if (resolved) return;
+      resolved = true;
+      clearTimeout(timeoutTimer);
+
+      if (btnTestGoogle) {
+        btnTestGoogle.disabled = false;
+        btnTestGoogle.textContent = "⚡ Test Access";
+      }
+
       if (res && res.googleConnected) {
-        onboardingDotGoogle.className = "dot active";
-        onboardingTextGoogle.textContent = "Connected to Google Tasks ✓";
+        if (onboardingDotGoogle) onboardingDotGoogle.className = "dot active";
+        if (onboardingTextGoogle) onboardingTextGoogle.textContent = "Connected to Google Tasks ✓";
         if (onboardingSubGoogle) {
           onboardingSubGoogle.textContent = 'Target List: "Daily Pull List" • Ready to sync!';
         }
@@ -524,8 +666,8 @@ echo "=================================================================="
           showGoogleAlert("✓ Success! Google Tasks is connected and ready to receive your daily pull lists.", true);
         }
       } else {
-        onboardingDotGoogle.className = "dot";
-        onboardingTextGoogle.textContent = "Google Tasks Not Connected";
+        if (onboardingDotGoogle) onboardingDotGoogle.className = "dot";
+        if (onboardingTextGoogle) onboardingTextGoogle.textContent = "Google Tasks Not Connected";
         if (onboardingSubGoogle) {
           onboardingSubGoogle.textContent = "Click 'Sign in with Google' to authorize your account.";
         }
@@ -534,10 +676,24 @@ echo "=================================================================="
           btnConnectGoogle.style.background = "linear-gradient(180deg, #1a73e8 0%, #1557b0 100%)";
         }
         if (userTriggered) {
-          showGoogleAlert("Google Tasks is not authorized yet. Please click 'Sign in with Google' above.", false);
+          showGoogleAlert("Google Tasks is not authorized yet. Launching Google Sign-in now...", false);
+          if (btnConnectGoogle) {
+            btnConnectGoogle.click();
+          }
         }
       }
-    });
+    };
+
+    if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.sendMessage) {
+      chrome.runtime.sendMessage({ action: "checkStatus" }, (res) => {
+        if (chrome.runtime.lastError) {
+          console.warn("checkStatus google error:", chrome.runtime.lastError);
+        }
+        handleGoogleResult(res);
+      });
+    } else {
+      handleGoogleResult(null);
+    }
   }
   window.checkGoogleTasks = checkGoogleTasks;
 
@@ -662,6 +818,9 @@ echo "=================================================================="
     if (paymentSuccessBox) {
       paymentSuccessBox.style.display = "block";
     }
+
+    if (typeof checkBridge === "function") checkBridge(false);
+    if (typeof checkGoogleTasks === "function") checkGoogleTasks(false);
   }
   window.applyPaidState = applyPaidState;
 

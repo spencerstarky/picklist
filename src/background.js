@@ -19,7 +19,7 @@ chrome.runtime.onInstalled.addListener((details) => {
   }
 });
 
-// External message listener (from payment success page)
+// External message listener (from payment success page & web views)
 if (chrome.runtime.onMessageExternal) {
   chrome.runtime.onMessageExternal.addListener((req, sender, sendResponse) => {
     if (req.action === "licensePaid" && req.email) {
@@ -27,6 +27,46 @@ if (chrome.runtime.onMessageExternal) {
         chrome.tabs.create({ url: chrome.runtime.getURL("src/onboarding.html?paid=true") });
         sendResponse({ success: true });
       });
+      return true;
+    }
+
+    if (req.action === "checkStatus") {
+      (async () => {
+        try {
+          const tokenPromise = getSessionToken().catch(() => null);
+          const bridgePromise = checkBridgeStatus().catch(() => ({ connected: false }));
+          const googlePromise = checkGoogleTasksStatus().catch(() => ({ connected: false }));
+          const storagePromise = chrome.storage.local.get([
+            "syncDestination",
+            "shortcutInstalled",
+            "googleConnected",
+            "lastSyncTimestamp",
+            "lastItemCount",
+            "isPaid",
+            "userEmail"
+          ]);
+
+          const [token, bridge, google, storage] = await Promise.all([
+            tokenPromise,
+            bridgePromise,
+            googlePromise,
+            storagePromise
+          ]);
+
+          sendResponse({
+            authenticated: !!token,
+            bridgeConnected: bridge?.connected || false,
+            bridgeData: bridge?.data || null,
+            googleConnected: google?.connected || !!storage?.googleConnected,
+            googleData: google?.data || null,
+            shortcutInstalled: !!storage?.shortcutInstalled,
+            syncDestination: storage?.syncDestination || "apple",
+            storage: storage || {}
+          });
+        } catch (e) {
+          sendResponse({ authenticated: false, bridgeConnected: false, googleConnected: false, error: e.message });
+        }
+      })();
       return true;
     }
   });
@@ -546,18 +586,26 @@ async function getGoogleAuthToken(interactive = false) {
 async function checkGoogleTasksStatus() {
   try {
     const token = await getGoogleAuthToken(false);
-    if (!token) return { connected: false };
+    if (!token) {
+      const stored = await chrome.storage.local.get("googleConnected");
+      return { connected: !!stored.googleConnected };
+    }
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3500);
     const resp = await fetch(`${GOOGLE_TASKS_API}/users/@me/lists`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
+      signal: controller.signal
     });
+    clearTimeout(timeoutId);
     if (resp.ok) {
       const data = await resp.json();
       return { connected: true, data };
     }
     return { connected: false, error: `Google API returned status ${resp.status}` };
   } catch (err) {
-    return { connected: false, error: err.message };
+    const stored = await chrome.storage.local.get("googleConnected").catch(() => ({}));
+    return { connected: !!stored.googleConnected, error: err.message };
   }
 }
 
@@ -1236,34 +1284,54 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
 
   if (req.action === "checkStatus") {
     (async () => {
-      const token = await getSessionToken();
-      const bridge = await checkBridgeStatus();
-      const google = await checkGoogleTasksStatus();
-      const storage = await chrome.storage.local.get([
-        "syncDestination",
-        "shortcutInstalled",
-        "lastSyncTimestamp",
-        "lastItemCount",
-        "lastCreatedCount",
-        "lastSkippedCount",
-        "lastMethod",
-        "lastError",
-        "lookbackHours",
-        "persistedCompletedKeys",
-        "items"
-      ]);
-      const completedHistoryCount = Object.keys(storage.persistedCompletedKeys || {}).length;
-      sendResponse({
-        authenticated: !!token,
-        bridgeConnected: bridge.connected,
-        bridgeData: bridge.data || null,
-        googleConnected: google.connected,
-        googleData: google.data || null,
-        shortcutInstalled: !!storage.shortcutInstalled,
-        syncDestination: storage.syncDestination || "apple",
-        completedHistoryCount,
-        storage
-      });
+      try {
+        const tokenPromise = getSessionToken().catch(() => null);
+        const bridgePromise = checkBridgeStatus().catch(() => ({ connected: false }));
+        const googlePromise = checkGoogleTasksStatus().catch(() => ({ connected: false }));
+        const storagePromise = chrome.storage.local.get([
+          "syncDestination",
+          "shortcutInstalled",
+          "googleConnected",
+          "lastSyncTimestamp",
+          "lastItemCount",
+          "lastCreatedCount",
+          "lastSkippedCount",
+          "lastMethod",
+          "lastError",
+          "lookbackHours",
+          "persistedCompletedKeys",
+          "items"
+        ]);
+
+        const [token, bridge, google, storage] = await Promise.all([
+          tokenPromise,
+          bridgePromise,
+          googlePromise,
+          storagePromise
+        ]);
+
+        const completedHistoryCount = Object.keys(storage?.persistedCompletedKeys || {}).length;
+        sendResponse({
+          authenticated: !!token,
+          bridgeConnected: bridge?.connected || false,
+          bridgeData: bridge?.data || null,
+          googleConnected: google?.connected || !!storage?.googleConnected,
+          googleData: google?.data || null,
+          shortcutInstalled: !!storage?.shortcutInstalled,
+          syncDestination: storage?.syncDestination || "apple",
+          completedHistoryCount,
+          storage: storage || {}
+        });
+      } catch (err) {
+        console.error("[NiftySync] checkStatus error:", err);
+        sendResponse({
+          authenticated: false,
+          bridgeConnected: false,
+          googleConnected: false,
+          shortcutInstalled: false,
+          error: err.message
+        });
+      }
     })();
     return true;
   }
