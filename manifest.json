@@ -21,7 +21,6 @@
     "https://www.googleapis.com/*",
     "https://oauth2.googleapis.com/*",
     "https://accounts.google.com/*",
-    "https://extensionpay.com/*",
     "https://*.chromiumapp.org/*",
     "https://*.workers.dev/*"
   ],
@@ -34,13 +33,6 @@
   "background": {
     "service_worker": "src/background.js"
   },
-  "content_scripts": [
-    {
-      "matches": ["https://extensionpay.com/*"],
-      "js": ["src/ExtPay.js"],
-      "run_at": "document_start"
-    }
-  ],
   "action": {
     "default_title": "PickList",
     "default_popup": "src/popup.html",

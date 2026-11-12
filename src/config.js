@@ -7,8 +7,9 @@ const CONFIG = {
   // Your Nifty referral link to capture referral program commissions
   NIFTY_REFERRAL_URL: "https://nifty.ai/?referral=SOURCEDANDSOLD",
 
-  // Your ExtensionPay extension ID registered at https://extensionpay.com
-  EXTPAY_ID: "nifty-pull-list",
+  // Stripe Payment Link for $29.99 Lifetime Access
+  STRIPE_PAYMENT_LINK: "https://buy.stripe.com/4gM6oB1CdbNL1MI0h9dAk00",
+  LICENSE_VERIFY_URL: "https://nifty-pull-list-auth.picklist-auth.workers.dev/api/license/verify",
 
   // One-time flat fee display price (or monthly fee depending on your Stripe setup)
   FLAT_FEE_PRICE: "$29.99",

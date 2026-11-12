@@ -30,8 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastSyncTimestampCached = null;
 
   // Paywall & License Management
-  const extpayId = (typeof CONFIG !== "undefined" && CONFIG.EXTPAY_ID) ? CONFIG.EXTPAY_ID : "nifty-pull-list";
-  const extpay = typeof ExtPay !== "undefined" ? ExtPay(extpayId) : null;
   const paywallContainer = document.getElementById("paywallContainer");
   const mainControlsContainer = document.getElementById("mainControlsContainer");
   const btnPopupCheckout = document.getElementById("btnPopupCheckout");
@@ -66,35 +64,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Verify in background with ExtPay
-  if (extpay) {
-    extpay.getUser().then((user) => {
-      const isPaid = !!(user && user.paid);
-      chrome.storage.local.set({ isPaid, userEmail: user?.email || "" });
-      setPaidState(isPaid);
-    }).catch(e => console.log("[ExtPay] User check:", e));
+  const stripePaymentLink = (typeof CONFIG !== "undefined" && CONFIG.STRIPE_PAYMENT_LINK)
+    ? CONFIG.STRIPE_PAYMENT_LINK
+    : "https://buy.stripe.com/4gM6oB1CdbNL1MI0h9dAk00";
 
-    if (btnPopupCheckout) {
-      btnPopupCheckout.addEventListener("click", () => extpay.openPaymentPage());
-    }
-    if (btnPopupLogin) {
-      btnPopupLogin.addEventListener("click", () => extpay.openLoginPage());
-    }
+  if (btnPopupCheckout) {
+    btnPopupCheckout.addEventListener("click", () => {
+      chrome.tabs.create({ url: stripePaymentLink });
+    });
+  }
 
-    const btnPaywallViewDemo = document.getElementById("btnPaywallViewDemo");
-    if (btnPaywallViewDemo) {
-      btnPaywallViewDemo.addEventListener("click", (e) => {
-        e.preventDefault();
-        chrome.tabs.create({ url: chrome.runtime.getURL("src/onboarding.html") });
-      });
-    }
+  if (btnPopupLogin) {
+    btnPopupLogin.addEventListener("click", () => {
+      chrome.tabs.create({ url: chrome.runtime.getURL("src/onboarding.html?restore=true") });
+    });
+  }
 
-    if (extpay.onPaid) {
-      extpay.onPaid.addListener((user) => {
-        chrome.storage.local.set({ isPaid: true, userEmail: user?.email || "" });
-        setPaidState(true);
-      });
-    }
+  const btnPaywallViewDemo = document.getElementById("btnPaywallViewDemo");
+  if (btnPaywallViewDemo) {
+    btnPaywallViewDemo.addEventListener("click", (e) => {
+      e.preventDefault();
+      chrome.tabs.create({ url: chrome.runtime.getURL("src/onboarding.html") });
+    });
   }
 
   let currentDestination = "apple";

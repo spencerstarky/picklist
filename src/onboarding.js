@@ -590,10 +590,7 @@ echo "=================================================================="
     btnContinueToStep2.addEventListener("click", () => goToStep(2));
   }
 
-  // Step 1: ExtensionPay Lifetime Access Integration
-  const extpayId = (typeof CONFIG !== "undefined" && CONFIG.EXTPAY_ID) ? CONFIG.EXTPAY_ID : "nifty-pull-list";
-  const extpay = typeof ExtPay !== "undefined" ? ExtPay(extpayId) : null;
-
+  // Step 1: Stripe Lifetime Access Integration
   const btnExtPayCheckout = document.getElementById("btnExtPayCheckout");
   const btnExtPayLogin = document.getElementById("btnExtPayLogin");
   const paymentStatusBox = document.getElementById("paymentStatusBox");
@@ -669,6 +666,16 @@ echo "=================================================================="
   }
   window.applyPaidState = applyPaidState;
 
+  // Check URL query parameters for instant post-checkout unlock
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("paid") === "true") {
+    const emailParam = urlParams.get("email") || "";
+    applyPaidState({ email: emailParam });
+    if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.set({ isPaid: true, userEmail: emailParam });
+    }
+  }
+
   // Pre-check storage cache for instant rendering
   if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
     chrome.storage.local.get(["isPaid", "userEmail"], (res) => {
@@ -678,35 +685,110 @@ echo "=================================================================="
     });
   }
 
-  if (extpay) {
-    // Check payment status with ExtensionPay server
-    extpay.getUser().then((user) => {
-      if (user && user.paid) {
-        applyPaidState(user);
-      }
-    }).catch((err) => {
-      console.log("[ExtPay] User check:", err);
+  // Stripe Checkout Button Handler
+  if (btnExtPayCheckout) {
+    btnExtPayCheckout.addEventListener("click", () => {
+      const stripePaymentLink = (typeof CONFIG !== "undefined" && CONFIG.STRIPE_PAYMENT_LINK)
+        ? CONFIG.STRIPE_PAYMENT_LINK
+        : "https://buy.stripe.com/4gM6oB1CdbNL1MI0h9dAk00";
+      window.open(stripePaymentLink, "_blank");
     });
+  }
 
-    if (btnExtPayCheckout) {
-      btnExtPayCheckout.addEventListener("click", () => {
-        extpay.openPaymentPage();
-      });
-    }
+  // Restore License Modal & API Verification
+  const restoreModal = document.getElementById("restoreModal");
+  const btnCloseRestoreModal = document.getElementById("btnCloseRestoreModal");
+  const restoreEmailInput = document.getElementById("restoreEmailInput");
+  const btnSubmitRestore = document.getElementById("btnSubmitRestore");
+  const restoreMsgBox = document.getElementById("restoreMsgBox");
 
-    if (btnExtPayLogin) {
-      btnExtPayLogin.addEventListener("click", () => {
-        extpay.openLoginPage();
-      });
+  function openRestoreModal() {
+    if (restoreModal) {
+      if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.get("userEmail", (res) => {
+          if (res?.userEmail && restoreEmailInput) restoreEmailInput.value = res.userEmail;
+        });
+      }
+      if (restoreMsgBox) restoreMsgBox.style.display = "none";
+      restoreModal.showModal();
     }
+  }
 
-    if (extpay.onPaid) {
-      extpay.onPaid.addListener((user) => {
-        applyPaidState(user);
-        // Automatically advance to Step 2: Connect Nifty
-        setTimeout(() => goToStep(2), 1500);
-      });
-    }
+  if (urlParams.get("restore") === "true") {
+    openRestoreModal();
+  }
+
+  if (btnExtPayLogin) {
+    btnExtPayLogin.addEventListener("click", openRestoreModal);
+  }
+
+  if (btnCloseRestoreModal && restoreModal) {
+    btnCloseRestoreModal.addEventListener("click", () => restoreModal.close());
+    restoreModal.addEventListener("click", (e) => {
+      if (e.target === restoreModal) restoreModal.close();
+    });
+  }
+
+  if (btnSubmitRestore) {
+    btnSubmitRestore.addEventListener("click", async () => {
+      const email = (restoreEmailInput?.value || "").trim().toLowerCase();
+      if (!email || !email.includes("@")) {
+        if (restoreMsgBox) {
+          restoreMsgBox.style.display = "block";
+          restoreMsgBox.style.background = "#fee2e2";
+          restoreMsgBox.style.color = "#991b1b";
+          restoreMsgBox.textContent = "Please enter a valid email address.";
+        }
+        return;
+      }
+
+      btnSubmitRestore.disabled = true;
+      btnSubmitRestore.textContent = "Verifying with Stripe...";
+      if (restoreMsgBox) restoreMsgBox.style.display = "none";
+
+      try {
+        const verifyUrl = (typeof CONFIG !== "undefined" && CONFIG.LICENSE_VERIFY_URL)
+          ? CONFIG.LICENSE_VERIFY_URL
+          : "https://nifty-pull-list-auth.picklist-auth.workers.dev/api/license/verify";
+
+        const resp = await fetch(`${verifyUrl}?email=${encodeURIComponent(email)}`);
+        const data = await resp.json();
+
+        if (data && data.paid) {
+          if (restoreMsgBox) {
+            restoreMsgBox.style.display = "block";
+            restoreMsgBox.style.background = "#dcfce7";
+            restoreMsgBox.style.color = "#166534";
+            restoreMsgBox.textContent = "✓ License verified! Unlocking PickList...";
+          }
+          applyPaidState({ email });
+          if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+            await chrome.storage.local.set({ isPaid: true, userEmail: email });
+          }
+          setTimeout(() => {
+            if (restoreModal) restoreModal.close();
+            goToStep(2);
+          }, 1200);
+        } else {
+          if (restoreMsgBox) {
+            restoreMsgBox.style.display = "block";
+            restoreMsgBox.style.background = "#fee2e2";
+            restoreMsgBox.style.color = "#991b1b";
+            restoreMsgBox.textContent = data.message || "No paid lifetime license found for this email. Check spelling or purchase a license.";
+          }
+        }
+      } catch (err) {
+        if (restoreMsgBox) {
+          restoreMsgBox.style.display = "block";
+          restoreMsgBox.style.background = "#fee2e2";
+          restoreMsgBox.style.color = "#991b1b";
+          restoreMsgBox.textContent = "Connection error. Please try again in a moment.";
+        }
+      } finally {
+        btnSubmitRestore.disabled = false;
+        btnSubmitRestore.textContent = "Verify & Unlock License";
+      }
+    });
   }
 
   // Finish Onboarding
@@ -789,14 +871,14 @@ echo "=================================================================="
     });
   }
 
-  // Re-check payment status whenever user refocuses this tab (e.g. returning from ExtensionPay checkout/login)
+  // Re-check payment status whenever user refocuses this tab (e.g. returning from Stripe checkout)
   window.addEventListener("focus", () => {
-    if (extpay) {
-      extpay.getUser().then((user) => {
-        if (user && user.paid) {
-          applyPaidState(user);
+    if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.get(["isPaid", "userEmail"], (res) => {
+        if (res && res.isPaid) {
+          applyPaidState({ email: res.userEmail || "" });
         }
-      }).catch(() => {});
+      });
     }
     checkNifty();
   });

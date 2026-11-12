@@ -11,16 +11,7 @@ const COOKIE_NAME = "__Secure-nifty.session_token";
 const BRIDGE_URL = "http://127.0.0.1:8989";
 const GOOGLE_TASKS_API = "https://tasks.googleapis.com/tasks/v1";
 
-importScripts('config.js', 'ExtPay.js');
-
-const extpay = typeof ExtPay !== "undefined" ? ExtPay(CONFIG.EXTPAY_ID) : null;
-if (extpay) {
-  try {
-    extpay.startBackground();
-  } catch (err) {
-    console.warn("[NiftySync] ExtensionPay background listener:", err);
-  }
-}
+importScripts('config.js');
 
 // Automatically open onboarding walkthrough on first extension install
 chrome.runtime.onInstalled.addListener((details) => {
@@ -788,20 +779,10 @@ async function syncWithGoogleTasks(items, options = {}) {
 async function fetchAndSyncOrders(options = {}) {
   // 0. Verify License Status
   const storedLicense = await chrome.storage.local.get(["isPaid", "userEmail"]);
-  if (!storedLicense.isPaid && typeof extpay !== "undefined" && extpay) {
-    try {
-      const user = await extpay.getUser();
-      if (!user || !user.paid) {
-        const errorMsg = "Payment required. Please unlock lifetime access ($29.99).";
-        await chrome.storage.local.set({ lastError: errorMsg, isPaid: false });
-        return { success: false, error: errorMsg };
-      }
-      await chrome.storage.local.set({ isPaid: true, userEmail: user.email || "" });
-    } catch (_) {
-      const errorMsg = "Payment required. Please unlock lifetime access ($29.99).";
-      await chrome.storage.local.set({ lastError: errorMsg, isPaid: false });
-      return { success: false, error: errorMsg };
-    }
+  if (!storedLicense.isPaid) {
+    const errorMsg = "Payment required. Please unlock lifetime access ($29.99).";
+    await chrome.storage.local.set({ lastError: errorMsg, isPaid: false });
+    return { success: false, error: errorMsg };
   }
 
   const token = await getSessionToken();
@@ -1148,16 +1129,8 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
     (async () => {
       // Enforce license verification
       const stored = await chrome.storage.local.get("isPaid");
-      if (!stored.isPaid && typeof extpay !== "undefined" && extpay) {
-        try {
-          const user = await extpay.getUser();
-          if (!user || !user.paid) {
-            return sendResponse({ success: false, error: "Payment required. Please unlock lifetime access ($29.99)." });
-          }
-          await chrome.storage.local.set({ isPaid: true, userEmail: user.email || "" });
-        } catch (_) {
-          return sendResponse({ success: false, error: "Payment required. Please unlock lifetime access ($29.99)." });
-        }
+      if (!stored.isPaid) {
+        return sendResponse({ success: false, error: "Payment required. Please unlock lifetime access ($29.99)." });
       }
       const result = await fetchAndSyncOrders(req.options || {});
       sendResponse(result);
@@ -1169,6 +1142,28 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
     (async () => {
       await chrome.storage.local.set({ syncDestination: req.destination });
       sendResponse({ success: true, destination: req.destination });
+    })();
+    return true;
+  }
+
+  if (req.action === "verifyLicense") {
+    (async () => {
+      const email = (req.email || "").trim().toLowerCase();
+      if (!email) return sendResponse({ paid: false, error: "Email required" });
+      try {
+        const verifyUrl = (typeof CONFIG !== "undefined" && CONFIG.LICENSE_VERIFY_URL)
+          ? CONFIG.LICENSE_VERIFY_URL
+          : "https://nifty-pull-list-auth.picklist-auth.workers.dev/api/license/verify";
+        const resp = await fetch(`${verifyUrl}?email=${encodeURIComponent(email)}`);
+        const data = await resp.json();
+        if (data && data.paid) {
+          await chrome.storage.local.set({ isPaid: true, userEmail: email });
+          return sendResponse({ paid: true, email });
+        }
+        sendResponse({ paid: false, message: data.message || "No license found" });
+      } catch (err) {
+        sendResponse({ paid: false, error: err.message });
+      }
     })();
     return true;
   }
