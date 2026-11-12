@@ -78,10 +78,8 @@ English
 | `https://tasks.googleapis.com/*` | host_permissions | Communicates with the official Google Tasks REST API to create and manage pull list items. |
 | `https://www.googleapis.com/*` | host_permissions | Queries Google user profile and task list endpoints during Google Tasks integration. |
 | `https://oauth2.googleapis.com/*` | host_permissions | Exchanges and refreshes Google OAuth tokens securely. |
-| `https://accounts.google.com/*` | host_permissions | Handles the user sign-in and authorization screen for Google Tasks. |
-| `https://extensionpay.com/*` | host_permissions | Connects to ExtensionPay to verify paid license status and process Stripe checkout. |
 | `https://*.chromiumapp.org/*` | host_permissions | OAuth redirect callback URL used by Chrome Identity (`launchWebAuthFlow`). |
-| `https://*.workers.dev/*` | host_permissions | Secure Cloudflare proxy worker for Google Tasks token exchange without client secrets. |
+| `https://*.workers.dev/*` | host_permissions | Secure Cloudflare proxy worker for license verification and Google Tasks OAuth token exchange without client secrets. |
 
 ## Privacy & Data Use
 

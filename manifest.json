@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "PickList : Daily Order Pulls for Nifty",
   "short_name": "PickList",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Automatically retrieves sold orders from Nifty, sorts descending by numeric SKU, and syncs into Apple Reminders & Google Tasks.",
   "permissions": [
     "cookies",

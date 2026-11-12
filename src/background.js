@@ -1,7 +1,6 @@
 /**
  * PickList - Background Service Worker (Manifest V3)
- * Author: Spencer Starkweather
- * Version: 1.0.0
+ * Version: 1.0.2
  * Supports Apple Reminders & Google Tasks destinations
  */
 

@@ -1,6 +1,5 @@
 /**
  * PickList - Onboarding Controller
- * Author: Spencer Starkweather
  * Supports Apple Reminders & Google Tasks destinations
  */
 

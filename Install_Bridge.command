@@ -1,7 +1,6 @@
 #!/bin/bash
 # ==============================================================================
 # PickList - 1-Click macOS Apple Reminders Bridge Installer
-# Author: Spencer Starkweather
 # ==============================================================================
 
 # Ensure Terminal stays open if double-clicked from Finder
@@ -27,8 +26,6 @@ if [ -f "$DIR/src/bridge.py" ]; then
   SRC_BRIDGE_PY="$DIR/src/bridge.py"
 elif [ -f "$DIR/bridge.py" ]; then
   SRC_BRIDGE_PY="$DIR/bridge.py"
-elif [ -f "$HOME/antigravity/nifty-pull-list/src/bridge.py" ]; then
-  SRC_BRIDGE_PY="$HOME/antigravity/nifty-pull-list/src/bridge.py"
 elif [ -f "$DEST_BRIDGE_PY" ]; then
   SRC_BRIDGE_PY="$DEST_BRIDGE_PY"
 fi

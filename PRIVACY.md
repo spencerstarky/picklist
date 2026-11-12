@@ -28,8 +28,8 @@ PickList is built with an absolute local-first architecture. All parsing of orde
 - Configuration settings (such as chosen task destination, sorting mode, lookback window, and last sync timestamp) are saved exclusively to `chrome.storage.local`.
 
 ### D. Payment Information
-- Lifetime license purchases are handled directly through **ExtensionPay** and **Stripe**.
-- PickList never receives, handles, or stores credit card numbers, CVVs, or financial details. ExtensionPay provides only an anonymized user identifier and license confirmation flag.
+- Lifetime license purchases are handled securely through **Stripe**.
+- PickList never receives, handles, or stores credit card numbers, CVVs, or financial details. Stripe provides only a customer identifier and license confirmation status.
 
 ---
 
@@ -50,7 +50,7 @@ PickList's use and transfer to any other app of information received from Google
 - **Direct Encrypted Calls:** All network communication is conducted via direct, encrypted HTTPS connections with:
   - `api.nifty.ai` (your inventory platform)
   - `tasks.googleapis.com` (official Google Tasks API)
-  - `extensionpay.com` (license verification)
+  - `*.workers.dev` (secure license verification)
 
 ---
 
