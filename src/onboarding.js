@@ -825,18 +825,23 @@ echo "=================================================================="
   const btnCloseVideoModal = document.getElementById("btnCloseVideoModal");
 
   function openVideoModal() {
-    if (videoModal && videoModalIframe) {
-      if (!videoModalIframe.src) {
-        videoModalIframe.src = videoModalIframe.getAttribute("data-src") || "https://www.loom.com/embed/7890456879c04e14948ffe996555a12f?autoplay=1";
+    if (videoModal) {
+      if (videoModalIframe && (!videoModalIframe.src || videoModalIframe.src.endsWith("src/onboarding.html") || videoModalIframe.src === "about:blank")) {
+        videoModalIframe.src = "https://www.loom.com/embed/7890456879c04e14948ffe996555a12f";
       }
       videoModal.showModal();
     }
   }
 
   function closeVideoModal() {
-    if (videoModal && videoModalIframe) {
+    if (videoModal) {
       videoModal.close();
-      videoModalIframe.src = ""; // Stops playback & audio immediately
+      if (videoModalIframe && videoModalIframe.src) {
+        // Soft reload iframe to stop audio
+        const currentSrc = videoModalIframe.src;
+        videoModalIframe.src = "";
+        setTimeout(() => { videoModalIframe.src = currentSrc; }, 200);
+      }
     }
   }
 

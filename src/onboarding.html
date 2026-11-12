@@ -2531,17 +2531,22 @@
         <span>📺</span>
         <span>PickList: 4-Minute Walkthrough & Setup Demo</span>
       </div>
-      <button type="button" class="btn-close-video" id="btnCloseVideoModal" title="Close video">×</button>
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <a href="https://www.loom.com/share/7890456879c04e14948ffe996555a12f" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; font-size: 13px; font-weight: 500; text-decoration: none;">
+          Watch on Loom ↗
+        </a>
+        <button type="button" class="btn-close-video" id="btnCloseVideoModal" title="Close video">×</button>
+      </div>
     </div>
     <div class="video-dialog-frame-wrapper">
       <iframe 
         id="videoModalIframe"
-        src="" 
-        data-src="https://www.loom.com/embed/7890456879c04e14948ffe996555a12f?autoplay=1" 
+        src="https://www.loom.com/embed/7890456879c04e14948ffe996555a12f" 
         frameborder="0" 
         webkitallowfullscreen 
         mozallowfullscreen 
         allowfullscreen 
+        loading="lazy"
         title="PickList Walkthrough Demo">
       </iframe>
     </div>
