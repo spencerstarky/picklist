@@ -24,6 +24,12 @@
     "https://*.chromiumapp.org/*",
     "https://*.workers.dev/*"
   ],
+  "externally_connectable": {
+    "matches": [
+      "https://*.workers.dev/*",
+      "https://spencerstarky.github.io/*"
+    ]
+  },
   "oauth2": {
     "client_id": "231991706388-ronnrq67mcfgg7e39aaj1rp7mop9obgc.apps.googleusercontent.com",
     "scopes": [

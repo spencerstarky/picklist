@@ -20,6 +20,19 @@ chrome.runtime.onInstalled.addListener((details) => {
   }
 });
 
+// External message listener (from payment success page)
+if (chrome.runtime.onMessageExternal) {
+  chrome.runtime.onMessageExternal.addListener((req, sender, sendResponse) => {
+    if (req.action === "licensePaid" && req.email) {
+      chrome.storage.local.set({ isPaid: true, userEmail: req.email }, () => {
+        chrome.tabs.create({ url: chrome.runtime.getURL("src/onboarding.html?paid=true") });
+        sendResponse({ success: true });
+      });
+      return true;
+    }
+  });
+}
+
 /**
  * Retrieves the Nifty session token from Chrome cookies.
  */
