@@ -226,8 +226,8 @@ document.addEventListener("DOMContentLoaded", () => {
         lookbackPreviewText.innerHTML = `Pulls items sold since <strong>${formatTimeDescription(d)}</strong>`;
       } else {
         const d = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-        badgeText = "First Sync";
-        lookbackPreviewText.innerHTML = `First sync: Pulls items sold since <strong>${formatTimeDescription(d)}</strong>`;
+        badgeText = "Since Sync";
+        lookbackPreviewText.innerHTML = `First sync: Pulls past 24h, then automatically syncs only newly sold items`;
       }
     } else if (val === "24") {
       const d = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -400,26 +400,23 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // Configure "Since Last Sync" for First-Time vs Returning users
-        if (lastSyncTimestampCached) {
-          const lastDate = new Date(lastSyncTimestampCached);
-          if (!isNaN(lastDate.getTime()) && optSinceLastSync) {
-            optSinceLastSync.style.display = "";
-            optSinceLastSync.textContent = "Since Last Sync";
-          }
-          if (prefs.savedLookback) {
-            lookbackSelect.value = prefs.savedLookback;
+        // Configure "Since Last Sync" - Always keep visible
+        if (optSinceLastSync) {
+          optSinceLastSync.style.display = "";
+          if (lastSyncTimestampCached) {
+            const lastDate = new Date(lastSyncTimestampCached);
+            if (!isNaN(lastDate.getTime())) {
+              optSinceLastSync.textContent = "Since Last Sync";
+            }
           } else {
-            // Default returning user to "since-last-sync"
-            lookbackSelect.value = "since-last-sync";
+            optSinceLastSync.textContent = "Since Last Sync (First Sync: 24h)";
           }
+        }
+
+        if (prefs.savedLookback) {
+          lookbackSelect.value = prefs.savedLookback;
         } else {
-          // BRAND NEW USER: No previous sync exists yet!
-          if (optSinceLastSync) {
-            optSinceLastSync.style.display = "none";
-          }
-          // Default to 1 Day (24h) for first-time safe sync
-          lookbackSelect.value = prefs.savedLookback || "24";
+          lookbackSelect.value = "since-last-sync";
         }
 
         if (lookbackSelect.value === "custom") {
