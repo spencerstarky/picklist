@@ -318,7 +318,8 @@ document.addEventListener("DOMContentLoaded", () => {
           if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
           if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
           if (onboardingSubBridge) {
-            onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
+            onboardingSubBridge.style.display = "none";
+            onboardingSubBridge.textContent = "";
           }
         }
       });
@@ -349,7 +350,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
         if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
         if (onboardingSubBridge) {
-          onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
+          onboardingSubBridge.style.display = "none";
+          onboardingSubBridge.textContent = "";
         }
         if (userTriggered) {
           showBridgeAlert("✓ Success! Apple Reminders is connected and ready to receive your daily pull lists.", true);
@@ -363,7 +365,8 @@ document.addEventListener("DOMContentLoaded", () => {
               if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
               if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
               if (onboardingSubBridge) {
-                onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
+                onboardingSubBridge.style.display = "none";
+                onboardingSubBridge.textContent = "";
               }
               if (userTriggered) {
                 showBridgeAlert("✓ Success! Apple Reminders is connected and ready to receive your daily pull lists.", true);
@@ -372,6 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
               if (onboardingDotBridge) onboardingDotBridge.className = "dot";
               if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders: Setup Required";
               if (onboardingSubBridge) {
+                onboardingSubBridge.style.display = "block";
                 onboardingSubBridge.textContent = "Install the official Apple Shortcut below to connect Reminders.";
               }
               if (userTriggered) {
@@ -383,6 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (onboardingDotBridge) onboardingDotBridge.className = "dot";
             if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders: Setup Required";
             if (onboardingSubBridge) {
+              onboardingSubBridge.style.display = "block";
               onboardingSubBridge.textContent = "Install the official Apple Shortcut below to connect Reminders.";
             }
             if (userTriggered) {
@@ -415,7 +420,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
       if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
       if (onboardingSubBridge) {
-        onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
+        onboardingSubBridge.style.display = "none";
+        onboardingSubBridge.textContent = "";
       }
       showBridgeAlert("✓ Opening Apple Shortcuts! Click 'Add Shortcut' in the macOS dialog, then return here.", true);
       setTimeout(() => checkBridge(false), 2000);
@@ -435,7 +441,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
         if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
         if (onboardingSubBridge) {
-          onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
+          onboardingSubBridge.style.display = "none";
+          onboardingSubBridge.textContent = "";
         }
         showBridgeAlert("✓ Success! Apple Reminders marked connected and ready to receive your pull lists.", true);
         checkBridge(true);
@@ -450,7 +457,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
         if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
         if (onboardingSubBridge) {
-          onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
+          onboardingSubBridge.style.display = "none";
+          onboardingSubBridge.textContent = "";
         }
         const testPayload = "SKU 11053 — Metallica 2025 Tour Tee (Test Sync)";
         if (navigator.clipboard) {
