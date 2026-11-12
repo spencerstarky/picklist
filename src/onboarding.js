@@ -316,9 +316,9 @@ document.addEventListener("DOMContentLoaded", () => {
       chrome.storage.local.get(["shortcutInstalled", "syncDestination"], (stored) => {
         if (stored && stored.shortcutInstalled) {
           if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
-          if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (SyncPullList Shortcut)";
+          if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
           if (onboardingSubBridge) {
-            onboardingSubBridge.textContent = "Official Apple Shortcut is active • Syncs directly to Reminders app & widgets";
+            onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
           }
         }
       });
@@ -345,37 +345,28 @@ document.addEventListener("DOMContentLoaded", () => {
         btnTestBridge.textContent = "⚡ Check / Test Status";
       }
 
-      if (res && res.bridgeConnected) {
+      if (res && (res.bridgeConnected || res.shortcutInstalled)) {
         if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
-        if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (Silent Bridge Running)";
+        if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
         if (onboardingSubBridge) {
-          onboardingSubBridge.textContent = "Background daemon active on port 8989 • Target: 'Daily Pull List' • iCloud Ready";
+          onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
         }
         if (userTriggered) {
-          showBridgeAlert("✓ Connected! Apple Reminders silent bridge is active on port 8989 and ready for background sync.", true);
-        }
-      } else if (res && res.shortcutInstalled) {
-        if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
-        if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (SyncPullList Shortcut)";
-        if (onboardingSubBridge) {
-          onboardingSubBridge.textContent = "Official Apple Shortcut is active • Syncs directly to Reminders app & widgets";
-        }
-        if (userTriggered) {
-          showBridgeAlert("✓ 'SyncPullList' shortcut is active! Clicking Sync in Chrome will populate your Reminders.", true);
+          showBridgeAlert("✓ Success! Apple Reminders is connected and ready to receive your daily pull lists.", true);
         }
       } else {
-        // Fallback: check if local daemon responds directly on port 8989
+        // Fallback: check if local helper responds directly on port 8989
         fetch("http://127.0.0.1:8989/health")
           .then((r) => r.ok ? r.json() : null)
           .then((health) => {
             if (health && health.status === "ok") {
               if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
-              if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (Silent Bridge Running)";
+              if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
               if (onboardingSubBridge) {
-                onboardingSubBridge.textContent = "Background daemon active on port 8989 • Target: 'Daily Pull List' • iCloud Ready";
+                onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
               }
               if (userTriggered) {
-                showBridgeAlert("✓ Connected! Apple Reminders silent bridge is active on port 8989 and ready for background sync.", true);
+                showBridgeAlert("✓ Success! Apple Reminders is connected and ready to receive your daily pull lists.", true);
               }
             } else {
               if (onboardingDotBridge) onboardingDotBridge.className = "dot";
@@ -422,7 +413,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const onInstallClick = () => {
     chrome.storage.local.set({ shortcutInstalled: true }, () => {
       if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
-      if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (SyncPullList Shortcut)";
+      if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
+      if (onboardingSubBridge) {
+        onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
+      }
       showBridgeAlert("✓ Opening Apple Shortcuts! Click 'Add Shortcut' in the macOS dialog, then return here.", true);
       setTimeout(() => checkBridge(false), 2000);
     });
@@ -439,11 +433,11 @@ document.addEventListener("DOMContentLoaded", () => {
     btnConfirmShortcutInstalled.addEventListener("click", () => {
       chrome.storage.local.set({ shortcutInstalled: true }, () => {
         if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
-        if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (SyncPullList Shortcut)";
+        if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
         if (onboardingSubBridge) {
-          onboardingSubBridge.textContent = "Official Apple Shortcut is active • Syncs directly to Reminders app & widgets";
+          onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
         }
-        showBridgeAlert("✓ Confirmed! 'SyncPullList' shortcut marked active. Reminders is ready to sync!", true);
+        showBridgeAlert("✓ Success! Apple Reminders marked connected and ready to receive your pull lists.", true);
         checkBridge(true);
       });
     });
@@ -454,9 +448,9 @@ document.addEventListener("DOMContentLoaded", () => {
     btnTestShortcutDirect.addEventListener("click", () => {
       chrome.storage.local.set({ shortcutInstalled: true }, () => {
         if (onboardingDotBridge) onboardingDotBridge.className = "dot active";
-        if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Active (SyncPullList Shortcut)";
+        if (onboardingTextBridge) onboardingTextBridge.textContent = "Apple Reminders Connected ✓";
         if (onboardingSubBridge) {
-          onboardingSubBridge.textContent = "Official Apple Shortcut is active • Syncs directly to Reminders app & widgets";
+          onboardingSubBridge.textContent = 'Target List: "Daily Pull List" • Ready to sync across Mac & iPhone';
         }
         const testPayload = "SKU 11053 — Metallica 2025 Tour Tee (Test Sync)";
         if (navigator.clipboard) {

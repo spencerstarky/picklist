@@ -484,9 +484,7 @@ document.addEventListener("DOMContentLoaded", () => {
           dotBridge.className = "dot active";
           textBridge.textContent = "Reminders Active";
           if (pillBridge) {
-            pillBridge.title = res.bridgeConnected
-              ? "Apple Reminders: Silent Bridge Active (Click for guide)"
-              : "Apple Reminders: SyncPullList Shortcut Active (Click for guide)";
+            pillBridge.title = "Apple Reminders Connected (Click for guide)";
           }
         } else {
           dotBridge.className = "dot";
