@@ -482,6 +482,11 @@ async function getGoogleAuthToken(interactive = false) {
     ? manifest.oauth2.scopes.join(" ")
     : "https://www.googleapis.com/auth/tasks";
 
+  console.log("[NiftySync] Initiating Google Tasks OAuth flow...");
+  console.log("[NiftySync] Extension ID:", chrome.runtime.id);
+  console.log("[NiftySync] Client ID:", clientId);
+  console.log("[NiftySync] Redirect URI:", redirectUri);
+
   const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
   authUrl.searchParams.set("client_id", clientId);
   authUrl.searchParams.set("response_type", "code");
