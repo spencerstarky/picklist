@@ -1804,6 +1804,102 @@
       color: #1d1d1f;
     }
 
+    /* Video Walkthrough Styles */
+    .btn-watch-video {
+      background: rgba(0, 113, 227, 0.08);
+      color: var(--primary);
+      border: 1px solid rgba(0, 113, 227, 0.25);
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-watch-video:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 113, 227, 0.25);
+    }
+
+    .video-dialog {
+      border: 0;
+      border-radius: 20px;
+      padding: 0;
+      width: 90vw;
+      max-width: 960px;
+      background: #0f172a;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      margin: auto;
+    }
+
+    .video-dialog::backdrop {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .video-dialog-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: #1e293b;
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .video-dialog-title {
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-close-video {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #cbd5e1;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      line-height: 1;
+      transition: all 0.15s ease;
+    }
+
+    .btn-close-video:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    .video-dialog-frame-wrapper {
+      position: relative;
+      padding-bottom: 42.1875%; /* Matches 2560x1080 ultrawide aspect ratio */
+      height: 0;
+      background: #000000;
+    }
+
+    .video-dialog-frame-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
   </style>
 </head>
 <body>
@@ -1817,9 +1913,12 @@
       </div>
       <h1>From Order to Physical Inventory in Seconds</h1>
       <p>Zero-configuration physical inventory pull lists synced directly into Apple Reminders or Google Tasks on your Mac, PC, iPhone & Android.</p>
-      <div style="margin-top: 14px;">
-        <a href="guide.html" target="_blank" style="display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--primary); text-decoration: none; background: rgba(0, 113, 227, 0.08); border: 1px solid rgba(0, 113, 227, 0.2); padding: 6px 14px; border-radius: 20px; transition: all 0.2s ease;">
-          <span>📖 What is PickList? View Product Guide & Walkthrough</span>
+      <div style="margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+        <button type="button" id="btnOpenVideoModal" class="btn-watch-video">
+          <span>▶ Watch 4-Min Demo Video</span>
+        </button>
+        <a href="guide.html" target="_blank" style="display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--text-secondary); text-decoration: none; background: #ffffff; border: 1px solid var(--border); padding: 7px 14px; border-radius: 20px; transition: all 0.2s ease;">
+          <span>📖 Product Guide</span>
           <span>↗</span>
         </a>
       </div>
@@ -2107,6 +2206,18 @@
     <div class="step-panel" id="panel-3">
       <h2>Step 3: Connect Your Task App</h2>
       <p class="panel-desc">Choose where your pull list syncs. You can switch between Apple Reminders and Google Tasks anytime.</p>
+
+      <!-- Video Setup Callout -->
+      <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 20px;">📺</span>
+          <div style="font-size: 13px; color: var(--text);">
+            <strong>Want to watch how to set this up?</strong>
+            <span style="display: block; color: var(--text-muted); font-size: 12px;">See the 1-Click Apple Shortcut (1:08) and Google Tasks authorization (3:15) in action.</span>
+          </div>
+        </div>
+        <button type="button" class="btn-watch-video" data-open-video-modal style="font-size: 12px; padding: 6px 14px;">Watch Demo (4 min) ↗</button>
+      </div>
 
       <!-- Segmented Platform Selector -->
       <div class="segmented-control-wrapper">
@@ -2412,6 +2523,29 @@
     </div>
 
   </div>
+
+  <!-- Video Walkthrough Modal Dialog -->
+  <dialog id="videoModal" class="video-dialog">
+    <div class="video-dialog-header">
+      <div class="video-dialog-title">
+        <span>📺</span>
+        <span>PickList: 4-Minute Walkthrough & Setup Demo</span>
+      </div>
+      <button type="button" class="btn-close-video" id="btnCloseVideoModal" title="Close video">×</button>
+    </div>
+    <div class="video-dialog-frame-wrapper">
+      <iframe 
+        id="videoModalIframe"
+        src="" 
+        data-src="https://www.loom.com/embed/7890456879c04e14948ffe996555a12f?autoplay=1" 
+        frameborder="0" 
+        webkitallowfullscreen 
+        mozallowfullscreen 
+        allowfullscreen 
+        title="PickList Walkthrough Demo">
+      </iframe>
+    </div>
+  </dialog>
 
   <script src="config.js"></script>
   <script src="ExtPay.js"></script>

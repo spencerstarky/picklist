@@ -736,6 +736,71 @@ echo "=================================================================="
     }
   });
 
+  // Video Walkthrough Modal Dialog
+  const videoModal = document.getElementById("videoModal");
+  const videoModalIframe = document.getElementById("videoModalIframe");
+  const btnOpenVideoModal = document.getElementById("btnOpenVideoModal");
+  const btnCloseVideoModal = document.getElementById("btnCloseVideoModal");
+
+  function openVideoModal() {
+    if (videoModal && videoModalIframe) {
+      if (!videoModalIframe.src) {
+        videoModalIframe.src = videoModalIframe.getAttribute("data-src") || "https://www.loom.com/embed/7890456879c04e14948ffe996555a12f?autoplay=1";
+      }
+      videoModal.showModal();
+    }
+  }
+
+  function closeVideoModal() {
+    if (videoModal && videoModalIframe) {
+      videoModal.close();
+      videoModalIframe.src = ""; // Stops playback & audio immediately
+    }
+  }
+
+  if (btnOpenVideoModal) {
+    btnOpenVideoModal.addEventListener("click", openVideoModal);
+  }
+
+  if (btnCloseVideoModal) {
+    btnCloseVideoModal.addEventListener("click", closeVideoModal);
+  }
+
+  document.querySelectorAll("[data-open-video-modal]").forEach((el) => {
+    el.addEventListener("click", openVideoModal);
+  });
+
+  if (videoModal) {
+    videoModal.addEventListener("click", (e) => {
+      const rect = videoModal.getBoundingClientRect();
+      const isInDialog = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.top + rect.height &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.left + rect.width
+      );
+      if (!isInDialog) {
+        closeVideoModal();
+      }
+    });
+
+    videoModal.addEventListener("cancel", () => {
+      if (videoModalIframe) videoModalIframe.src = "";
+    });
+  }
+
+  // Re-check payment status whenever user refocuses this tab (e.g. returning from ExtensionPay checkout/login)
+  window.addEventListener("focus", () => {
+    if (extpay) {
+      extpay.getUser().then((user) => {
+        if (user && user.paid) {
+          applyPaidState(user);
+        }
+      }).catch(() => {});
+    }
+    checkNifty();
+  });
+
   // Run initial checks
   checkNifty();
   checkBridge();
