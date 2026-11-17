@@ -258,8 +258,37 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnCheckNifty = document.getElementById("btnCheckNifty");
 
   function checkNifty() {
+    if (btnCheckNifty) {
+      btnCheckNifty.disabled = true;
+      btnCheckNifty.textContent = "Checking...";
+    }
+    if (onboardingDotNifty) onboardingDotNifty.className = "dot checking";
     onboardingTextNifty.textContent = "Checking Nifty session...";
+
+    let completed = false;
+    const timeout = setTimeout(() => {
+      if (!completed) {
+        completed = true;
+        if (btnCheckNifty) {
+          btnCheckNifty.disabled = false;
+          btnCheckNifty.textContent = "Check Status";
+        }
+        if (onboardingDotNifty) onboardingDotNifty.className = "dot";
+        onboardingTextNifty.textContent = "Not logged into Nifty";
+        onboardingSubNifty.textContent = "Please sign into app.nifty.ai in another tab, then re-check.";
+      }
+    }, 3000);
+
     chrome.runtime.sendMessage({ action: "checkStatus" }, (res) => {
+      if (completed) return;
+      completed = true;
+      clearTimeout(timeout);
+
+      if (btnCheckNifty) {
+        btnCheckNifty.disabled = false;
+        btnCheckNifty.textContent = "Check Status";
+      }
+
       if (res && res.authenticated) {
         onboardingDotNifty.className = "dot active";
         onboardingTextNifty.textContent = "Connected to Nifty (Active Session)";
@@ -267,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         onboardingDotNifty.className = "dot";
         onboardingTextNifty.textContent = "Not logged into Nifty";
-        onboardingSubNifty.textContent = "Please sign into app.nifty.ai, or use the referral partner link above.";
+        onboardingSubNifty.textContent = "Please sign into app.nifty.ai in another tab, then click Check Status.";
       }
     });
   }
