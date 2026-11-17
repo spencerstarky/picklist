@@ -16,6 +16,7 @@
   "host_permissions": [
     "https://app.nifty.ai/*",
     "https://api.nifty.ai/*",
+    "https://*.nifty.ai/*",
     "http://127.0.0.1:8989/*",
     "http://localhost:8989/*",
     "https://tasks.googleapis.com/*",

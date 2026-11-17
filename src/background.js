@@ -102,6 +102,7 @@ async function getSessionToken() {
     // 4. Search all cookies on nifty.ai domain
     if (!cookie) {
       const allCookies = await chrome.cookies.getAll({ domain: "nifty.ai" });
+      console.log("[NiftySync] All cookies found on domain nifty.ai:", allCookies.map(c => c.name));
       if (allCookies && allCookies.length > 0) {
         cookie = allCookies.find(c => c.name.includes("session_token"))
               || allCookies.find(c => c.name.includes("session"))
