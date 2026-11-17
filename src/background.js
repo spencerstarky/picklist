@@ -69,6 +69,48 @@ if (chrome.runtime.onMessageExternal) {
       })();
       return true;
     }
+    if (req.action === "setDestination") {
+      (async () => {
+        await chrome.storage.local.set({ syncDestination: req.destination });
+        sendResponse({ success: true, destination: req.destination });
+      })();
+      return true;
+    }
+
+    if (req.action === "verifyLicense") {
+      (async () => {
+        const email = (req.email || "").trim().toLowerCase();
+        if (!email) return sendResponse({ paid: false, error: "Email required" });
+        try {
+          const verifyUrl = (typeof CONFIG !== "undefined" && CONFIG.LICENSE_VERIFY_URL)
+            ? CONFIG.LICENSE_VERIFY_URL
+            : "https://nifty-pull-list-auth.picklist-auth.workers.dev/api/license/verify";
+          const resp = await fetch(`${verifyUrl}?email=${encodeURIComponent(email)}`);
+          const data = await resp.json();
+          if (data && data.paid) {
+            await chrome.storage.local.set({ isPaid: true, userEmail: email });
+            return sendResponse({ paid: true, email });
+          }
+          sendResponse({ paid: false, message: data.message || "No license found" });
+        } catch (err) {
+          sendResponse({ paid: false, error: err.message });
+        }
+      })();
+      return true;
+    }
+
+    if (req.action === "connectGoogleTasks") {
+      (async () => {
+        try {
+          const token = await getGoogleAuthToken(true);
+          await chrome.storage.local.set({ syncDestination: "google", googleConnected: true });
+          sendResponse({ success: true, token });
+        } catch (err) {
+          sendResponse({ success: false, error: err.message });
+        }
+      })();
+      return true;
+    }
   });
 }
 

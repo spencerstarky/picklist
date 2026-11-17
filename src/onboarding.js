@@ -3,6 +3,59 @@
  * Supports Apple Reminders & Google Tasks destinations
  */
 
+const KNOWN_EXTENSION_IDS = [
+  "oofcimjgealfkoaicaefdlelkpncapfd", // Local unpacked developer build
+  "jlhnaekhelojnpfiigjjmjhdchjkfndi"  // Chrome Web Store published build
+];
+
+function sendExtensionMessage(message, callback) {
+  if (typeof chrome === "undefined" || !chrome.runtime || !chrome.runtime.sendMessage) {
+    if (callback) callback({ error: "Chrome runtime unavailable" });
+    return;
+  }
+
+  // Inside internal extension page (chrome-extension://...)
+  if (window.location.protocol === "chrome-extension:") {
+    try {
+      chrome.runtime.sendMessage(message, (res) => {
+        if (callback) callback(res);
+      });
+    } catch (e) {
+      if (callback) callback({ error: e.message });
+    }
+    return;
+  }
+
+  // On external website (e.g. https://getpicklist.com)
+  let responded = false;
+  function tryExt(idx) {
+    if (idx >= KNOWN_EXTENSION_IDS.length) {
+      if (!responded && callback) {
+        responded = true;
+        callback({ error: "PickList extension not reachable from web page" });
+      }
+      return;
+    }
+    const extId = KNOWN_EXTENSION_IDS[idx];
+    try {
+      chrome.runtime.sendMessage(extId, message, (res) => {
+        const err = chrome.runtime.lastError;
+        if (!err && res) {
+          if (!responded && callback) {
+            responded = true;
+            callback(res);
+          }
+        } else {
+          tryExt(idx + 1);
+        }
+      });
+    } catch (e) {
+      tryExt(idx + 1);
+    }
+  }
+  tryExt(0);
+}
+
 let isUserPaid = false;
 
 function goToStep(stepNum) {
@@ -52,9 +105,7 @@ function switchOnboardingDest(dest) {
   if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
     chrome.storage.local.set({ syncDestination: dest });
   }
-  if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.sendMessage) {
-    chrome.runtime.sendMessage({ action: "setDestination", destination: dest });
-  }
+  sendExtensionMessage({ action: "setDestination", destination: dest });
 
   if (dest === "google") {
     if (typeof checkGoogleTasks === "function") checkGoogleTasks(false);
@@ -279,7 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }, 3000);
 
-    chrome.runtime.sendMessage({ action: "checkStatus" }, (res) => {
+    sendExtensionMessage({ action: "checkStatus" }, (res) => {
       if (completed) return;
       completed = true;
       clearTimeout(timeout);
@@ -426,16 +477,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
 
-    if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.sendMessage) {
-      chrome.runtime.sendMessage({ action: "checkStatus" }, (res) => {
-        if (chrome.runtime.lastError) {
-          console.warn("checkStatus bridge error:", chrome.runtime.lastError);
-        }
-        handleBridgeResult(res);
-      });
-    } else {
-      handleBridgeResult(null);
-    }
+    sendExtensionMessage({ action: "checkStatus" }, (res) => {
+      handleBridgeResult(res);
+    });
   }
   window.checkBridge = checkBridge;
 
@@ -715,23 +759,16 @@ echo "=================================================================="
       }
     };
 
-    if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.sendMessage) {
-      chrome.runtime.sendMessage({ action: "checkStatus" }, (res) => {
-        if (chrome.runtime.lastError) {
-          console.warn("checkStatus google error:", chrome.runtime.lastError);
-        }
-        handleGoogleResult(res);
-      });
-    } else {
-      handleGoogleResult(null);
-    }
+    sendExtensionMessage({ action: "checkStatus" }, (res) => {
+      handleGoogleResult(res);
+    });
   }
   window.checkGoogleTasks = checkGoogleTasks;
 
   if (btnConnectGoogle) {
     btnConnectGoogle.addEventListener("click", () => {
       btnConnectGoogle.textContent = "Signing in...";
-      chrome.runtime.sendMessage({ action: "connectGoogleTasks" }, (res) => {
+      sendExtensionMessage({ action: "connectGoogleTasks" }, (res) => {
         if (res && res.success) {
           checkGoogleTasks(true);
         } else {
@@ -870,6 +907,12 @@ echo "=================================================================="
     chrome.storage.local.get(["isPaid", "userEmail"], (res) => {
       if (res && res.isPaid) {
         applyPaidState({ email: res.userEmail || "" });
+      }
+    });
+  } else {
+    sendExtensionMessage({ action: "checkStatus" }, (res) => {
+      if (res && res.storage && res.storage.isPaid) {
+        applyPaidState({ email: res.storage.userEmail || "" });
       }
     });
   }
@@ -1071,6 +1114,12 @@ echo "=================================================================="
       chrome.storage.local.get(["isPaid", "userEmail"], (res) => {
         if (res && res.isPaid) {
           applyPaidState({ email: res.userEmail || "" });
+        }
+      });
+    } else {
+      sendExtensionMessage({ action: "checkStatus" }, (res) => {
+        if (res && res.storage && res.storage.isPaid) {
+          applyPaidState({ email: res.storage.userEmail || "" });
         }
       });
     }
