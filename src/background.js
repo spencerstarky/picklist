@@ -77,11 +77,13 @@ if (chrome.runtime.onMessageExternal) {
  */
 async function getSessionToken() {
   try {
+    // 1. Direct check on app URL with standard cookie name
     let cookie = await chrome.cookies.get({
       url: NIFTY_APP_URL,
       name: COOKIE_NAME
     });
 
+    // 2. Direct check on API host
     if (!cookie) {
       cookie = await chrome.cookies.get({
         url: NIFTY_API_HOST,
@@ -89,12 +91,38 @@ async function getSessionToken() {
       });
     }
 
+    // 3. Check without __Secure- prefix (nifty.session_token)
     if (!cookie) {
-      const allCookies = await chrome.cookies.getAll({ name: COOKIE_NAME });
+      cookie = await chrome.cookies.get({
+        url: NIFTY_APP_URL,
+        name: "nifty.session_token"
+      });
+    }
+
+    // 4. Search all cookies on nifty.ai domain
+    if (!cookie) {
+      const allCookies = await chrome.cookies.getAll({ domain: "nifty.ai" });
       if (allCookies && allCookies.length > 0) {
-        cookie = allCookies[0];
+        cookie = allCookies.find(c => c.name.includes("session_token"))
+              || allCookies.find(c => c.name.includes("session"))
+              || allCookies.find(c => c.name.includes("token"))
+              || allCookies.find(c => c.name.includes("auth"))
+              || allCookies[0];
       }
     }
+
+    // 5. Search all cookies on app.nifty.ai URL
+    if (!cookie) {
+      const urlCookies = await chrome.cookies.getAll({ url: NIFTY_APP_URL });
+      if (urlCookies && urlCookies.length > 0) {
+        cookie = urlCookies.find(c => c.name.includes("session_token"))
+              || urlCookies.find(c => c.name.includes("session"))
+              || urlCookies.find(c => c.name.includes("token"))
+              || urlCookies[0];
+      }
+    }
+
+    console.log("[NiftySync] Nifty cookie check result:", cookie ? `${cookie.name} (length: ${cookie.value?.length})` : "NO COOKIES FOUND");
 
     if (cookie && cookie.value) {
       try {
