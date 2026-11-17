@@ -218,6 +218,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Partner promo copy button
+  const btnCopyPromo = document.getElementById('btnCopyGuidePartnerPromo');
+  if (btnCopyPromo) {
+    btnCopyPromo.addEventListener('click', () => {
+      navigator.clipboard.writeText('SOURCEDANDSOLD');
+      btnCopyPromo.textContent = '✓ Copied!';
+      setTimeout(() => {
+        btnCopyPromo.textContent = '📋 Copy';
+      }, 2000);
+    });
+  }
+
   // Initial counter calculation
   updateCounter();
 });
