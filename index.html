@@ -2,15 +2,602 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="Lgpk_X3Z7FDzuO259oIPhZGVLkzx-bBLkY3KxPYjOBE" />
   <meta name="google-site-verification" content="google2da449855979e6a1" />
-  <meta http-equiv="refresh" content="0; url=src/guide.html">
-  <title>PickList - Daily Reseller Pull List Automation</title>
-  <script>
-    window.location.replace("src/guide.html");
-  </script>
+  <title>PickList — Daily Reseller Pull List Automation for Nifty</title>
+  <meta name="description" content="One-click order pull lists synced directly into Apple Reminders & Google Tasks. Automatically sequences sold items by rack & bin from eBay, Poshmark, Mercari & Depop.">
+  <link rel="icon" type="image/png" href="icons/icon48.png">
+
+  <!-- OpenGraph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getpicklist.com/">
+  <meta property="og:title" content="PickList — Automatic Order Pull Lists for Nifty">
+  <meta property="og:description" content="Walk your inventory racks with both hands free. PickList turns your daily sold orders into an optimized walking path on your phone.">
+  <meta property="og:image" content="https://getpicklist.com/icons/screenshot-devices-1280x800.png">
+
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --accent: #0071e3;
+      --accent-hover: #0077ed;
+      --accent-glow: rgba(0, 113, 227, 0.28);
+      --border: #e2e8f0;
+      --border-subtle: #f1f5f9;
+      --success: #10b981;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.08), 0 4px 8px -2px rgba(0, 0, 0, 0.03);
+      --shadow-xl: 0 20px 32px -6px rgba(0, 0, 0, 0.10), 0 8px 12px -4px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation */
+    .navbar {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 24px;
+    }
+
+    .nav-container {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #0071e3 0%, #0056b3 100%);
+      color: #ffffff;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      box-shadow: 0 2px 6px rgba(0, 113, 227, 0.3);
+    }
+
+    .nav-logo .badge-nifty {
+      font-size: 11px;
+      font-weight: 600;
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 2px 7px;
+      border-radius: 12px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-link {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .btn-nav-install {
+      background: var(--text-main);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav-install:hover {
+      background: #1e293b;
+      transform: translateY(-1px);
+    }
+
+    /* Main Container */
+    .hero-wrapper {
+      flex: 1;
+      max-width: 1160px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 48px 24px 64px 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr;
+      gap: 56px;
+      align-items: center;
+      width: 100%;
+    }
+
+    /* Left Column: Focused Copy & Big CTA */
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #e0f2fe;
+      color: #0284c7;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 6px 13px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(2, 132, 199, 0.2);
+    }
+
+    .hero-headline {
+      font-size: 46px;
+      line-height: 1.12;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      margin-bottom: 18px;
+    }
+
+    .hero-headline .accent-text {
+      background: linear-gradient(135deg, #0071e3 0%, #2563eb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-lead {
+      font-size: 17px;
+      line-height: 1.55;
+      color: #475569;
+      margin-bottom: 24px;
+      max-width: 530px;
+    }
+
+    .hero-benefits {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      margin-bottom: 32px;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 14.5px;
+      font-weight: 500;
+      color: #334155;
+    }
+
+    .benefit-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ecfdf5;
+      color: #059669;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    /* Big Action CTA Button */
+    .cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .btn-hero-install {
+      width: 100%;
+      background: linear-gradient(180deg, #0077ed 0%, #0066cc 100%);
+      color: #ffffff;
+      padding: 16px 28px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 16.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 13px;
+      box-shadow: 0 8px 24px var(--accent-glow), 0 2px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .btn-hero-install:hover {
+      background: linear-gradient(180deg, #0080ff 0%, #0071e3 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(0, 113, 227, 0.38);
+    }
+
+    .btn-hero-install:active {
+      transform: translateY(0);
+    }
+
+    .chrome-svg-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .cta-micro-note {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      padding-left: 2px;
+    }
+
+    .cta-micro-note .lock-icon {
+      font-size: 12px;
+    }
+
+    .learn-more-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      margin-top: 4px;
+      padding-left: 2px;
+      transition: gap 0.2s ease, color 0.15s ease;
+    }
+
+    .learn-more-link:hover {
+      color: var(--accent-hover);
+      gap: 9px;
+    }
+
+    /* Right Column: Dual iPhone Visual Stage */
+    .hero-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .phones-dual-stage {
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 34px 24px;
+      box-shadow: var(--shadow-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .phone-card {
+      text-align: center;
+      flex: 1;
+      max-width: 215px;
+    }
+
+    .phone-card img {
+      width: 100%;
+      height: auto;
+      max-height: 420px;
+      object-fit: contain;
+      filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.12));
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .phone-card img:hover {
+      transform: translateY(-5px) scale(1.02);
+    }
+
+    .phone-badge {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #64748b;
+      margin-top: 12px;
+      background: #f1f5f9;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+
+    /* Clean Footer */
+    .footer {
+      border-top: 1px solid var(--border);
+      background: #ffffff;
+      padding: 24px;
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 960px) {
+      .hero-split {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .hero-left {
+        text-align: center;
+        align-items: center;
+      }
+      .hero-headline {
+        font-size: 38px;
+      }
+      .hero-benefits {
+        align-items: flex-start;
+      }
+      .cta-group {
+        align-items: center;
+      }
+      .hero-right {
+        order: -1;
+      }
+      .phones-dual-stage {
+        padding: 24px 16px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .hero-headline {
+        font-size: 30px;
+      }
+      .phones-dual-stage {
+        flex-direction: column;
+        gap: 24px;
+      }
+      .phone-card {
+        max-width: 240px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <p>Redirecting to <a href="src/guide.html">PickList Guide & Feature Overview</a>...</p>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <div class="nav-logo-icon">✓</div>
+        <span>PickList</span>
+        <span class="badge-nifty">for Nifty</span>
+      </a>
+      <div class="nav-links">
+        <a href="/guide" class="nav-link">Product Guide</a>
+        <a href="/onboarding" class="nav-link">Setup Wizard</a>
+        <a href="https://chromewebstore.google.com/detail/picklist-daily-order-pull/jlhnaekhelojnpfiigjjmjhdchjkfndi" target="_blank" class="btn-nav-install" id="navInstallBtn">
+          <span>Add to Chrome</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Content Section -->
+  <main class="hero-wrapper">
+    <div class="hero-split">
+
+      <!-- Left Column: High-Converting Copy & Big CTA -->
+      <div class="hero-left">
+        <div class="pill-badge">
+          <span>📱 Mobile Task Apps & Widgets</span>
+        </div>
+
+        <h1 class="hero-headline">
+          Your Daily Pick List.<br>
+          <span class="accent-text">Sent Straight to Your Phone.</span>
+        </h1>
+
+        <p class="hero-lead">
+          Walk your racks, shelves, and bins with both hands free. PickList connects directly with your active Nifty session, sorts your multi-channel sales from eBay, Poshmark, Mercari & Depop by warehouse location, and delivers an optimized walking path directly into Apple Reminders & Google Tasks.
+        </p>
+
+        <ul class="hero-benefits">
+          <li class="benefit-item">
+            <span class="benefit-icon">✓</span>
+            <span><strong>1-Click Sync</strong> — pulls sold orders without manual entry or CSV exports</span>
+          </li>
+          <li class="benefit-item">
+            <span class="benefit-icon">✓</span>
+            <span><strong>Bin-by-Bin Walking Path</strong> — sequences racks & bins to eliminate backtracking</span>
+          </li>
+          <li class="benefit-item">
+            <span class="benefit-icon">✓</span>
+            <span><strong>Native Mobile Widgets</strong> — check off items from lock screen & Apple Watch</span>
+          </li>
+        </ul>
+
+        <!-- Big Action CTA Button -->
+        <div class="cta-group">
+          <a href="https://chromewebstore.google.com/detail/picklist-daily-order-pull/jlhnaekhelojnpfiigjjmjhdchjkfndi" target="_blank" class="btn-hero-install" id="heroInstallBtn">
+            <svg class="chrome-svg-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" fill="#ffffff" fill-opacity="0.2"/>
+              <path d="M12 7C9.24 7 7 9.24 7 12C7 14.76 9.24 17 12 17C14.76 17 17 14.76 17 12C17 9.24 14.76 7 12 7Z" fill="#ffffff"/>
+            </svg>
+            <span>Add to Chrome — Install Extension</span>
+          </a>
+
+          <div class="cta-micro-note">
+            <span class="lock-icon">🔒</span>
+            <span>Zero password entry • Works directly with your active Nifty session</span>
+          </div>
+
+          <a href="/guide" class="learn-more-link">
+            <span>Explore the full product guide & video walkthrough</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Dual iPhone Visual Showcase -->
+      <div class="hero-right">
+        <div class="phones-dual-stage">
+          <div class="phone-card">
+            <img src="src/images/iphone-mockup-reminders.png?v=2" alt="Apple Reminders Daily Pull List Widget on iPhone">
+            <span class="phone-badge">🍎 Apple Reminders Widget</span>
+          </div>
+          <div class="phone-card">
+            <img src="src/images/iphone-mockup-tasks.png?v=2" alt="Google Tasks Mobile App on iPhone">
+            <span class="phone-badge">📋 Google Tasks Mobile App</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Clean Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div>
+        <strong>PickList</strong> — Built for high-volume clothing & inventory resellers using Nifty.
+      </div>
+      <div class="footer-links">
+        <a href="/guide">Product Guide</a>
+        <a href="/onboarding">Setup Wizard</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="mailto:starkyspencer@gmail.com">Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Smart Extension Detection Script -->
+  <script>
+    (function detectInstalledExtension() {
+      const EXTENSION_IDS = [
+        "oofcimjgealfkoaicaefdlelkpncapfd", // local unpacked dev build
+        "jlhnaekhelojnpfiigjjmjhdchjkfndi"  // published Web Store build
+      ];
+
+      if (typeof chrome === "undefined" || !chrome.runtime || !chrome.runtime.sendMessage) {
+        return;
+      }
+
+      function checkId(idx) {
+        if (idx >= EXTENSION_IDS.length) return;
+        const id = EXTENSION_IDS[idx];
+        try {
+          chrome.runtime.sendMessage(id, { action: "checkStatus" }, function(res) {
+            if (!chrome.runtime.lastError && res) {
+              const heroBtn = document.getElementById("heroInstallBtn");
+              const navBtn = document.getElementById("navInstallBtn");
+              if (heroBtn) {
+                heroBtn.innerHTML = "<span>✓ Extension Installed — Open Setup Wizard</span>";
+                heroBtn.href = "/onboarding";
+                heroBtn.target = "_self";
+                heroBtn.style.background = "linear-gradient(180deg, #10b981 0%, #059669 100%)";
+              }
+              if (navBtn) {
+                navBtn.textContent = "✓ Installed";
+                navBtn.href = "/onboarding";
+                navBtn.target = "_self";
+              }
+            } else {
+              checkId(idx + 1);
+            }
+          });
+        } catch (e) {
+          checkId(idx + 1);
+        }
+      }
+
+      checkId(0);
+    })();
+  </script>
+
 </body>
 </html>
