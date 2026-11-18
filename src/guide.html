@@ -1692,19 +1692,399 @@
       box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
     }
 
-    /* Responsive */
+    /* ====================================================================
+       ROBUST MOBILE RESPONSIVE OPTIMIZATION
+       ==================================================================== */
     @media (max-width: 860px) {
-      .hero h1 { font-size: 32px; }
-      .workflow-cards-grid { grid-template-columns: 1fr; gap: 14px; }
-      .story-row, .story-row.reverse { grid-template-columns: 1fr; gap: 36px; }
+      body {
+        overflow-x: hidden;
+      }
+
+      .navbar {
+        padding: 12px 16px;
+      }
+
+      .nav-links .nav-link {
+        display: none;
+      }
+
+      .btn-nav-primary {
+        padding: 7px 12px;
+        font-size: 12.5px;
+      }
+
+      .container {
+        padding: 24px 16px 56px;
+        max-width: 100%;
+      }
+
+      /* Hero Section */
+      .hero {
+        margin-bottom: 28px;
+      }
+
+      .hero h1 {
+        font-size: 29px;
+        line-height: 1.22;
+        letter-spacing: -0.02em;
+        margin-bottom: 14px;
+      }
+
+      .hero p {
+        font-size: 15px;
+        line-height: 1.52;
+        margin-bottom: 22px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+      }
+
+      .hero-actions .btn-hero,
+      .hero-actions .btn-hero-secondary {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        padding: 13px 18px;
+        font-size: 14.5px;
+      }
+
+      /* Browser Extension Simulator */
+      .browser-demo-section {
+        margin-bottom: 40px;
+      }
+
+      .chrome-window-mockup {
+        border-radius: 12px;
+      }
+
+      .chrome-topbar {
+        padding: 8px 10px 0;
+        gap: 8px;
+      }
+
+      .window-controls {
+        padding-bottom: 8px;
+        gap: 5px;
+      }
+
+      .control-dot {
+        width: 10px;
+        height: 10px;
+      }
+
+      .chrome-tab {
+        padding: 6px 10px 7px;
+        max-width: 170px;
+      }
+
+      .tab-title {
+        font-size: 11px;
+      }
+
+      .chrome-nav-bar {
+        padding: 6px 10px;
+        gap: 6px;
+        overflow: hidden;
+      }
+
+      .nav-arrow-btns {
+        display: none;
+      }
+
+      .chrome-url-box {
+        padding: 4px 8px;
+        font-size: 11px;
+        min-width: 0;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      .url-text {
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .url-star {
+        display: none;
+      }
+
+      .chrome-extensions-bar {
+        flex-shrink: 0;
+        gap: 6px;
+      }
+
+      .chrome-ext-btn {
+        padding: 2px;
+      }
+
+      .sim-click-hint {
+        display: none;
+      }
+
+      .browser-viewport {
+        padding: 18px 14px;
+        background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+        min-height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .nifty-app-layout {
+        display: none;
+      }
+
+      .sim-popup-dropdown {
+        position: relative !important;
+        top: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 340px !important;
+        margin: 0 auto !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+        transform: none !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        padding: 14px !important;
+      }
+
+      /* Workflow Cards Grid */
+      .workflow-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 32px 0 48px;
+      }
+
+      .workflow-card {
+        padding: 20px 16px;
+      }
+
+      .workflow-card h3 {
+        font-size: 16px;
+        margin-bottom: 6px;
+      }
+
+      .workflow-card p {
+        font-size: 13.5px;
+      }
+
+      /* Video Demo Card */
+      .video-demo-card {
+        padding: 20px 14px;
+        margin-bottom: 48px;
+      }
+
+      .video-demo-title h2 {
+        font-size: 22px;
+      }
+
+      .video-chapters-chips {
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .chapter-chip {
+        font-size: 11px;
+        padding: 3px 8px;
+      }
+
+      .btn-video-start {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+
+      /* Story Sections & Interactive Checklist Demo */
+      .story-row, .story-row.reverse {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        margin-bottom: 48px;
+      }
+
       .story-row.reverse .story-copy { order: 1; }
       .story-row.reverse .story-visual { order: 2; }
-      .nav-links .nav-link { display: none; }
-      .phones-dual-stage { flex-direction: column; }
-      .table-row { grid-template-columns: 80px 70px 1fr 60px; }
-      .table-row .status-cell { display: none; }
-      .sim-popup-dropdown { position: static; width: 100%; margin-top: 16px; transform: none !important; opacity: 1 !important; pointer-events: auto !important; }
-      .sim-click-hint { display: none; }
+
+      .story-copy h2 {
+        font-size: 24px;
+        line-height: 1.25;
+        margin-bottom: 12px;
+      }
+
+      .story-copy .lead-p {
+        font-size: 14.5px;
+        line-height: 1.55;
+        word-break: break-word;
+      }
+
+      .story-features {
+        gap: 12px;
+      }
+
+      .feature-text-block strong {
+        font-size: 13.5px;
+      }
+
+      .feature-text-block p {
+        font-size: 12.5px;
+        line-height: 1.45;
+        word-break: break-word;
+      }
+
+      .checklist-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .checklist-controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .demo-tabs-bar {
+        display: flex;
+        gap: 4px;
+        padding: 3px;
+        overflow-x: auto;
+      }
+
+      .demo-tab-btn {
+        flex: 1;
+        padding: 7px 4px;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      .interactive-item {
+        padding: 8px 10px;
+        gap: 8px;
+        font-size: 12.5px;
+      }
+
+      .sku-badge {
+        font-size: 10px;
+        padding: 2px 6px;
+        flex-shrink: 0;
+      }
+
+      .interactive-item .item-title {
+        font-size: 12px;
+        line-height: 1.35;
+        min-width: 0;
+        word-break: break-word;
+      }
+
+      .interactive-item .item-meta {
+        font-size: 11px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      /* Dual iPhone Mockups & Tablet Mockups */
+      .visual-stage {
+        padding: 16px;
+        border-radius: 16px;
+      }
+
+      .phones-dual-stage {
+        flex-direction: column;
+        gap: 24px;
+        padding: 22px 14px;
+      }
+
+      .phone-stage-card {
+        max-width: 240px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .phone-stage-card img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .tablet-stage {
+        padding: 18px 12px;
+      }
+
+      .tablet-stage img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .device-pills-row {
+        gap: 6px;
+      }
+
+      .device-pills-row span {
+        font-size: 10.5px;
+        padding: 3px 8px;
+      }
+
+      /* Partner Deal Banner */
+      .partner-deal-banner {
+        padding: 20px 16px;
+        margin: 28px 0 36px;
+      }
+
+      .partner-deal-card {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        gap: 16px;
+      }
+
+      .partner-deal-text h3 {
+        font-size: 17px;
+      }
+
+      .partner-deal-text p {
+        font-size: 13px;
+      }
+
+      .btn-partner-deal {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* Bottom CTA Card */
+      .cta-card {
+        padding: 32px 18px;
+        margin: 32px 0 48px;
+        border-radius: 16px;
+      }
+
+      .cta-card h2 {
+        font-size: 23px;
+        line-height: 1.25;
+        margin-bottom: 12px;
+      }
+
+      .cta-card p {
+        font-size: 14.5px;
+        margin-bottom: 20px;
+      }
+
+      .cta-card .btn-hero {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* Footer */
+      footer {
+        padding: 28px 16px;
+      }
+
+      footer div {
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+      }
     }
   </style>
 </head>
