@@ -4,6 +4,7 @@
     { "source": "/guide", "destination": "/", "permanent": false },
     { "source": "/guide.html", "destination": "/", "permanent": false },
     { "source": "/src/guide.html", "destination": "/", "permanent": false },
+    { "source": "/src/guide", "destination": "/", "permanent": false },
     { "source": "/privacy", "destination": "/src/privacy.html", "permanent": false },
     { "source": "/terms", "destination": "/src/terms.html", "permanent": false },
     { "source": "/onboarding", "destination": "/src/onboarding.html", "permanent": false }
