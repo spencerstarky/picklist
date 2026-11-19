@@ -1433,12 +1433,12 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     const currentHour = now.getHours();
     const currentDay = now.getDay(); // 1 = Mon, ..., 5 = Fri
 
-    if (currentHour === targetHour && currentDay >= 1 && currentDay <= 5) {
+    if (currentHour >= targetHour && currentDay >= 1 && currentDay <= 5) {
       const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
       const { lastAlarmRunDate } = await chrome.storage.local.get("lastAlarmRunDate");
 
       if (lastAlarmRunDate !== todayStr) {
-        console.log(`[NiftySync] Executing scheduled ${targetHour}:00 weekday sync for ${todayStr}...`);
+        console.log(`[NiftySync] Executing scheduled ${targetHour}:00 weekday sync (or catch-up on wake) for ${todayStr}...`);
         await chrome.storage.local.set({ lastAlarmRunDate: todayStr });
 
         let lookback = savedLookback;

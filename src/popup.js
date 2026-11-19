@@ -495,12 +495,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // 3. Error state if any
+      // 3. Status display (Error or Last Sync Summary)
       const storage = res.storage || {};
       if (storage.lastError) {
         statusBox.textContent = formatFriendlyError(storage.lastError);
         statusBox.className = "status-box error";
         statusBox.title = "Click to dismiss error";
+      } else if (storage.lastSyncTimestamp) {
+        const lastDate = new Date(storage.lastSyncTimestamp);
+        if (!isNaN(lastDate.getTime())) {
+          const count = storage.lastCreatedCount !== undefined ? storage.lastCreatedCount : (storage.lastItemCount || 0);
+          const itemWord = count === 1 ? "item" : "items";
+          statusBox.textContent = `✓ Last synced ${formatTimeDescription(lastDate)} (${count} ${itemWord})`;
+          statusBox.className = "status-box success";
+          statusBox.removeAttribute("title");
+        }
       }
     });
   }
