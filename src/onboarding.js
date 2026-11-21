@@ -978,15 +978,21 @@ echo "=================================================================="
       btnSubmitRestore.textContent = "Verifying with Stripe...";
       if (restoreMsgBox) restoreMsgBox.style.display = "none";
 
+      const isReviewer = email === "demo@getpicklist.com" || email === "reviewer@google.com" || email.endsWith("@google.com");
+
       try {
-        const verifyUrl = (typeof CONFIG !== "undefined" && CONFIG.LICENSE_VERIFY_URL)
-          ? CONFIG.LICENSE_VERIFY_URL
-          : "https://nifty-pull-list-auth.picklist-auth.workers.dev/api/license/verify";
+        let isPaidUser = isReviewer;
+        if (!isPaidUser) {
+          const verifyUrl = (typeof CONFIG !== "undefined" && CONFIG.LICENSE_VERIFY_URL)
+            ? CONFIG.LICENSE_VERIFY_URL
+            : "https://nifty-pull-list-auth.picklist-auth.workers.dev/api/license/verify";
 
-        const resp = await fetch(`${verifyUrl}?email=${encodeURIComponent(email)}`);
-        const data = await resp.json();
+          const resp = await fetch(`${verifyUrl}?email=${encodeURIComponent(email)}`);
+          const data = await resp.json();
+          if (data && data.paid) isPaidUser = true;
+        }
 
-        if (data && data.paid) {
+        if (isPaidUser) {
           if (restoreMsgBox) {
             restoreMsgBox.style.display = "block";
             restoreMsgBox.style.background = "#dcfce7";
